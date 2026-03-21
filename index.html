@@ -314,7 +314,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div id="ls-warn" style="display:none;background:rgba(240,160,48,.15);border:1px solid var(--amber);border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--amber);text-align:left">
       ⚠ <b>Private/Incognito mode detected.</b> Your account data will be saved for this session only and won't persist after closing the tab. For full persistence, open in a normal browser window.
     </div>
-    <div class="atabs">
+    <div class="atabs" id="auth-tabs">
       <button class="atab on" data-action="switchTab('login')">Sign In</button>
       <button class="atab" data-action="switchTab('reg')">Register</button>
     </div>
@@ -324,8 +324,42 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <div class="fg"><label>Password</label><input id="l-p" type="password" placeholder="••••••••" autocomplete="current-password"></div>
       <div id="l-err" class="emsg"></div>
       <button class="btnpri" style="margin-top:8px" data-action="doLogin()">Sign In →</button>
+      <div style="text-align:center;margin-top:8px">
+        <a id="forgot-link" style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showForgot()">Forgot password?</a>
+      </div>
       <div class="divd">or</div>
       <button class="btnalt" data-action="doGuest()">👁 Watch as Viewer (live sync, read-only)</button>
+    </div>
+    <!-- Forgot Password -->
+    <div id="apanel-forgot" class="apanel">
+      <div style="font-family:var(--disp);font-size:13px;color:var(--gold);margin-bottom:10px;letter-spacing:.5px">🔑 RESET PASSWORD</div>
+      <!-- Step 1: Enter username -->
+      <div id="fp-step1">
+        <div class="fg"><label>Your Username</label><input id="fp-u" type="text" placeholder="your_username" autocomplete="username"></div>
+        <div id="fp-err1" class="emsg"></div>
+        <button class="btnpri" style="margin-top:6px" data-action="fpStep1()">Continue →</button>
+      </div>
+      <!-- Step 2: Answer security question -->
+      <div id="fp-step2" style="display:none">
+        <div style="font-size:12px;color:var(--dim);margin-bottom:10px">Answer your security question to reset your password.</div>
+        <div class="fg"><label id="fp-question-label">Security Question</label>
+          <input id="fp-answer" type="text" placeholder="Your answer" autocomplete="off"></div>
+        <div class="fg"><label>New Password</label><input id="fp-newpass" type="password" placeholder="Min 4 characters"></div>
+        <div class="fg"><label>Confirm New Password</label><input id="fp-newpass2" type="password" placeholder="Repeat password"></div>
+        <div id="fp-err2" class="emsg"></div>
+        <button class="btnpri" style="margin-top:6px" data-action="fpStep2()">Reset Password →</button>
+      </div>
+      <!-- Step 3: Success -->
+      <div id="fp-step3" style="display:none">
+        <div style="text-align:center;padding:16px 0">
+          <div style="font-size:32px;margin-bottom:8px">✅</div>
+          <div style="color:var(--em);font-size:14px;font-family:var(--disp)">Password reset successfully!</div>
+          <div style="color:var(--dim);font-size:12px;margin-top:6px">You can now sign in with your new password.</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:10px">
+        <a style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showLogin()">← Back to Sign In</a>
+      </div>
     </div>
     <!-- Register -->
     <div id="apanel-reg" class="apanel">
@@ -333,6 +367,20 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <div class="fg"><label>Username</label><input id="r-u" type="text" placeholder="virat_kumar" autocomplete="username"></div>
       <div class="fg"><label>Password</label><input id="r-p" type="password" placeholder="Min 4 characters"></div>
       <div class="fg"><label>Confirm Password</label><input id="r-p2" type="password" placeholder="Repeat password"></div>
+      <div class="fg">
+        <label>Security Question <span style="color:var(--dim);font-size:10px;text-transform:none;letter-spacing:0">(for password reset)</span></label>
+        <select id="r-sq" style="width:100%;background:var(--bg2);border:1px solid var(--bdr);color:var(--txt);font-family:var(--body);font-size:12px;padding:8px 10px;border-radius:6px;outline:none;margin-bottom:6px">
+          <option value="">— Choose a question —</option>
+          <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+          <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+          <option value="What city were you born in?">What city were you born in?</option>
+          <option value="What is your favourite cricket team?">What is your favourite cricket team?</option>
+          <option value="What is your favourite cricketer?">What is your favourite cricketer?</option>
+          <option value="What was the name of your first school?">What was the name of your first school?</option>
+          <option value="What is your childhood nickname?">What is your childhood nickname?</option>
+        </select>
+        <input id="r-sa" type="text" style="width:100%;background:var(--bg2);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;outline:none" placeholder="Your answer (remember this!)">
+      </div>
       <div id="r-err" class="emsg"></div>
       <div id="r-ok" class="omsg"></div>
       <button class="btnpri" style="margin-top:8px" data-action="doRegister()">Create Account →</button>
@@ -528,7 +576,24 @@ tr:hover td{background:rgba(255,255,255,.02)}
         <div id="sch-b-xi" style="display:flex;flex-direction:column;gap:3px"></div>
       </div>
     </div>
-    <div class="mr"><label>Venue</label><input class="ifield" id="sch-v" placeholder="Stadium name"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:11px">
+      <div class="mr" style="margin-bottom:0">
+        <label>Match Stage</label>
+        <select id="sch-stage" class="sfield">
+          <option value="League">League Match</option>
+          <option value="Group A">Group A</option>
+          <option value="Group B">Group B</option>
+          <option value="Group C">Group C</option>
+          <option value="Group D">Group D</option>
+          <option value="Round of 16">Round of 16</option>
+          <option value="Quarter Final">Quarter Final</option>
+          <option value="Semi Final">Semi Final</option>
+          <option value="3rd Place Play-off">3rd Place Play-off</option>
+          <option value="Final">Final</option>
+        </select>
+      </div>
+      <div class="mr" style="margin-bottom:0"><label>Venue</label><input class="ifield" id="sch-v" placeholder="Stadium name"></div>
+    </div>
     <div class="mr"><label>Date</label><input class="ifield" id="sch-d" type="date"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
       <div class="mr" style="margin-bottom:0"><label>Umpire 1</label><input class="ifield" id="sch-u1" placeholder="On-field 1"></div>
@@ -797,6 +862,67 @@ function switchTab(t){
   document.querySelectorAll('.atab').forEach((b,i)=>b.classList.toggle('on',i===(t==='login'?0:1)));
   document.getElementById('apanel-login').classList.toggle('on',t==='login');
   document.getElementById('apanel-reg').classList.toggle('on',t==='reg');
+  let fp=document.getElementById('apanel-forgot');if(fp)fp.classList.remove('on');
+  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
+}
+function showForgot(){
+  ['apanel-login','apanel-reg'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
+  document.getElementById('apanel-forgot').classList.add('on');
+  // Hide main tabs when in forgot mode
+  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='none';
+  // Reset all steps
+  ['fp-step1','fp-step2','fp-step3'].forEach((id,i)=>{
+    let el=document.getElementById(id);if(el)el.style.display=i===0?'':'none';
+  });
+  document.getElementById('fp-u').value='';
+  document.getElementById('fp-err1').textContent='';
+  document.getElementById('fp-answer').value='';
+  document.getElementById('fp-newpass').value='';
+  document.getElementById('fp-newpass2').value='';
+  let e2=document.getElementById('fp-err2');if(e2)e2.textContent='';
+}
+function showLogin(){
+  document.getElementById('apanel-forgot').classList.remove('on');
+  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
+  switchTab('login');
+}
+function fpStep1(){
+  let uname=document.getElementById('fp-u').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'_');
+  let err=document.getElementById('fp-err1');err.textContent='';
+  if(!uname){err.textContent='Enter your username';return;}
+  let u=getUsers()[uname];
+  if(!u){err.textContent='Username not found';return;}
+  if(!u.secQ){
+    err.textContent='No security question set for this account. You registered before this feature was added — please contact the site admin to reset your password manually.';
+    return;
+  }
+  // Store uname for step 2
+  document.getElementById('fp-step1').setAttribute('data-uname',uname);
+  document.getElementById('fp-question-label').textContent=u.secQ;
+  document.getElementById('fp-step1').style.display='none';
+  document.getElementById('fp-step2').style.display='';
+}
+function fpStep2(){
+  let uname=document.getElementById('fp-step1').getAttribute('data-uname');
+  let answer=document.getElementById('fp-answer').value.trim().toLowerCase();
+  let newpass=document.getElementById('fp-newpass').value;
+  let newpass2=document.getElementById('fp-newpass2').value;
+  let err=document.getElementById('fp-err2');err.textContent='';
+  if(!answer){err.textContent='Enter your answer';return;}
+  if(newpass.length<4){err.textContent='New password must be at least 4 characters';return;}
+  if(newpass!==newpass2){err.textContent='Passwords do not match';return;}
+  let users=getUsers();
+  let u=users[uname];
+  if(!u){err.textContent='User not found';return;}
+  // Verify answer (case-insensitive)
+  if((u.secA||'').toLowerCase()!==answer){
+    err.textContent='Incorrect answer — please try again';return;
+  }
+  // Reset password
+  users[uname].hash=hp(newpass);
+  putUsers(users);
+  document.getElementById('fp-step2').style.display='none';
+  document.getElementById('fp-step3').style.display='';
 }
 function doRegister(){
   let name=document.getElementById('r-n').value.trim();
@@ -811,7 +937,11 @@ function doRegister(){
   if(pass!==pass2){err.textContent='Passwords do not match';return;}
   let users=getUsers();
   if(users[uname]){err.textContent='Username already taken';return;}
-  users[uname]={hash:hp(pass),name,data:null};putUsers(users);
+  let secQ=document.getElementById('r-sq')?.value||'';
+  let secA=(document.getElementById('r-sa')?.value||'').trim().toLowerCase();
+  if(!secQ){err.textContent='Please choose a security question';return;}
+  if(!secA){err.textContent='Please provide an answer to your security question';return;}
+  users[uname]={hash:hp(pass),name,secQ,secA,data:null};putUsers(users);
   ok.textContent='✅ Account created! Signing you in...';
   setTimeout(()=>loginAs(uname,name),700);
 }
@@ -854,8 +984,12 @@ function doLogout(){
   document.getElementById('topbar').classList.add('hidden');
   document.getElementById('main').classList.add('hidden');
   document.getElementById('syncbar').classList.remove('on');
-  ['l-u','l-p','r-n','r-u','r-p','r-p2'].forEach(id=>{let e=document.getElementById(id);if(e)e.value='';});
+  ['l-u','l-p','r-n','r-u','r-p','r-p2','fp-u','fp-answer','fp-newpass','fp-newpass2'].forEach(id=>{let e=document.getElementById(id);if(e)e.value='';});
+  ['fp-step1','fp-step2','fp-step3'].forEach((id,i)=>{let el=document.getElementById(id);if(el)el.style.display=i===0?'':'none';});
   document.getElementById('l-err').textContent='';
+  // Reset forgot panel
+  let fp=document.getElementById('apanel-forgot');if(fp)fp.classList.remove('on');
+  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
 }
 function initApp(){
   try{
@@ -1212,6 +1346,7 @@ function scheduleMatch(){
   let xiA=getXIFromRows('a',a);
   let xiB=getXIFromRows('b',b);
   if(xiA.length<1||xiB.length<1){toast('Enter at least 1 player for each team');return;}
+  let matchType=document.getElementById('sch-stage').value||'League';
   let venue=document.getElementById('sch-v').value.trim()||'TBD';
   let date=document.getElementById('sch-d').value;
   let umpires=[document.getElementById('sch-u1').value.trim()||'Umpire 1',
@@ -1222,7 +1357,7 @@ function scheduleMatch(){
   if(editId){
     // Edit mode — update existing match
     let m=APP.matches.find(x=>x.id===editId);
-    if(m){m.teamAId=a;m.teamBId=b;m.venue=venue;m.date=date;m.umpires=umpires;m.playingXI={[a]:xiA,[b]:xiB};}
+    if(m){m.teamAId=a;m.teamBId=b;m.matchType=matchType;m.venue=venue;m.date=date;m.umpires=umpires;m.playingXI={[a]:xiA,[b]:xiB};}
     mo.removeAttribute('data-edit-id');
     let title=mo.querySelector('.mt');if(title)title.textContent='📅 Schedule Match';
     closeM('sch-mo');renderMatches();populateSCSelect();saveState();toast('Match updated ✓');
@@ -1230,7 +1365,7 @@ function scheduleMatch(){
     // New match
     APP.matches.push({
       id:'m_'+Date.now(),teamAId:a,teamBId:b,
-      playingXI:{[a]:xiA,[b]:xiB},
+      matchType,playingXI:{[a]:xiA,[b]:xiB},
       venue,date,umpires,
       status:'scheduled',innings:[],winner:null,toss:null,resultText:null
     });
@@ -1249,6 +1384,10 @@ function renderMatches(){
   el.innerHTML=APP.matches.map((m,idx)=>{
     let tA=APP.teams.find(t=>t.id===m.teamAId),tB=APP.teams.find(t=>t.id===m.teamBId);
     if(!tA||!tB)return'';
+        let mt=m.matchType||'League';
+    let mtColor=mt==='Final'?'var(--gold)':mt==='Semi Final'?'var(--purple)':mt==='Quarter Final'||mt==='Round of 16'?'var(--blue)':mt.startsWith('Group')?'var(--amber)':'var(--em)';
+    let mtBg=mt==='Final'?'rgba(240,192,64,.2)':mt==='Semi Final'?'rgba(160,64,240,.2)':mt==='Quarter Final'||mt==='Round of 16'?'rgba(64,144,240,.2)':mt.startsWith('Group')?'rgba(240,160,48,.2)':'rgba(0,201,122,.15)';
+    let stageBadge=`<span style="font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:8px;background:${mtBg};color:${mtColor};border:1px solid ${mtColor};margin-right:4px">${mt.toUpperCase()}</span>`;
     let stag=m.status==='live'?'<span class="tag tr">🔴 LIVE</span>':m.status==='completed'?'<span class="tag tg">✅ DONE</span>':'<span class="tag tb">UPCOMING</span>';
     let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`<div style="font-family:var(--mono);font-size:11px;color:var(--dim)">${t?t.code:'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})</div>`;}).join('');
     let wr=m.resultText?`<div style="color:var(--em);font-size:12px;margin-top:3px">🏆 ${m.resultText}</div>`:'';
@@ -1268,7 +1407,10 @@ function renderMatches(){
     }
     return`<div class="card" id="mc-${m.id}">
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;flex-wrap:wrap">
-        <div style="font-family:var(--disp);font-size:14px">${tA.name} <span style="color:var(--dim)">vs</span> ${tB.name}</div>
+        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+          ${stageBadge}
+          <div style="font-family:var(--disp);font-size:14px">${tA.name} <span style="color:var(--dim)">vs</span> ${tB.name}</div>
+        </div>
         <div style="margin-left:auto">${stag}</div>
       </div>
       <div style="font-size:11px;color:var(--dim)">📍 ${m.venue} &nbsp;|&nbsp; 📅 ${m.date}</div>
@@ -1324,6 +1466,8 @@ function openEditMatch(mid){
   // Pre-fill XI from the match's stored playingXI if available, else from squad
   buildXIRows('a',m.teamAId,m.playingXI?m.playingXI[m.teamAId]:null);
   buildXIRows('b',m.teamBId,m.playingXI?m.playingXI[m.teamBId]:null);
+  let stageEl=document.getElementById('sch-stage');
+  if(stageEl)stageEl.value=m.matchType||'League';
   let sa=document.getElementById('sch-a'),sb=document.getElementById('sch-b');
   sa.onchange=()=>onSchTeamChange('a');
   sb.onchange=()=>onSchTeamChange('b');
@@ -1688,6 +1832,9 @@ function renderLive(){
       <div class="ri">Need:<span>${need} off ${bl}b</span></div>`;
   }
   let tossStr=m.toss?`<span style="font-size:10px;font-family:var(--mono);color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${m.toss.decision.toUpperCase()}</span>`:'';
+  let lmt=m.matchType||'League';
+  let lmtcol=lmt==='Final'?'var(--gold)':lmt==='Semi Final'?'var(--purple)':lmt==='Quarter Final'?'var(--blue)':lmt.startsWith('Group')?'var(--amber)':'var(--em)';
+  let stageBanner=lmt!=='League'?`<div style="text-align:center;font-family:var(--disp);font-size:11px;letter-spacing:2px;color:${lmtcol};background:rgba(0,0,0,.3);border:1px solid ${lmtcol};border-radius:6px;padding:4px 12px;margin-bottom:10px">${lmt.toUpperCase()}</div>`:'';
   let overLog=`<div class="overlog"><span class="olbl">THIS OVER:</span>`;
   (inn.thisOver||[]).forEach(b=>overLog+=`<div class="ball ${bc(b)}">${b}</div>`);
   overLog+='</div>';
@@ -1733,7 +1880,7 @@ function renderLive(){
       </div>
     </div>`;
   }
-  el.innerHTML=`${iebb}${warns}
+  el.innerHTML=`${stageBanner}${iebb}${warns}
   <div class="shero">
     <div class="steam">${batT?batT.name.toUpperCase():''} — INN ${inn.number} &nbsp;${tossStr}</div>
     <div class="sruns" id="sdisplay">${inn.runs}/${inn.wickets}</div>
@@ -1799,7 +1946,8 @@ function populateSCSelect(){
   sel.innerHTML='<option value="">— Select a match —</option>'
     +all.map(m=>{
       let tA=APP.teams.find(t=>t.id===m.teamAId),tB=APP.teams.find(t=>t.id===m.teamBId);
-      return`<option value="${m.id}">${tA?tA.name:'?'} vs ${tB?tB.name:'?'} (${m.date}) [${m.status.toUpperCase()}]</option>`;
+      let mt2=m.matchType||'League';
+      return`<option value="${m.id}">[${mt2}] ${tA?tA.name:'?'} vs ${tB?tB.name:'?'} (${m.date})</option>`;
     }).join('');
   if(prev)sel.value=prev;
 }
@@ -1809,8 +1957,13 @@ function renderSC(){
   if(!mid){el.innerHTML='<p style="color:var(--dim)">Select a match.</p>';return;}
   let m=APP.matches.find(x=>x.id===mid)||(APP.liveMatch?.id===mid?APP.liveMatch:null);
   if(!m){el.innerHTML='<p style="color:var(--dim)">Not found.</p>';return;}
+  let mtype=m.matchType||'League';
+  let mtcol=mtype==='Final'?'var(--gold)':mtype==='Semi Final'?'var(--purple)':mtype==='Quarter Final'?'var(--blue)':'var(--em)';
   let html=`<div style="margin-bottom:12px">
-    <div style="font-family:var(--disp);font-size:16px">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+      <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(240,192,64,.1);color:${mtcol};border:1px solid ${mtcol}">${mtype.toUpperCase()}</span>
+      <div style="font-family:var(--disp);font-size:16px">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
+    </div>
     <div style="font-size:11px;color:var(--dim)">📍 ${m.venue} | ${m.date} | 👔 ${m.umpires.join(' · ')}</div>
     ${m.toss?`<div style="font-size:11px;color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${m.toss.decision.toUpperCase()}</div>`:''}
     ${m.resultText?`<div style="color:var(--em);font-size:14px;margin-top:4px;font-family:var(--disp)">🏆 ${m.resultText}</div>`:''}
@@ -1865,8 +2018,13 @@ function renderCompleted(){
   if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
   el.innerHTML=done.map(m=>{
     let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`${t?t.code:'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})`;}).join(' | ');
+    let hmt=m.matchType||'League';
+    let hmtcol=hmt==='Final'?'var(--gold)':hmt==='Semi Final'?'var(--purple)':hmt==='Quarter Final'||hmt==='Round of 16'?'var(--blue)':hmt.startsWith('Group')?'var(--amber)':'var(--em)';
     return`<div class="hcard" onclick="showMHist('${m.id}')">
-      <div class="hteams">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+        <span style="font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.3);color:${hmtcol};border:1px solid ${hmtcol}">${hmt.toUpperCase()}</span>
+        <div class="hteams">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
+      </div>
       <div class="hsc">${sc}</div>
       <div class="hres">${m.resultText||'—'}</div>
       <div style="font-size:10px;color:var(--dim);margin-top:2px">📍 ${m.venue} | 📅 ${m.date}</div>
@@ -1886,7 +2044,9 @@ function renderPoints(){
   let el=document.getElementById('pt');
   let s={};
   APP.teams.forEach(t=>{s[t.id]={p:0,w:0,l:0,nr:0,pts:0,rf:0,bf:0,ra:0,ba:0};});
-  APP.matches.filter(m=>m.status==='completed').forEach(m=>{
+  // Only League and Group matches count toward the points table
+  let leagueTypes=new Set(['League','Group A','Group B','Group C','Group D']);
+  APP.matches.filter(m=>m.status==='completed'&&leagueTypes.has(m.matchType||'League')).forEach(m=>{
     if(!s[m.teamAId]||!s[m.teamBId])return;
     s[m.teamAId].p++;s[m.teamBId].p++;
     if(m.winner==='tie'){s[m.teamAId].pts++;s[m.teamBId].pts++;s[m.teamAId].nr++;s[m.teamBId].nr++;}
