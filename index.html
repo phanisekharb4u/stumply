@@ -291,6 +291,31 @@ tr:hover td{background:rgba(255,255,255,.02)}
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:12px;padding:8px 16px;border-radius:8px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap}
 #toast.on{opacity:1}
 .hidden{display:none!important}
+/* ── Stat sub-tabs ── */
+.stab-btn{flex:1;min-width:80px;padding:6px 8px;background:none;border:none;color:var(--dim);font-family:var(--disp);font-size:11px;font-weight:600;cursor:pointer;border-radius:5px;transition:all .2s;letter-spacing:.3px;white-space:nowrap}
+.stab-btn:hover{color:var(--txt);background:rgba(255,255,255,.05)}
+.stab-btn.stab-on{background:rgba(240,192,64,.15);color:var(--gold)}
+.statsview{display:none}.statsview.active{display:block;animation:fadein .2s}
+/* ── Stats tables ── */
+.stat-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.stat-table th{background:var(--bg2);color:var(--dim);font-family:var(--disp);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:7px 8px;text-align:left;border-bottom:1px solid var(--bdr);white-space:nowrap}
+.stat-table td{padding:6px 8px;border-bottom:1px solid rgba(26,58,90,.3);vertical-align:middle;font-family:var(--mono);font-size:11px}
+.stat-table tr:hover td{background:rgba(255,255,255,.03)}
+.stat-table .num{text-align:right;color:var(--gold)}
+.stat-table .hi{color:var(--em);font-weight:700}
+.stat-medal{display:inline-block;font-size:18px;margin-right:6px;vertical-align:middle}
+.award-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px}
+.award-card.gold-award{border-color:var(--gdim);background:rgba(240,192,64,.07)}
+.award-card.green-award{border-color:var(--edim);background:rgba(0,201,122,.07)}
+.award-card.blue-award{border-color:rgba(64,144,240,.4);background:rgba(64,144,240,.07)}
+.award-card.purple-award{border-color:var(--purple);background:rgba(160,64,240,.07)}
+.award-card.red-award{border-color:var(--red);background:rgba(232,64,64,.07)}
+.award-info .award-title{font-family:var(--disp);font-size:11px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+.award-info .award-name{font-family:var(--disp);font-size:17px;color:var(--txt);margin-top:2px}
+.award-info .award-val{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:2px}
+.stat-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.stat-filter button{background:var(--bg2);border:1px solid var(--bdr);color:var(--dim);font-family:var(--disp);font-size:10px;padding:4px 10px;border-radius:4px;cursor:pointer;transition:all .15s}
+.stat-filter button.on{background:rgba(240,192,64,.15);color:var(--gold);border-color:var(--gdim)}
 .iebb{background:linear-gradient(135deg,rgba(0,201,122,.2),rgba(240,192,64,.1));border:1px solid var(--edim);border-radius:10px;padding:16px;text-align:center;margin-bottom:13px}
 .iebb h2{font-family:var(--disp);font-size:19px;color:var(--gold)}
 .iebb p{color:var(--dim);margin-top:4px;font-size:13px}
@@ -463,10 +488,52 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
 <!-- HISTORY -->
 <div id="view-history" class="view">
-  <div class="stitle">🏆 History & Points</div>
-  <div class="tcol">
-    <div><div class="ch">Completed Matches</div><div id="hm"></div></div>
-    <div><div class="ch">Points Table</div><div id="pt"></div></div>
+  <div class="stitle">🏆 History & Stats</div>
+
+  <!-- Stats sub-tabs -->
+  <div style="display:flex;gap:2px;flex-wrap:wrap;margin-bottom:14px;background:var(--bg2);border-radius:8px;padding:4px;border:1px solid var(--bdr)">
+    <button class="stab-btn stab-on" data-action="switchStatTab('matches')"   id="stab-matches">📋 Matches</button>
+    <button class="stab-btn"         data-action="switchStatTab('points')"    id="stab-points">📊 Points Table</button>
+    <button class="stab-btn"         data-action="switchStatTab('batting')"   id="stab-batting">🏏 Batting</button>
+    <button class="stab-btn"         data-action="switchStatTab('bowling')"   id="stab-bowling">🎳 Bowling</button>
+    <button class="stab-btn"         data-action="switchStatTab('fielding')"  id="stab-fielding">🧤 Fielding</button>
+    <button class="stab-btn"         data-action="switchStatTab('awards')"    id="stab-awards">🏅 Awards</button>
+  </div>
+
+  <!-- Matches -->
+  <div id="statsview-matches" class="statsview active">
+    <div class="ch">Completed Matches</div>
+    <div id="hm"></div>
+  </div>
+
+  <!-- Points Table -->
+  <div id="statsview-points" class="statsview">
+    <div class="ch">Points Table</div>
+    <div id="pt"></div>
+  </div>
+
+  <!-- Batting Stats -->
+  <div id="statsview-batting" class="statsview">
+    <div class="ch">🏏 Batting Statistics — All Tournaments Matches</div>
+    <div id="stats-batting"></div>
+  </div>
+
+  <!-- Bowling Stats -->
+  <div id="statsview-bowling" class="statsview">
+    <div class="ch">🎳 Bowling Statistics — All Tournament Matches</div>
+    <div id="stats-bowling"></div>
+  </div>
+
+  <!-- Fielding Stats -->
+  <div id="statsview-fielding" class="statsview">
+    <div class="ch">🧤 Fielding Statistics — Catches & Run-Outs</div>
+    <div id="stats-fielding"></div>
+  </div>
+
+  <!-- Awards -->
+  <div id="statsview-awards" class="statsview">
+    <div class="ch">🏅 Tournament Awards</div>
+    <div id="stats-awards"></div>
   </div>
 </div>
 
@@ -622,6 +689,66 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div class="mact">
       <button class="bsm bgld" data-action="scheduleMatch()">📅 Schedule</button>
       <button class="bsm bdng" onclick="cancelSchModal()">✕ Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Discard / Abandon Match -->
+<div class="mo" id="discard-mo">
+  <div class="mb" style="max-width:440px">
+    <div class="mt red">⚠ Discard / Abandon Match</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.6">
+      This action will stop the live match. Choose what to do with it:
+    </p>
+
+    <!-- Reason -->
+    <div class="mr">
+      <label>Reason for Abandoning</label>
+      <select id="disc-reason" class="sfield">
+        <option value="Rain/Bad Weather">🌧 Rain / Bad Weather</option>
+        <option value="Pitch Issue">🏟 Pitch Issue</option>
+        <option value="Player Injury">🤕 Player Injury</option>
+        <option value="Security Concern">🚨 Security Concern</option>
+        <option value="Insufficient Players">👥 Insufficient Players</option>
+        <option value="Mutual Agreement">🤝 Mutual Agreement</option>
+        <option value="Scoring Error">✏️ Scoring Error — Restart</option>
+        <option value="Other">📝 Other</option>
+      </select>
+    </div>
+
+    <!-- What to do with the match -->
+    <div class="mr">
+      <label>Action</label>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:4px">
+        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
+          <input type="radio" name="disc-action" id="disc-no-result" value="no_result" checked style="margin-top:2px;flex-shrink:0">
+          <span>
+            <b style="color:var(--amber)">No Result</b>
+            <span style="display:block;font-size:11px;color:var(--dim);margin-top:2px">Match stays in history as "No Result". Scores so far are saved. No points awarded.</span>
+          </span>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
+          <input type="radio" name="disc-action" id="disc-reschedule" value="reschedule" style="margin-top:2px;flex-shrink:0">
+          <span>
+            <b style="color:var(--blue)">Reset & Reschedule</b>
+            <span style="display:block;font-size:11px;color:var(--dim);margin-top:2px">Clears all scores and puts the match back as "Scheduled" so it can be restarted fresh.</span>
+          </span>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
+          <input type="radio" name="disc-action" id="disc-delete" value="delete" style="margin-top:2px;flex-shrink:0">
+          <span>
+            <b style="color:var(--red)">Delete Match</b>
+            <span style="display:block;font-size:11px;color:var(--dim);margin-top:2px">Permanently removes this match from the tournament. Cannot be undone.</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div id="disc-err" style="color:var(--red);font-size:12px;margin-top:8px;min-height:16px"></div>
+
+    <div class="mact">
+      <button class="bsm bdng" style="flex:2" data-action="confirmDiscard()">⚠ Confirm</button>
+      <button class="bsm" style="flex:1;background:var(--bg2);color:var(--dim);border:1px solid var(--bdr)" data-action="closeM('discard-mo')">✕ Cancel</button>
     </div>
   </div>
 </div>
@@ -2008,6 +2135,69 @@ function determineWinner(m){
   toast('🏆 '+m.resultText);
   saveState();renderLive();renderHistory();renderMatches();populateSCSelect();
 }
+// ══════════════════════════════════════════════════════════════════════════
+//  DISCARD / ABANDON MATCH
+// ══════════════════════════════════════════════════════════════════════════
+function openDiscard(){
+  if(!APP.liveMatch){toast('No live match');return;}
+  // Reset to defaults
+  let r=document.getElementById('disc-no-result');
+  if(r)r.checked=true;
+  let e=document.getElementById('disc-err');if(e)e.textContent='';
+  let rs=document.getElementById('disc-reason');
+  if(rs)rs.value='Rain/Bad Weather';
+  openM('discard-mo');
+}
+function confirmDiscard(){
+  if(!APP.liveMatch){closeM('discard-mo');return;}
+  let m=APP.liveMatch;
+  let reason=document.getElementById('disc-reason')?.value||'Other';
+  let action=[...document.querySelectorAll('input[name="disc-action"]')].find(r=>r.checked)?.value||'no_result';
+  let errEl=document.getElementById('disc-err');
+  if(errEl)errEl.textContent='';
+
+  if(action==='no_result'){
+    // Mark as completed with No Result — preserve scores so far
+    m.status='completed';
+    m.winner='no_result';
+    m.resultText=`No Result — ${reason}`;
+    // Mark any incomplete innings as completed
+    (m.innings||[]).forEach(inn=>{inn.completed=true;});
+    APP.liveMatch=null;
+    document.getElementById('livebadge').classList.add('hidden');
+    closeM('discard-mo');
+    saveState();renderLive();renderHistory();renderMatches();populateSCSelect();
+    toast(`Match abandoned — No Result (${reason})`,'warn');
+
+  } else if(action==='reschedule'){
+    // Reset all innings data, put back to scheduled
+    m.status='scheduled';
+    m.innings=[];
+    m.currentInnings=0;
+    m.winner=null;
+    m.toss=null;
+    m.resultText=null;
+    APP.liveMatch=null;
+    APP.pendingFreeHit=false;
+    APP.pendingExtra=null;
+    document.getElementById('livebadge').classList.add('hidden');
+    closeM('discard-mo');
+    saveState();renderLive();renderHistory();renderMatches();populateSCSelect();
+    toast(`Match reset — scores cleared, ready to reschedule`,'warn');
+
+  } else if(action==='delete'){
+    // Permanently delete
+    APP.matches=APP.matches.filter(x=>x.id!==m.id);
+    APP.liveMatch=null;
+    APP.pendingFreeHit=false;
+    APP.pendingExtra=null;
+    document.getElementById('livebadge').classList.add('hidden');
+    closeM('discard-mo');
+    saveState();renderLive();renderHistory();renderMatches();populateSCSelect();
+    toast('Match permanently deleted');
+  }
+}
+
 function canScore(){
   if(APP.role!=='admin'){toast('Only admin can score');return false;}
   if(!APP.liveMatch){toast('No live match');return false;}
@@ -2077,6 +2267,7 @@ function renderLive(){
       <span class="mglbl">⚡ Actions:</span>
       <button class="bsm bblu" onclick="openManage()">⚙️ Manage Players / Bowler</button>
       <button class="bsm bpur" onclick="triggerRetiredHurt()">🚑 Retired Hurt</button>
+      <button class="bsm bdng" onclick="openDiscard()" style="margin-left:auto">🚫 Discard Match</button>
     </div>
     <div class="card"><div class="ch">🎯 Ball-by-Ball Entry</div>
       <div class="sbtns">
@@ -2227,7 +2418,398 @@ function renderSC(){
 // ══════════════════════════════════════════════════════════════════════════
 //  HISTORY / POINTS TABLE
 // ══════════════════════════════════════════════════════════════════════════
-function renderHistory(){renderCompleted();renderPoints();}
+// ══════════════════════════════════════════════════════════════════════════
+//  HISTORY & TOURNAMENT STATS
+// ══════════════════════════════════════════════════════════════════════════
+function switchStatTab(tab){
+  document.querySelectorAll('.stab-btn').forEach(b=>{
+    b.classList.toggle('stab-on', b.id==='stab-'+tab);
+  });
+  document.querySelectorAll('.statsview').forEach(v=>{
+    v.classList.toggle('active', v.id==='statsview-'+tab);
+  });
+  // Render on demand
+  if(tab==='matches')   renderCompleted();
+  else if(tab==='points')    renderPoints();
+  else if(tab==='batting')   renderBattingStats();
+  else if(tab==='bowling')   renderBowlingStats();
+  else if(tab==='fielding')  renderFieldingStats();
+  else if(tab==='awards')    renderAwards();
+}
+function renderHistory(){
+  renderCompleted();
+  renderPoints();
+  // Pre-render stats so they're ready
+  renderBattingStats();
+  renderBowlingStats();
+  renderFieldingStats();
+  renderAwards();
+}
+
+// ── Collect all player stats across all completed matches ─────────────
+function collectPlayerStats(){
+  let batting={};  // pid → {name,team,matches,innings,runs,balls,fours,sixes,outs,notOuts,centuries,halfCenturies,ducks,highest,highestNotOut}
+  let bowling={};  // pid → {name,team,matches,overs,balls,runs,wickets,maidens,wides,noballs,bestWickets,bestRuns}
+  let fielding={}; // pid → {name,team,catches,runOuts,stumpings}
+
+  let done=APP.matches.filter(m=>m.status==='completed');
+
+  done.forEach(m=>{
+    let teamA=APP.teams.find(t=>t.id===m.teamAId);
+    let teamB=APP.teams.find(t=>t.id===m.teamBId);
+
+    m.innings.forEach(inn=>{
+      let batTeam=APP.teams.find(t=>t.id===inn.battingTeamId);
+      let bwlTeam=APP.teams.find(t=>t.id===inn.bowlingTeamId);
+
+      // ── Batting ──────────────────────────────────────────────────
+      Object.entries(inn.batsmen||{}).forEach(([pid,b])=>{
+        if(b.status==='yet')return; // did not bat
+        if(!batting[pid]) batting[pid]={
+          name:b.name,team:batTeam?batTeam.code:'?',
+          matches:new Set(),innings:0,runs:0,balls:0,
+          fours:0,sixes:0,outs:0,notOuts:0,
+          centuries:0,halfCenturies:0,ducks:0,
+          highest:0,highestNotOut:false
+        };
+        let p=batting[pid];
+        p.matches.add(m.id);
+        p.innings++;
+        p.runs+=b.runs||0;
+        p.balls+=b.balls||0;
+        p.fours+=b.fours||0;
+        p.sixes+=b.sixes||0;
+        let out=(b.status==='out');
+        if(out)p.outs++;else p.notOuts++;
+        if((b.runs||0)===0&&out)p.ducks++;
+        if((b.runs||0)>=100)p.centuries++;
+        else if((b.runs||0)>=50)p.halfCenturies++;
+        // Highest score
+        if((b.runs||0)>p.highest||((b.runs||0)===p.highest&&!out&&p.highestNotOut===false)){
+          p.highest=b.runs||0;
+          p.highestNotOut=!out;
+        }
+      });
+
+      // ── Bowling ──────────────────────────────────────────────────
+      Object.entries(inn.bowlers||{}).forEach(([pid,bw])=>{
+        if((bw.overs||0)===0&&(bw.balls||0)===0)return; // did not bowl
+        if(!bowling[pid]) bowling[pid]={
+          name:bw.name,team:bwlTeam?bwlTeam.code:'?',
+          matches:new Set(),overs:0,balls:0,runs:0,
+          wickets:0,maidens:0,wides:0,noballs:0,
+          bestWickets:0,bestRuns:999
+        };
+        let p=bowling[pid];
+        p.matches.add(m.id);
+        p.overs+=bw.overs||0;
+        p.balls+=bw.balls||0;
+        p.runs+=bw.runs||0;
+        p.wickets+=bw.wickets||0;
+        p.maidens+=bw.maidens||0;
+        p.wides+=bw.wides||0;
+        p.noballs+=bw.noballs||0;
+        // Best bowling figure
+        if((bw.wickets||0)>p.bestWickets||
+          ((bw.wickets||0)===p.bestWickets&&(bw.runs||0)<p.bestRuns)){
+          p.bestWickets=bw.wickets||0;
+          p.bestRuns=bw.runs||0;
+        }
+      });
+
+      // ── Fielding — parse from dismissal strings ───────────────────
+      Object.entries(inn.batsmen||{}).forEach(([pid,b])=>{
+        if(b.status!=='out'||!b.dismissal)return;
+        let dism=b.dismissal;
+        // Caught: "c FielderName b BowlerName"
+        if(dism.startsWith('c ')&&dism.includes(' b ')){
+          let fielder=dism.slice(2,dism.indexOf(' b ')).trim();
+          // Find fielder by name in bowling team
+          let fp=findPlayerByName(fielder,inn.bowlingTeamId);
+          if(fp){
+            if(!fielding[fp.id])fielding[fp.id]={name:fp.name,team:bwlTeam?bwlTeam.code:'?',matches:new Set(),catches:0,runOuts:0,stumpings:0};
+            fielding[fp.id].catches++;
+            fielding[fp.id].matches.add(m.id);
+          }
+        }
+        // Stumped: "st FielderName b BowlerName"
+        if(dism.startsWith('st ')){
+          let fielder=dism.slice(3,dism.indexOf(' b ')).trim();
+          let fp=findPlayerByName(fielder,inn.bowlingTeamId);
+          if(fp){
+            if(!fielding[fp.id])fielding[fp.id]={name:fp.name,team:bwlTeam?bwlTeam.code:'?',matches:new Set(),catches:0,runOuts:0,stumpings:0};
+            fielding[fp.id].stumpings++;
+            fielding[fp.id].matches.add(m.id);
+          }
+        }
+        // Run Out: "run out (FielderName)"
+        if(dism.startsWith('run out')){
+          let m2=dism.match(/\(([^)]+)\)/);
+          if(m2){
+            let fp=findPlayerByName(m2[1].trim(),inn.bowlingTeamId);
+            if(fp){
+              if(!fielding[fp.id])fielding[fp.id]={name:fp.name,team:bwlTeam?bwlTeam.code:'?',matches:new Set(),catches:0,runOuts:0,stumpings:0};
+              fielding[fp.id].runOuts++;
+              fielding[fp.id].matches.add(m.id);
+            }
+          }
+        }
+      });
+    });
+  });
+
+  // Convert matches Set to count
+  Object.values(batting).forEach(p=>{p.matches=p.matches.size;});
+  Object.values(bowling).forEach(p=>{p.matches=p.matches.size;});
+  Object.values(fielding).forEach(p=>{p.matches=p.matches.size;});
+
+  return {batting:Object.entries(batting).map(([id,v])=>({id,...v})),
+          bowling:Object.entries(bowling).map(([id,v])=>({id,...v})),
+          fielding:Object.entries(fielding).map(([id,v])=>({id,...v}))};
+}
+
+function findPlayerByName(name,teamId){
+  let team=APP.teams.find(t=>t.id===teamId);
+  if(!team)return null;
+  let nm=name.toLowerCase();
+  return team.players.find(p=>p.name.toLowerCase()===nm||p.name.toLowerCase().includes(nm))||null;
+}
+
+// ── Batting Stats table ───────────────────────────────────────────────
+function renderBattingStats(){
+  let el=document.getElementById('stats-batting');if(!el)return;
+  let done=APP.matches.filter(m=>m.status==='completed');
+  if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
+  let {batting}=collectPlayerStats();
+  if(!batting.length){el.innerHTML='<p style="color:var(--dim)">No batting data yet.</p>';return;}
+
+  // Sort by runs desc
+  batting.sort((a,b)=>b.runs-a.runs);
+
+  let rows=batting.map((p,i)=>{
+    let avg=p.outs>0?(p.runs/p.outs).toFixed(2):'—';
+    let sr=p.balls>0?((p.runs/p.balls)*100).toFixed(1):'—';
+    let hs=p.highest+(p.highestNotOut?'*':'');
+    let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+    return`<tr>
+      <td style="font-family:var(--body)">${medal} <b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
+      <td class="num">${p.matches}</td>
+      <td class="num">${p.innings}</td>
+      <td class="num hi">${p.runs}</td>
+      <td class="num">${p.balls}</td>
+      <td class="num">${avg}</td>
+      <td class="num">${sr}</td>
+      <td class="num">${hs}</td>
+      <td class="num" style="color:var(--gold)">${p.centuries}</td>
+      <td class="num" style="color:var(--amber)">${p.halfCenturies}</td>
+      <td class="num" style="color:var(--purple)">${p.sixes}</td>
+      <td class="num" style="color:var(--blue)">${p.fours}</td>
+      <td class="num" style="color:var(--red)">${p.ducks}</td>
+      <td class="num">${p.notOuts}</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML=`<div style="overflow-x:auto">
+    <table class="stat-table">
+      <thead><tr>
+        <th>Player</th><th>M</th><th>Inn</th>
+        <th style="color:var(--em)">Runs</th><th>Balls</th>
+        <th>Avg</th><th>SR</th><th>HS</th>
+        <th>100s</th><th>50s</th><th>6s</th><th>4s</th>
+        <th>Ducks</th><th>NO</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+// ── Bowling Stats table ───────────────────────────────────────────────
+function renderBowlingStats(){
+  let el=document.getElementById('stats-bowling');if(!el)return;
+  let done=APP.matches.filter(m=>m.status==='completed');
+  if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
+  let {bowling}=collectPlayerStats();
+  let bowlers=bowling.filter(p=>p.wickets>0||p.overs>0);
+  if(!bowlers.length){el.innerHTML='<p style="color:var(--dim)">No bowling data yet.</p>';return;}
+
+  // Sort by wickets desc, then economy asc
+  bowlers.sort((a,b)=>b.wickets-a.wickets||(a.overs>0&&b.overs>0?(a.runs/a.overs)-(b.runs/b.overs):0));
+
+  let rows=bowlers.map((p,i)=>{
+    let totalOv=p.overs+Math.round(p.balls/6*10)/10;
+    let eco=p.overs>0?(p.runs/p.overs).toFixed(2):'—';
+    let avg=p.wickets>0?(p.runs/p.wickets).toFixed(2):'—';
+    let best=p.bestWickets>0?`${p.bestWickets}/${p.bestRuns}`:'—';
+    let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+    return`<tr>
+      <td style="font-family:var(--body)">${medal} <b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
+      <td class="num">${p.matches}</td>
+      <td class="num">${p.overs}.${p.balls}</td>
+      <td class="num">${p.runs}</td>
+      <td class="num hi">${p.wickets}</td>
+      <td class="num">${best}</td>
+      <td class="num" style="color:${parseFloat(eco)<7?'var(--em)':parseFloat(eco)>10?'var(--red)':'var(--amber)'}">${eco}</td>
+      <td class="num">${avg}</td>
+      <td class="num">${p.maidens}</td>
+      <td class="num">${p.wides}</td>
+      <td class="num">${p.noballs}</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML=`<div style="overflow-x:auto">
+    <table class="stat-table">
+      <thead><tr>
+        <th>Player</th><th>M</th><th>Overs</th><th>Runs</th>
+        <th style="color:var(--em)">Wkts</th><th>Best</th>
+        <th>Eco</th><th>Avg</th><th>Mdns</th>
+        <th>Wds</th><th>NBs</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+// ── Fielding Stats table ──────────────────────────────────────────────
+function renderFieldingStats(){
+  let el=document.getElementById('stats-fielding');if(!el)return;
+  let done=APP.matches.filter(m=>m.status==='completed');
+  if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
+  let {fielding}=collectPlayerStats();
+  if(!fielding.length){el.innerHTML='<p style="color:var(--dim)">No fielding data yet.<br><span style="font-size:11px">Tip: Enter fielder names when recording Caught/Stumped/Run Out dismissals.</span></p>';return;}
+
+  fielding.sort((a,b)=>(b.catches+b.stumpings+b.runOuts)-(a.catches+a.stumpings+a.runOuts));
+
+  let rows=fielding.map((p,i)=>{
+    let total=p.catches+p.stumpings+p.runOuts;
+    let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+    return`<tr>
+      <td style="font-family:var(--body)">${medal} <b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
+      <td class="num">${p.matches}</td>
+      <td class="num hi">${total}</td>
+      <td class="num" style="color:var(--em)">${p.catches}</td>
+      <td class="num" style="color:var(--gold)">${p.stumpings}</td>
+      <td class="num" style="color:var(--blue)">${p.runOuts}</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML=`<div style="overflow-x:auto">
+    <table class="stat-table">
+      <thead><tr>
+        <th>Player</th><th>M</th>
+        <th style="color:var(--em)">Total</th>
+        <th>Catches</th><th>Stumpings</th><th>Run Outs</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+// ── Awards ─────────────────────────────────────────────────────────────
+function renderAwards(){
+  let el=document.getElementById('stats-awards');if(!el)return;
+  let done=APP.matches.filter(m=>m.status==='completed');
+  if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
+  let {batting,bowling,fielding}=collectPlayerStats();
+  if(!batting.length){el.innerHTML='<p style="color:var(--dim)">Not enough data yet.</p>';return;}
+
+  function award(emoji,title,cls,name,team,value,sub){
+    if(!name)return'';
+    return`<div class="award-card ${cls}">
+      <div style="font-size:38px;flex-shrink:0">${emoji}</div>
+      <div class="award-info">
+        <div class="award-title">${title}</div>
+        <div class="award-name">${esc(name)} <span style="font-size:11px;color:var(--dim)">(${esc(team)})</span></div>
+        <div class="award-val">${value}${sub?` <span style="color:var(--dim)">${sub}</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Orange Cap — most runs
+  let orangeCap=batting.reduce((a,b)=>b.runs>a.runs?b:a,batting[0]);
+  // Purple Cap — most wickets
+  let purpleCapArr=bowling.filter(p=>p.wickets>0);
+  let purpleCap=purpleCapArr.length?purpleCapArr.reduce((a,b)=>b.wickets>a.wickets||(b.wickets===a.wickets&&(b.runs/b.overs)<(a.runs/a.overs))?b:a,purpleCapArr[0]):null;
+  // Best Striker — highest strike rate (min 20 balls)
+  let strikers=batting.filter(p=>p.balls>=20);
+  let bestSR=strikers.length?strikers.reduce((a,b)=>((b.runs/b.balls)>(a.runs/a.balls))?b:a,strikers[0]):null;
+  // Best Economy — lowest economy (min 2 overs)
+  let econBowlers=bowling.filter(p=>p.overs>=2);
+  let bestEcon=econBowlers.length?econBowlers.reduce((a,b)=>(b.runs/b.overs)<(a.runs/a.overs)?b:a,econBowlers[0]):null;
+  // Most Sixes
+  let mostSixes=batting.filter(p=>p.sixes>0).reduce((a,b)=>b.sixes>a.sixes?b:a,batting[0]);
+  // Most Fours
+  let mostFours=batting.filter(p=>p.fours>0).reduce((a,b)=>b.fours>a.fours?b:a,batting[0]);
+  // Most Centuries
+  let centurion=batting.filter(p=>p.centuries>0);
+  centurion.sort((a,b)=>b.centuries-a.centuries);
+  // Most Half-Centuries
+  let halfCens=batting.filter(p=>p.halfCenturies>0);
+  halfCens.sort((a,b)=>b.halfCenturies-a.halfCenturies);
+  // Best Fielder — most dismissals
+  let bestFielder=fielding.length?fielding.reduce((a,b)=>(b.catches+b.stumpings+b.runOuts)>(a.catches+a.stumpings+a.runOuts)?b:a,fielding[0]):null;
+  // Highest Individual Score
+  let highestBat=batting.reduce((a,b)=>b.highest>a.highest?b:a,batting[0]);
+  // Best Bowling Figure
+  let bestBowling=purpleCapArr.length?purpleCapArr.reduce((a,b)=>b.bestWickets>a.bestWickets||(b.bestWickets===a.bestWickets&&b.bestRuns<a.bestRuns)?b:a,purpleCapArr[0]):null;
+  // Tournament Winner
+  let final=APP.matches.find(m=>m.status==='completed'&&m.matchType==='Final');
+  let champion=final&&final.winner&&final.winner!=='tie'?APP.teams.find(t=>t.id===final.winner):null;
+
+  let html='';
+
+  // Champion first
+  if(champion){
+    html+=`<div class="award-card gold-award" style="margin-bottom:14px">
+      <div style="font-size:44px;flex-shrink:0">🏆</div>
+      <div class="award-info">
+        <div class="award-title" style="color:var(--gold)">TOURNAMENT CHAMPION</div>
+        <div class="award-name" style="font-size:22px;color:var(--gold)">${esc(champion.name)}</div>
+        <div class="award-val">Winner of the Final</div>
+      </div>
+    </div>`;
+  }
+
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+  html+=award('🟠','Orange Cap — Most Runs','gold-award',orangeCap?.name,orangeCap?.team,orangeCap?.runs+' runs',`Avg: ${orangeCap?.outs>0?(orangeCap.runs/orangeCap.outs).toFixed(1):'—'}`);
+  html+=award('🟣','Purple Cap — Most Wickets','purple-award',purpleCap?.name,purpleCap?.team,purpleCap?.wickets+' wickets',`Best: ${purpleCap?.bestWickets}/${purpleCap?.bestRuns}`);
+  html+=award('⚡','Highest Score','gold-award',highestBat?.name,highestBat?.team,highestBat?.highest+(highestBat?.highestNotOut?'*':'')+' runs','');
+  html+=award('🎳','Best Bowling Figure','purple-award',bestBowling?.name,bestBowling?.team,`${bestBowling?.bestWickets}/${bestBowling?.bestRuns}`,'');
+  html+=award('💥','Most Sixes','blue-award',mostSixes?.sixes>0?mostSixes.name:null,mostSixes?.team,mostSixes?.sixes+' sixes','');
+  html+=award('🔥','Fastest Striker','red-award',bestSR?.name,bestSR?.team,`SR: ${bestSR?((bestSR.runs/bestSR.balls)*100).toFixed(1):'—'}`,`${bestSR?.runs} runs off ${bestSR?.balls}b`);
+  html+=award('🧊','Best Economy','green-award',bestEcon?.name,bestEcon?.team,`Eco: ${bestEcon?(bestEcon.runs/bestEcon.overs).toFixed(2):'—'}`,`${bestEcon?.wickets} wkts`);
+  html+=award('🧤','Best Fielder','blue-award',bestFielder?.name,bestFielder?.team,`${bestFielder?(bestFielder.catches+bestFielder.stumpings+bestFielder.runOuts):0} dismissals`,`${bestFielder?.catches||0}c ${bestFielder?.stumpings||0}st ${bestFielder?.runOuts||0}ro`);
+  if(centurion.length) html+=award('💯','Centuries','gold-award',centurion[0].name,centurion[0].team,centurion[0].centuries+' × 100','');
+  if(halfCens.length)  html+=award('5️⃣0️⃣','Half-Centuries','gold-award',halfCens[0].name,halfCens[0].team,halfCens[0].halfCenturies+' × 50','');
+  html+=award('4️⃣','Most Fours','blue-award',mostFours?.fours>0?mostFours.name:null,mostFours?.team,mostFours?.fours+' fours','');
+  html+='</div>';
+
+  // Tournament summary numbers
+  let totalRuns=batting.reduce((s,p)=>s+p.runs,0);
+  let totalWkts=bowling.reduce((s,p)=>s+p.wickets,0);
+  let totalSixes=batting.reduce((s,p)=>s+p.sixes,0);
+  let totalFours=batting.reduce((s,p)=>s+p.fours,0);
+  let totalCents=batting.reduce((s,p)=>s+p.centuries,0);
+  let totalHalfs=batting.reduce((s,p)=>s+p.halfCenturies,0);
+
+  html+=`<div class="card" style="margin-top:14px">
+    <div class="ch">📊 Tournament Summary</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center">
+      ${[['Total Runs',totalRuns,'var(--gold)'],['Total Wickets',totalWkts,'var(--red)'],
+         ['Centuries',totalCents,'var(--gold)'],['Half-Centuries',totalHalfs,'var(--amber)'],
+         ['Sixes Hit',totalSixes,'var(--purple)'],['Fours Hit',totalFours,'var(--blue)'],
+         ['Matches Played',done.length,'var(--em)'],['Players Used',batting.length,'var(--dim)'],
+         ['Teams',APP.teams.length,'var(--dim)']
+        ].map(([label,val,col])=>`
+        <div style="background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;padding:10px 6px">
+          <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:${col}">${val}</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:3px">${label}</div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+
+  el.innerHTML=html;
+}
 function renderCompleted(){
   let el=document.getElementById('hm');
   let done=APP.matches.filter(m=>m.status==='completed');
@@ -2242,7 +2824,7 @@ function renderCompleted(){
         <div class="hteams">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
       </div>
       <div class="hsc">${sc}</div>
-      <div class="hres">${m.resultText||'—'}</div>
+      <div class="hres" style="color:${m.winner==='no_result'?'var(--amber)':'var(--em)'}">${m.resultText||'—'}</div>
       <div style="font-size:10px;color:var(--dim);margin-top:2px">📍 ${esc(m.venue)} | 📅 ${esc(m.date)}</div>
     </div>`;
   }).join('');
@@ -2266,7 +2848,7 @@ function renderPoints(){
     if(!s[m.teamAId]||!s[m.teamBId])return;
     s[m.teamAId].p++;s[m.teamBId].p++;
     if(m.winner==='tie'){s[m.teamAId].pts++;s[m.teamBId].pts++;s[m.teamAId].nr++;s[m.teamBId].nr++;}
-    else if(m.winner){s[m.winner].w++;s[m.winner].pts+=2;let l=m.teamAId===m.winner?m.teamBId:m.teamAId;if(s[l])s[l].l++;}
+    else if(m.winner&&m.winner!=='no_result'){s[m.winner].w++;s[m.winner].pts+=2;let l=m.teamAId===m.winner?m.teamBId:m.teamAId;if(s[l])s[l].l++;}
     m.innings.forEach(inn=>{
       let b=Math.min(inn.legalBalls,(APP.tournament.overs||20)*6);
       if(s[inn.battingTeamId]){s[inn.battingTeamId].rf+=inn.runs;s[inn.battingTeamId].bf+=b;}
@@ -2380,12 +2962,13 @@ function bindActions(){
         // SECURITY: whitelist of allowed functions — NO eval()
         var ALLOWED = {
           doLogin,doRegister,doGuest,doLogout,showForgot,showLogin,showViewer,
+          switchStatTab,
           switchTab,fpStep1,fpStep2,
           showTab,saveTournament,addTeam,clearBulk,filterPlayers,
           copyShareLink,openShareLink,updateBowlerMaxLabel,
           openSchedModal,scheduleMatch,cancelSchModal,
           startMatch,confirmToss,confirmInningsSetup,confirmNewOver,
-          openManage,applyBatsmen,applyBowler,
+          openManage,applyBatsmen,applyBowler,openDiscard,confirmDiscard,
           triggerWicket,confirmWicket,onDismChange,
           addRun,addExtra,confirmExtra,triggerRetiredHurt,
           openEditMatch,deleteMatch,confirmDeleteMatch,moveMatch,
