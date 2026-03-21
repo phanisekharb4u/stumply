@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Stumply">
 <meta name="description" content="Cricket tournament manager — live scoring, team management, match history">
+<link rel="manifest" href="/manifest.json">
 <title>Stumply — Cricket Tournament Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -700,6 +701,22 @@ const LS_SESSION = 'cs_sess_v1';      // {uname?,role}
 const LS_LIVE    = 'cs_live_v1';      // shared broadcast for viewers
 
 // ══════════════════════════════════════════════════════════════════════════
+//  SECURITY — XSS sanitization
+// ══════════════════════════════════════════════════════════════════════════
+// esc() HTML-encodes user-supplied strings before inserting into innerHTML
+// Use for: player names, team names, venue, username — anything user-typed
+function esc(s){
+  if(s==null)return'';
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;')
+    .replace(/\//g,'&#x2F;');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
 //  APP STATE
 // ══════════════════════════════════════════════════════════════════════════
 let APP={
@@ -745,7 +762,25 @@ function lsRemove(key){
   if(lsAvailable()){try{localStorage.removeItem(key);}catch{}}
   delete _memStore[key];
 }
+// Legacy hash (backward compat for old accounts)
 function hp(p){let h=0;for(let ch of p)h=(Math.imul(31,h)+ch.charCodeAt(0))|0;return h.toString(36);}
+// ── PBKDF2 password hashing (Web Crypto API — industry standard) ──────
+// Format stored: "hexSalt$hexDerivedKey"
+async function hashPassword(password, saltHex){
+  let enc=new TextEncoder();
+  let saltBuf=saltHex?hexToBuf(saltHex):crypto.getRandomValues(new Uint8Array(16));
+  let key=await crypto.subtle.importKey('raw',enc.encode(password),{name:'PBKDF2'},false,['deriveBits']);
+  let bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:saltBuf,iterations:100000,hash:'SHA-256'},key,256);
+  return bufToHex(saltBuf)+'$'+bufToHex(new Uint8Array(bits));
+}
+async function verifyPassword(password, stored){
+  if(!stored)return false;
+  if(!stored.includes('$'))return hp(password)===stored; // legacy accounts
+  let salt=stored.split('$')[0];
+  return(await hashPassword(password,salt))===stored;
+}
+function bufToHex(buf){return Array.from(buf).map(b=>b.toString(16).padStart(2,'0')).join('');}
+function hexToBuf(hex){let b=new Uint8Array(hex.length/2);for(let i=0;i<b.length;i++)b[i]=parseInt(hex.slice(i*2,i*2+2),16);return b;}
 function getUsers(){try{return JSON.parse(lsGet(LS_USERS)||'{}')}catch{return{}}}
 function putUsers(u){try{lsSet(LS_USERS,JSON.stringify(u));}catch{}}
 function userGet(un){return getUsers()[un]||null;}
@@ -940,25 +975,32 @@ function fpStep2(){
   let u=users[uname];
   if(!u){err.textContent='User not found';return;}
   // Verify answer (case-insensitive)
-  if((u.secA||'').toLowerCase()!==answer){
-    err.textContent='Incorrect answer — please try again';return;
-  }
-  // Reset password
-  users[uname].hash=hp(newpass);
-  putUsers(users);
-  document.getElementById('fp-step2').style.display='none';
-  document.getElementById('fp-step3').style.display='';
+  // Compare answer (hashed or legacy plaintext)
+  let storedA=u.secA||'';
+  let answerMatch=(storedA===hp(answer))||(storedA.toLowerCase()===answer);
+  if(!answerMatch){err.textContent='Incorrect answer — please try again';return;}
+  // Reset password using PBKDF2
+  hashPassword(newpass).then(hash=>{
+    let uu=getUsers();uu[uname].hash=hash;putUsers(uu);
+    document.getElementById('fp-step2').style.display='none';
+    document.getElementById('fp-step3').style.display='';
+  }).catch(()=>{
+    let uu=getUsers();uu[uname].hash=hp(newpass);putUsers(uu);
+    document.getElementById('fp-step2').style.display='none';
+    document.getElementById('fp-step3').style.display='';
+  });
 }
 function doRegister(){
-  let name=document.getElementById('r-n').value.trim();
-  let uname=document.getElementById('r-u').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'_');
+  let name=document.getElementById('r-n').value.trim().slice(0,60);
+  let uname=document.getElementById('r-u').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'_').slice(0,30);
   let pass=document.getElementById('r-p').value;
   let pass2=document.getElementById('r-p2').value;
   let err=document.getElementById('r-err');let ok=document.getElementById('r-ok');
   err.textContent='';ok.textContent='';
   if(!name){err.textContent='Enter your name';return;}
-  if(!uname){err.textContent='Enter a username';return;}
+  if(!uname||uname.length<3){err.textContent='Username must be at least 3 characters';return;}
   if(pass.length<4){err.textContent='Password min 4 characters';return;}
+  if(pass.length>128){err.textContent='Password too long (max 128 characters)';return;}
   if(pass!==pass2){err.textContent='Passwords do not match';return;}
   let users=getUsers();
   if(users[uname]){err.textContent='Username already taken';return;}
@@ -966,18 +1008,48 @@ function doRegister(){
   let secA=(document.getElementById('r-sa')?.value||'').trim().toLowerCase();
   if(!secQ){err.textContent='Please choose a security question';return;}
   if(!secA){err.textContent='Please provide an answer to your security question';return;}
-  users[uname]={hash:hp(pass),name,secQ,secA,data:null};putUsers(users);
-  ok.textContent='✅ Account created! Signing you in...';
-  setTimeout(()=>loginAs(uname,name),700);
+  hashPassword(pass).then(hash=>{
+    users[uname]={hash,name,secQ,secA:hp(secA),data:null};putUsers(users);
+    ok.textContent='✅ Account created! Signing you in...';
+    setTimeout(()=>loginAs(uname,name),700);
+  }).catch(()=>{
+    users[uname]={hash:hp(pass),name,secQ,secA:hp(secA),data:null};putUsers(users);
+    ok.textContent='✅ Account created! Signing you in...';
+    setTimeout(()=>loginAs(uname,name),700);
+  });
 }
 function doLogin(){
   let uname=document.getElementById('l-u').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'_');
   let pass=document.getElementById('l-p').value;
   let err=document.getElementById('l-err');err.textContent='';
   if(!uname||!pass){err.textContent='Enter username and password';return;}
+  // Rate limiting: lock after 5 failed attempts for 15 minutes
+  let rlKey='rl_'+uname;
+  let rl=JSON.parse(lsGet(rlKey)||'{"count":0,"until":0}');
+  if(rl.until>Date.now()){
+    let mins=Math.ceil((rl.until-Date.now())/60000);
+    err.textContent='Too many failed attempts. Try again in '+mins+' minute'+(mins>1?'s':'')+'.';return;
+  }
   let u=getUsers()[uname];
-  if(!u||u.hash!==hp(pass)){err.textContent='Invalid username or password';return;}
-  loginAs(uname,u.name);
+  if(!u){err.textContent='Invalid username or password';return;}
+  verifyPassword(pass,u.hash).then(ok=>{
+    if(!ok){
+      rl.count=(rl.count||0)+1;
+      if(rl.count>=5){rl.until=Date.now()+15*60*1000;rl.count=0;}
+      lsSet(rlKey,JSON.stringify(rl));
+      let left=Math.max(0,5-(rl.count));
+      err.textContent=rl.until>Date.now()
+        ?'Too many attempts — account locked for 15 minutes.'
+        :'Invalid username or password'+(left>0&&left<5?' ('+left+' attempt'+(left===1?'':'s')+' left)':'');
+      return;
+    }
+    lsSet(rlKey,JSON.stringify({count:0,until:0}));
+    loginAs(uname,u.name);
+  }).catch(()=>{
+    if(u.hash!==hp(pass)){err.textContent='Invalid username or password';return;}
+    lsSet(rlKey,JSON.stringify({count:0,until:0}));
+    loginAs(uname,u.name);
+  });
 }
 function loginAs(uname,name){
   try{
@@ -1286,13 +1358,13 @@ function renderTeamList(){
   if(!APP.teams.length){el.innerHTML='<p style="color:var(--dim)">No teams yet.</p>';return;}
   el.innerHTML=`<table><thead><tr><th>Code</th><th>Name</th><th>City</th><th>Players</th><th></th></tr></thead><tbody>`
     +APP.teams.map(t=>`<tr>
-      <td><span class="tag tg">${t.code}</span></td><td>${t.name}</td><td>${t.city||'—'}</td><td>${t.players.length}</td>
+      <td><span class="tag tg">${esc(t.code)}</span></td><td>${esc(t.name)}</td><td>${esc(t.city)||'—'}</td><td>${t.players.length}</td>
       <td>${APP.role==='admin'?`<button class="bsm bdng" onclick="deleteTeam('${t.id}')">✕</button>`:''}</td>
     </tr>`).join('')+'</tbody></table>';
 }
 function populatePlayerTeamSel(){
   let el=document.getElementById('pt-sel');if(!el)return;
-  el.innerHTML='<option value="">— Select Team —</option>'+APP.teams.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
+  el.innerHTML='<option value="">— Select Team —</option>'+APP.teams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');
 }
 function filterPlayers(){
   let tid=document.getElementById('pt-sel').value;
@@ -1302,7 +1374,7 @@ function filterPlayers(){
   if(!team?.players.length){el.innerHTML='<p style="color:var(--dim)">No players.</p>';return;}
   el.innerHTML=`<table><thead><tr><th>#</th><th>Name</th><th>Role</th><th></th></tr></thead><tbody>`
     +team.players.map(p=>`<tr>
-      <td><span class="tag tb">${p.jersey}</span></td><td>${p.name}</td><td><span class="tag ta">${p.role}</span></td>
+      <td><span class="tag tb">${esc(p.jersey)}</span></td><td>${esc(p.name)}</td><td><span class="tag ta">${esc(p.role)}</span></td>
       <td>${APP.role==='admin'?`<button class="bsm bdng" onclick="delPlayer('${tid}','${p.id}')">✕</button>`:''}</td>
     </tr>`).join('')+'</tbody></table>';
 }
@@ -1447,7 +1519,7 @@ function getXIFromRows(side, teamId){
 
 function openSchedModal(){
   if(APP.teams.length<2){toast('Add at least 2 teams first');return;}
-  let opts=APP.teams.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
+  let opts=APP.teams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');
   document.getElementById('sch-a').innerHTML=opts;
   document.getElementById('sch-b').innerHTML=opts;
   document.getElementById('sch-d').value=new Date().toISOString().split('T')[0];
@@ -1552,8 +1624,8 @@ function renderMatches(){
         </div>
         <div style="margin-left:auto">${stag}</div>
       </div>
-      <div style="font-size:11px;color:var(--dim)">📍 ${m.venue} &nbsp;|&nbsp; 📅 ${m.date}</div>
-      <div style="font-size:11px;color:var(--dim)">👔 ${m.umpires.join(' · ')}</div>
+      <div style="font-size:11px;color:var(--dim)">📍 ${esc(m.venue)} &nbsp;|&nbsp; 📅 ${esc(m.date)}</div>
+      <div style="font-size:11px;color:var(--dim)">👔 ${m.umpires.map(esc).join(' · ')}</div>
       ${sc}${wr}
       <div style="margin-top:9px;display:flex;gap:6px;flex-wrap:wrap">${ab}</div>
     </div>`;
@@ -1591,7 +1663,7 @@ function moveMatch(mid,dir){
 function openEditMatch(mid){
   let m=APP.matches.find(x=>x.id===mid);if(!m)return;
   if(APP.teams.length<2){toast('Need at least 2 teams');return;}
-  let opts=APP.teams.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
+  let opts=APP.teams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');
   document.getElementById('sch-a').innerHTML=opts;
   document.getElementById('sch-b').innerHTML=opts;
   document.getElementById('sch-a').value=m.teamAId;
@@ -1624,7 +1696,7 @@ function startMatch(mid){
   let live=APP.matches.find(x=>x.status==='live');
   if(live&&live.id!==mid){toast('A match is already live!');return;}
   APP.liveMatch=m;m.status='live';
-  let opts=[m.teamAId,m.teamBId].map(id=>{let t=APP.teams.find(x=>x.id===id);return`<option value="${id}">${t?t.name:id}</option>`;}).join('');
+  let opts=[m.teamAId,m.teamBId].map(id=>{let t=APP.teams.find(x=>x.id===id);return`<option value="${id}">${esc(t?t.name:id)}</option>`;}).join('');
   document.getElementById('toss-w').innerHTML=opts;
   openM('toss-mo');
   document.getElementById('livebadge').classList.remove('hidden');
@@ -1663,8 +1735,8 @@ function startInnings(num,batId,bwlId){
   m.innings.push(inn);m.currentInnings=num-1;
   batPlayers.forEach(p=>{inn.batsmen[p.id]={name:p.name,runs:0,balls:0,fours:0,sixes:0,status:'yet',dismissal:''};});
   bwlPlayers.forEach(p=>{inn.bowlers[p.id]={name:p.name,overs:0,maidens:0,runs:0,wickets:0,wides:0,noballs:0,balls:0};});
-  let opO=batPlayers.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
-  let bwO=bwlPlayers.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  let opO=batPlayers.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  let bwO=bwlPlayers.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
   document.getElementById('ins-op1').innerHTML=opO;
   document.getElementById('ins-op2').innerHTML=opO;
   document.getElementById('ins-bwl').innerHTML=bwO;
@@ -1697,13 +1769,13 @@ function openManage(){
     +available.map(p=>{
       let st=inn.batsmen[p.id].status;
       let sel=(p.id===inn.striker)?'selected':'';
-      return`<option value="${p.id}" ${sel}>${p.name} (${st})</option>`;
+      return`<option value="${p.id}" ${sel}>${esc(p.name)} (${st})</option>`;
     }).join('');
   let nsOpts='<option value="">— keep current —</option>'
     +available.map(p=>{
       let st=inn.batsmen[p.id].status;
       let sel=(p.id===inn.nonStriker)?'selected':'';
-      return`<option value="${p.id}" ${sel}>${p.name} (${st})</option>`;
+      return`<option value="${p.id}" ${sel}>${esc(p.name)} (${st})</option>`;
     }).join('');
   document.getElementById('mg-sk').innerHTML=bOpts;
   document.getElementById('mg-ns').innerHTML=nsOpts;
@@ -1804,7 +1876,7 @@ function triggerWicket(){
   // Players first — auto-select the first available batsman
   // Skip option goes at the END so it's never accidentally chosen
   let sel=document.getElementById('wkt-next');
-  sel.innerHTML=rem.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')
+  sel.innerHTML=rem.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')
     +'<option value="" style="color:var(--dim)">— Set later via ⚙️ Manage —</option>';
   // Auto-select first available player if any remain
   if(rem.length>0) sel.value=rem[0].id;
@@ -1912,7 +1984,7 @@ function triggerRetiredHurt(){
   let bs=inn.batsmen[inn.striker];if(!bs)return;
   bs.status='retired';bs.dismissal='retired hurt';
   inn.striker=null;
-  toast(`${bs.name} retired hurt — use ⚙️ Manage to set next batsman`,'warn');
+  toast(`${esc(bs.name)} retired hurt — use ⚙️ Manage to set next batsman`,'warn');
   afterScore();openManage();
 }
 function swapEnds(inn){let t=inn.striker;inn.striker=inn.nonStriker;inn.nonStriker=t;}
@@ -2039,16 +2111,16 @@ function renderLive(){
   ${tgt}
   <div class="bgrid">
     <div class="bcard sk"><div class="skm">★ ON STRIKE</div>
-      <div class="bnm">${st?st.name:'⚠ Not set'}</div>
+      <div class="bnm">${st?esc(st.name):'⚠ Not set'}</div>
       <div class="bst"><span>${st?st.runs:0}</span>(${st?st.balls:0}b) 4s:<span>${st?st.fours:0}</span> 6s:<span>${st?st.sixes:0}</span> SR:<span>${st&&st.balls>0?((st.runs/st.balls)*100).toFixed(1):'—'}</span></div>
     </div>
     <div class="bcard">
-      <div class="bnm">${ns?ns.name:'⚠ Not set'} <span style="font-size:9px;color:var(--dim)">(non-striker)</span></div>
+      <div class="bnm">${ns?esc(ns.name):'⚠ Not set'} <span style="font-size:9px;color:var(--dim)">(non-striker)</span></div>
       <div class="bst"><span>${ns?ns.runs:0}</span>(${ns?ns.balls:0}b) 4s:<span>${ns?ns.fours:0}</span> 6s:<span>${ns?ns.sixes:0}</span></div>
     </div>
   </div>
   <div class="bwlcard">
-    <div class="bwlnm">${bw?bw.name:'⚠ Not set'} <span style="font-size:10px;color:var(--dim)">(Bowling)</span></div>
+    <div class="bwlnm">${bw?esc(bw.name):'⚠ Not set'} <span style="font-size:10px;color:var(--dim)">(Bowling)</span></div>
     <div style="font-family:var(--mono);font-size:11px;color:var(--dim)">
       O:<span style="color:var(--blue)">${bw?bw.overs+'.'+(bw.balls||0):'0'}</span>
       M:<span style="color:var(--blue)">${bw?bw.maidens:0}</span>
@@ -2067,7 +2139,7 @@ function renderLive(){
   </div>
   ${sp}
   ${inn.fallOfWickets.length?`<div class="card"><div class="ch">⬇ Fall of Wickets</div>
-    <div class="fow-list">${inn.fallOfWickets.map(f=>`<div class="fow-chip">${f.score}/${f.wicket} (${f.batsman}, ov ${f.over})</div>`).join('')}</div>
+    <div class="fow-list">${inn.fallOfWickets.map(f=>`<div class="fow-chip">${f.score}/${f.wicket} (${esc(f.batsman)}, ov ${f.over})</div>`).join('')}</div>
   </div>`:''}`;
 }
 function bc(b){
@@ -2091,7 +2163,7 @@ function populateSCSelect(){
     +all.map(m=>{
       let tA=APP.teams.find(t=>t.id===m.teamAId),tB=APP.teams.find(t=>t.id===m.teamBId);
       let mt2=m.matchType||'League';
-      return`<option value="${m.id}">[${mt2}] ${tA?tA.name:'?'} vs ${tB?tB.name:'?'} (${m.date})</option>`;
+      return`<option value="${m.id}">[${mt2}] ${tA?esc(tA.name):'?'} vs ${tB?esc(tB.name):'?'} (${esc(m.date)})</option>`;
     }).join('');
   if(prev)sel.value=prev;
 }
@@ -2108,14 +2180,14 @@ function renderSC(){
       <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(240,192,64,.1);color:${mtcol};border:1px solid ${mtcol}">${mtype.toUpperCase()}</span>
       <div style="font-family:var(--disp);font-size:16px">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
     </div>
-    <div style="font-size:11px;color:var(--dim)">📍 ${m.venue} | ${m.date} | 👔 ${m.umpires.join(' · ')}</div>
+    <div style="font-size:11px;color:var(--dim)">📍 ${esc(m.venue)} | ${esc(m.date)} | 👔 ${m.umpires.map(esc).join(' · ')}</div>
     ${m.toss?`<div style="font-size:11px;color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${m.toss.decision.toUpperCase()}</div>`:''}
     ${m.resultText?`<div style="color:var(--em);font-size:14px;margin-top:4px;font-family:var(--disp)">🏆 ${m.resultText}</div>`:''}
   </div>`;
   m.innings.forEach(inn=>{
     let bat=APP.teams.find(t=>t.id===inn.battingTeamId),bwl=APP.teams.find(t=>t.id===inn.bowlingTeamId);
     html+=`<div style="margin-bottom:20px">
-      <div class="inns-hdr">${bat?bat.name:'?'} — Innings ${inn.number}: <b>${inn.runs}/${inn.wickets}</b> (${ov(inn)} / ${APP.tournament.overs||20} Ov)</div>
+      <div class="inns-hdr">${bat?esc(bat.name):'?'} — Innings ${inn.number}: <b>${inn.runs}/${inn.wickets}</b> (${ov(inn)} / ${APP.tournament.overs||20} Ov)</div>
       <table><thead><tr><th>Batsman</th><th>Dismissal</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead><tbody>`;
     bat&&bat.players.forEach(p=>{
       let b=inn.batsmen[p.id];if(!b||b.status==='yet')return;
@@ -2123,7 +2195,7 @@ function renderSC(){
       let dis=b.status==='batting'?'<span class="tag tg">not out</span>'
         :b.status==='retired'?'<span class="tag ta">retired hurt</span>'
         :`<span style="font-size:10px;color:var(--dim)">${b.dismissal}</span>`;
-      html+=`<tr><td style="font-weight:600">${b.name}</td><td>${dis}</td>
+      html+=`<tr><td style="font-weight:600">${esc(b.name)}</td><td>${dis}</td>
         <td style="font-family:var(--mono);color:var(--gold);font-weight:700">${b.runs}</td>
         <td style="font-family:var(--mono)">${b.balls}</td><td style="font-family:var(--mono)">${b.fours}</td>
         <td style="font-family:var(--mono)">${b.sixes}</td><td style="font-family:var(--mono)">${sr}</td></tr>`;
@@ -2138,7 +2210,7 @@ function renderSC(){
     html+=`<table style="margin-top:6px"><thead><tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>Eco</th><th>Wd</th><th>Nb</th></tr></thead><tbody>`;
     bwl&&bwl.players.forEach(p=>{
       let b=inn.bowlers[p.id];if(!b||(b.overs===0&&(b.balls||0)===0))return;
-      html+=`<tr><td style="font-weight:600">${b.name}</td>
+      html+=`<tr><td style="font-weight:600">${esc(b.name)}</td>
         <td style="font-family:var(--mono)">${b.overs}.${b.balls||0}</td>
         <td style="font-family:var(--mono)">${b.maidens}</td>
         <td style="font-family:var(--mono)">${b.runs}</td>
@@ -2171,7 +2243,7 @@ function renderCompleted(){
       </div>
       <div class="hsc">${sc}</div>
       <div class="hres">${m.resultText||'—'}</div>
-      <div style="font-size:10px;color:var(--dim);margin-top:2px">📍 ${m.venue} | 📅 ${m.date}</div>
+      <div style="font-size:10px;color:var(--dim);margin-top:2px">📍 ${esc(m.venue)} | 📅 ${esc(m.date)}</div>
     </div>`;
   }).join('');
 }
@@ -2226,11 +2298,11 @@ function renderPoints(){
 function renderHome(){
   document.getElementById('htnm').textContent=`${APP.tournament.name} — ${APP.tournament.edition}`;
   document.getElementById('hinfo').innerHTML=`
-    <div>🏆 <b>${APP.tournament.name}</b></div>
-    <div>📅 ${APP.tournament.edition}, ${APP.tournament.year}</div>
+    <div>🏆 <b>${esc(APP.tournament.name)}</b></div>
+    <div>📅 ${esc(APP.tournament.edition)}, ${esc(APP.tournament.year)}</div>
     <div>🏏 ${APP.teams.length} Teams | 📋 ${APP.matches.length} Matches</div>
     <div>⏱ ${APP.tournament.overs||20}-over format | ✅ ${APP.matches.filter(m=>m.status==='completed').length} Completed</div>
-    ${APP.uname?`<div style="color:var(--dim);font-size:11px;margin-top:3px">Owner: <b style="color:var(--gold)">${APP.dname}</b></div>`:''}`;
+    ${APP.uname?`<div style="color:var(--dim);font-size:11px;margin-top:3px">Owner: <b style="color:var(--gold)">${esc(APP.dname)}</b></div>`:''}`;
   let live=APP.matches.find(m=>m.status==='live');
   let lel=document.getElementById('hlive');
   if(live){
@@ -2256,7 +2328,7 @@ function renderHome(){
 // ══════════════════════════════════════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════════════════════════════════════
-function gtn(id){if(!id||id==='tie')return id==='tie'?'Tie':'—';return(APP.teams.find(x=>x.id===id)||{name:id}).name;}
+function gtn(id){if(!id||id==='tie')return id==='tie'?'Tie':'—';return esc((APP.teams.find(x=>x.id===id)||{name:id}).name);}
 function openM(id){document.getElementById(id).classList.add('on');}
 function closeM(id){document.getElementById(id).classList.remove('on');}
 function toast(msg,type){
@@ -2305,8 +2377,23 @@ function bindActions(){
         if(!match){ console.warn('Unknown action:', action); return; }
         var fnName = match[1];
         var argsStr = match[2].trim();
-        var fn = window[fnName] || eval(fnName); // try window first, then scope
-        if(typeof fn !== 'function'){ console.warn('Not a function:', fnName); return; }
+        // SECURITY: whitelist of allowed functions — NO eval()
+        var ALLOWED = {
+          doLogin,doRegister,doGuest,doLogout,showForgot,showLogin,showViewer,
+          switchTab,fpStep1,fpStep2,
+          showTab,saveTournament,addTeam,clearBulk,filterPlayers,
+          copyShareLink,openShareLink,updateBowlerMaxLabel,
+          openSchedModal,scheduleMatch,cancelSchModal,
+          startMatch,confirmToss,confirmInningsSetup,confirmNewOver,
+          openManage,applyBatsmen,applyBowler,
+          triggerWicket,confirmWicket,onDismChange,
+          addRun,addExtra,confirmExtra,triggerRetiredHurt,
+          openEditMatch,deleteMatch,confirmDeleteMatch,moveMatch,
+          populateSCSelect,renderSC,showMHist,
+          closeM:function(id){document.getElementById(id)?.classList.remove('on');},
+        };
+        var fn = ALLOWED[fnName];
+        if(typeof fn !== 'function'){ console.warn('Blocked action:', fnName); return; }
         if(!argsStr){ fn(); return; }
         // Parse args: handle 'string', "string", numbers
         var args = argsStr.split(/,(?=(?:[^'"]*['"][^'"]*['"])*[^'"]*$)/).map(function(a){
@@ -2352,6 +2439,12 @@ function bindActions(){
   try{var t='__cs_ls_test__';localStorage.setItem(t,t);localStorage.removeItem(t);}
   catch(e){var w=document.getElementById('ls-warn');if(w)w.style.display='block';}
 })();
+// Register service worker for PWA/offline support
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js').catch(()=>{});
+  });
+}
 // Bind all data-action elements (auth buttons need this before login)
 bindActions();
 
