@@ -535,8 +535,8 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <select id="wkt-ro"><option value="striker">Striker</option><option value="ns">Non-Striker</option></select>
     </div>
     <div class="mr">
-      <label>Next Batsman <span style="color:var(--dim);font-size:10px">(optional — can set later via ⚙️ Manage)</span></label>
-      <select id="wkt-next"><option value="">— Skip (set later) —</option></select>
+      <label>Next Batsman In <span style="color:var(--em);font-size:10px">← auto-selected</span></label>
+      <select id="wkt-next"></select>
     </div>
     <div class="mact">
       <button class="bsm" data-action="confirmWicket()">✔ Confirm</button>
@@ -1662,9 +1662,14 @@ function triggerWicket(){
   let batT=APP.teams.find(t=>t.id===inn.battingTeamId);
   let xiPlayers=getMatchXI(APP.liveMatch,inn.battingTeamId);
   let rem=xiPlayers.filter(p=>inn.batsmen[p.id]&&inn.batsmen[p.id].status==='yet');
-  document.getElementById('wkt-next').innerHTML=
-    '<option value="">— Skip (set later via ⚙️ Manage) —</option>'
-    +rem.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  // Players first — auto-select the first available batsman
+  // Skip option goes at the END so it's never accidentally chosen
+  let sel=document.getElementById('wkt-next');
+  sel.innerHTML=rem.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')
+    +'<option value="" style="color:var(--dim)">— Set later via ⚙️ Manage —</option>';
+  // Auto-select first available player if any remain
+  if(rem.length>0) sel.value=rem[0].id;
+  else sel.value='';
   openM('wkt-mo');
 }
 function onDismChange(){
