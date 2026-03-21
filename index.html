@@ -7,9 +7,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="CricScore">
+<meta name="apple-mobile-web-app-title" content="Stumply">
 <meta name="description" content="Cricket tournament manager — live scoring, team management, match history">
-<title>CricScore — Tournament Manager</title>
+<title>Stumply — Cricket Tournament Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -297,7 +297,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 </style>
 </head>
 <body>
-<noscript><div style="color:#fff;background:#050e1a;padding:40px;text-align:center;font-family:sans-serif">JavaScript is required to run CricScore. Please enable JavaScript in your browser.</div></noscript>
+<noscript><div style="color:#fff;background:#050e1a;padding:40px;text-align:center;font-family:sans-serif">JavaScript is required to run Stumply. Please enable JavaScript in your browser.</div></noscript>
 
 <!-- ══ AUTH ══ -->
 <div id="authscr">
@@ -309,8 +309,8 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <rect x="33" y="14" width="14" height="4" rx="1" fill="#f0c040" opacity=".7"/>
       <rect x="33" y="62" width="14" height="4" rx="1" fill="#f0c040" opacity=".7"/>
     </svg>
-    <h1>🏏 CricScore</h1>
-    <p class="sub">Your tournament, your data — individual logins</p>
+    <h1>🏏 Stumply</h1>
+    <p class="sub">Stumply — Your cricket tournament, your data</p>
     <div id="ls-warn" style="display:none;background:rgba(240,160,48,.15);border:1px solid var(--amber);border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--amber);text-align:left">
       ⚠ <b>Private/Incognito mode detected.</b> Your account data will be saved for this session only and won't persist after closing the tab. For full persistence, open in a normal browser window.
     </div>
@@ -341,7 +341,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 </div>
 <!-- ══ TOPBAR ══ -->
 <div id="topbar" class="hidden">
-  <div class="logo">Cric<span>Score</span></div>
+  <div class="logo">Stum<span>ply</span></div>
   <div class="nav-tabs">
     <button class="tab-btn active" data-action="showTab('home')">🏠 Home</button>
     <button class="tab-btn" data-action="showTab('matches')">📋 Matches</button>
@@ -365,7 +365,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 <!-- HOME -->
 <div id="view-home" class="view active">
   <div style="text-align:center;padding:22px 0 15px">
-    <h1 style="font-family:var(--disp);font-size:26px;color:var(--gold);letter-spacing:2px">CRICSCORE</h1>
+    <h1 style="font-family:var(--disp);font-size:26px;color:var(--gold);letter-spacing:2px">STUMPLY</h1>
     <p id="htnm" style="color:var(--dim);font-size:12px;margin-top:2px">Your Tournament</p>
   </div>
   <div class="tcol">
@@ -647,7 +647,7 @@ function lsAvailable(){
     _lsOK=true;
   }catch(e){
     _lsOK=false;
-    console.warn('CricScore: localStorage unavailable, using in-memory storage. Data will not persist across page reloads.',e);
+    console.warn('Stumply: localStorage unavailable, using in-memory storage. Data will not persist across page reloads.',e);
   }
   return _lsOK;
 }
@@ -1099,41 +1099,50 @@ function getLastXI(teamId){
   return ids.size>0?[...ids]:null;
 }
 
-function buildXIRows(side, teamId){
+function buildXIRows(side, teamId, prefilledPlayers){
   let cont=document.getElementById('sch-'+side+'-xi');
   let hint=document.getElementById('sch-'+side+'-hint');
   if(!cont)return;
   let team=APP.teams.find(t=>t.id===teamId);
-  if(!team){cont.innerHTML='';if(hint)hint.textContent='';return;}
+  if(!team){cont.innerHTML='<p style="color:var(--dim);font-size:12px">Select a team above</p>';if(hint)hint.textContent='';return;}
 
-  let lastIds=getLastXI(teamId);
-  // Build an ordered list: last XI first (in original player order), then remainders
+  // Start with full squad in order
   let orderedPlayers=[...team.players];
-  let suggested=[];
-  if(lastIds){
-    // Reorder: players from lastXI first (preserving squad order), then the rest
-    suggested=orderedPlayers.filter(p=>lastIds.has(p.id));
-    let rest=orderedPlayers.filter(p=>!lastIds.has(p.id));
-    orderedPlayers=[...suggested,...rest];
-    if(hint)hint.textContent=`(auto-filled from last match — edit as needed)`;
+
+  if(prefilledPlayers&&prefilledPlayers.length>0){
+    // Edit mode — use the previously saved XI, top up with squad for any gaps
+    let filledIds=new Set(prefilledPlayers.map(p=>p.id));
+    let extras=orderedPlayers.filter(p=>!filledIds.has(p.id));
+    orderedPlayers=[...prefilledPlayers,...extras];
+    if(hint)hint.textContent='(pre-filled from saved lineup — edit as needed)';
   } else {
-    if(hint)hint.textContent='(no previous match found — fill manually)';
+    // Check if team has played before → reorder to last XI first
+    let lastIdArr=getLastXI(teamId); // returns array or null
+    if(lastIdArr&&lastIdArr.length>0){
+      let lastIdSet=new Set(lastIdArr); // array → Set for .has()
+      let inLast=orderedPlayers.filter(p=>lastIdSet.has(p.id));
+      let notInLast=orderedPlayers.filter(p=>!lastIdSet.has(p.id));
+      orderedPlayers=[...inLast,...notInLast];
+      if(hint)hint.textContent='(auto-filled from last match — edit as needed)';
+    } else {
+      // No previous match — just fill from squad (THE MAIN FIX)
+      if(hint)hint.textContent=orderedPlayers.length>0?`✅ ${orderedPlayers.length} players loaded from squad`:' ⚠ No players in squad — add in Admin → Teams';
+    }
   }
 
-  // Show exactly 11 editable rows pre-filled with player names
+  // Show 11 editable rows — pre-filled from squad players
   let rows=[];
   for(let i=0;i<11;i++){
     let p=orderedPlayers[i]||null;
     let nm=p?p.name:'';
     let pid=p?p.id:'';
-    rows.push(`<div style="display:flex;gap:4px;align-items:center">
-      <span style="font-family:var(--mono);font-size:10px;color:var(--gold);width:16px;text-align:center">${i+1}</span>
-      <input class="ifield" data-side="${side}" data-idx="${i}"
-        style="font-size:12px;padding:4px 7px"
+    rows.push(`<div style="display:flex;gap:4px;align-items:center;margin-bottom:2px">
+      <span style="font-family:var(--mono);font-size:10px;color:var(--gold);width:18px;text-align:center;flex-shrink:0">${i+1}</span>
+      <input class="ifield xi-inp" data-side="${side}" data-idx="${i}"
+        style="font-size:12px;padding:4px 7px;flex:1"
         placeholder="Player ${i+1} name"
         value="${nm.replace(/"/g,'&quot;')}"
-        data-orig-id="${pid}"
-        oninput="onXINameChange(this)">
+        data-orig-id="${pid}">
     </div>`);
   }
   cont.innerHTML=rows.join('');
@@ -1184,11 +1193,16 @@ function openSchedModal(){
   document.getElementById('sch-b').innerHTML=opts;
   document.getElementById('sch-d').value=new Date().toISOString().split('T')[0];
   document.getElementById('sch-warn').textContent='';
-  // Default second team to second option so A≠B initially
-  if(APP.teams.length>=2)document.getElementById('sch-b').value=APP.teams[1].id;
-  // Build XI rows for both teams
+  // Always default Team A = first team, Team B = second team (different teams)
+  document.getElementById('sch-a').value=APP.teams[0].id;
+  document.getElementById('sch-b').value=APP.teams[1].id;
+  // Build XI rows — pre-filled from each team's squad
   buildXIRows('a',APP.teams[0].id);
   buildXIRows('b',APP.teams[1].id);
+  // Wire the team dropdowns so changing team A/B re-fills the XI
+  let sa=document.getElementById('sch-a'),sb=document.getElementById('sch-b');
+  sa.onchange=()=>onSchTeamChange('a');
+  sb.onchange=()=>onSchTeamChange('b');
   openM('sch-mo');
 }
 
@@ -1307,8 +1321,12 @@ function openEditMatch(mid){
   document.getElementById('sch-u2').value=m.umpires[1]||'';
   document.getElementById('sch-u3').value=m.umpires[2]||'';
   document.getElementById('sch-warn').textContent='';
-  buildXIRows('a',m.teamAId);
-  buildXIRows('b',m.teamBId);
+  // Pre-fill XI from the match's stored playingXI if available, else from squad
+  buildXIRows('a',m.teamAId,m.playingXI?m.playingXI[m.teamAId]:null);
+  buildXIRows('b',m.teamBId,m.playingXI?m.playingXI[m.teamBId]:null);
+  let sa=document.getElementById('sch-a'),sb=document.getElementById('sch-b');
+  sa.onchange=()=>onSchTeamChange('a');
+  sb.onchange=()=>onSchTeamChange('b');
   document.getElementById('sch-mo').setAttribute('data-edit-id',mid);
   let title=document.querySelector('#sch-mo .mt');
   if(title)title.textContent='✏️ Edit Match';
