@@ -378,7 +378,15 @@ tr:hover td{background:rgba(255,255,255,.02)}
       </div>
       <div id="v-err" class="emsg"></div>
       <button class="btnpri" style="margin-top:8px" data-action="doGuest()">👁 Watch Live →</button>
-      <div style="text-align:center;margin-top:8px">
+      <div style="margin-top:10px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;padding:9px 12px;font-size:11px;color:var(--dim)">
+        🔔 <b style="color:var(--txt)">Enable notifications?</b> Get alerted when a match starts, wickets fall, and the result is announced.
+        <div style="margin-top:7px;display:flex;gap:7px">
+          <button class="bsm bgld" style="flex:1;font-size:11px" data-action="enableNotifications()">🔔 Yes, notify me</button>
+          <button class="bsm" style="flex:1;font-size:11px;background:var(--bg3);color:var(--dim);border:1px solid var(--bdr)" data-action="skipNotifications()">Not now</button>
+        </div>
+        <div id="notif-status" style="font-size:10px;margin-top:5px;color:var(--em)"></div>
+      </div>
+      <div style="text-align:center;margin-top:10px">
         <a style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showLogin()">← Back to Sign In</a>
       </div>
     </div>
@@ -453,6 +461,8 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <div id="uinfo">
     <span id="uchip" class="chip">VIEWER</span>
     <span id="unm" style="font-family:var(--mono);font-size:10px;color:var(--dim)"></span>
+    <button id="notif-btn" title="Enable notifications" data-action="toggleNotifications()"
+      style="background:none;border:none;font-size:16px;cursor:pointer;padding:2px 5px;opacity:0.5;display:none">🔔</button>
     <button class="btn-out" data-action="doLogout()">Logout</button>
   </div>
 </div>
@@ -835,6 +845,85 @@ tr:hover td{background:rgba(255,255,255,.02)}
 const LS_USERS   = 'cs_users_v1';     // {uname:{hash,name,data}}
 const LS_SESSION = 'cs_sess_v1';      // {uname?,role}
 const LS_LIVE    = 'cs_live_v1';      // shared broadcast for viewers
+
+// ══════════════════════════════════════════════════════════════════════════
+//  PUSH NOTIFICATIONS
+// ══════════════════════════════════════════════════════════════════════════
+// notifyViewers() — called by admin app after key events.
+// Sends a notification via the service worker to ALL open viewer tabs/windows
+// AND to any installed PWA instances on the same device.
+//
+// On Android Chrome: works fully (foreground + background)
+// On iPhone Safari: works when installed as PWA (iOS 16.4+)
+// On desktop Chrome/Edge: works fully
+
+let _swReg = null; // cached SW registration
+
+async function getSwReg(){
+  if(_swReg)return _swReg;
+  if(!('serviceWorker' in navigator))return null;
+  try{_swReg=await navigator.serviceWorker.ready;return _swReg;}catch{return null;}
+}
+
+async function requestNotifPermission(){
+  if(!('Notification' in window))return false;
+  if(Notification.permission==='granted')return true;
+  if(Notification.permission==='denied')return false;
+  let result=await Notification.requestPermission();
+  return result==='granted';
+}
+
+async function sendNotif(title,body,tag){
+  if(!('Notification' in window))return;
+  if(Notification.permission!=='granted')return;
+  try{
+    let reg=await getSwReg();
+    if(reg){
+      // Use SW — works in background too
+      reg.active?.postMessage({type:'SHOW_NOTIFICATION',title,body,tag,
+        url:window.location.href.split('?')[0]+'?view='+(APP.uname||'')});
+    } else {
+      // Fallback: direct Notification API (foreground only)
+      new Notification(title,{body,icon:'/icon-192.png',tag,vibrate:[100,50,100]});
+    }
+  }catch(e){console.warn('Notification error:',e);}
+}
+
+// Key notification triggers — called from game engine
+function notifyMatchStarted(teamA,teamB,matchType){
+  sendNotif(
+    '🏏 Match Started!',
+    `${teamA} vs ${teamB}${matchType&&matchType!=='League'?' — '+matchType:''}`,
+    'match-start'
+  );
+}
+function notifyInningsComplete(team,runs,wickets,overs){
+  sendNotif(
+    '📊 Innings Complete',
+    `${team}: ${runs}/${wickets} (${overs} Ov)`,
+    'innings-end'
+  );
+}
+function notifyWicket(batsmanName,runs,dismissal,score,over){
+  sendNotif(
+    `⚡ Wicket! ${batsmanName} out for ${runs}`,
+    `${dismissal} | Score: ${score} (${over})`,
+    'wicket'
+  );
+}
+function notifyMatchResult(resultText,matchType){
+  sendNotif(
+    `🏆 Match Result${matchType&&matchType!=='League'?' — '+matchType:''}`,
+    resultText,
+    'match-result'
+  );
+}
+function notifyHalfCentury(name,runs){
+  sendNotif(`🎯 Half Century!`,`${name} reaches ${runs} runs!`,'fifty');
+}
+function notifyCentury(name,runs){
+  sendNotif(`💯 CENTURY!`,`${name} scores ${runs} runs!`,'century');
+}
 
 // ══════════════════════════════════════════════════════════════════════════
 //  SECURITY — XSS sanitization
@@ -1300,6 +1389,7 @@ function initApp(){
   if(APP.liveMatch)APP.liveMatch=APP.matches.find(m=>m.status==='live')||null;
   buildBulkTable();renderHome();renderMatches();renderTeamList();
   populatePlayerTeamSel();populateSCSelect();renderHistory();
+  updateNotifBell();
   showTab('home');
   }catch(e){
     console.error('initApp error:',e);
@@ -1837,6 +1927,10 @@ function startMatch(mid){
   openM('toss-mo');
   document.getElementById('livebadge').classList.remove('hidden');
   saveState();
+  // Notify viewers that match has started
+  let tA=APP.teams.find(t=>t.id===m.teamAId);
+  let tB=APP.teams.find(t=>t.id===m.teamBId);
+  notifyMatchStarted(tA?tA.name:'Team A',tB?tB.name:'Team B',m.matchType||'League');
 }
 function confirmToss(){
   let m=APP.liveMatch;
@@ -1967,6 +2061,12 @@ function addRun(r){
   inn.thisOver.push(lbl);
   advBall(inn);
   if(r%2===1)swapEnds(inn);
+  // Milestone notifications (50, 100, 150...)
+  if(bs){
+    let prev=bs.runs-r, curr=bs.runs;
+    if(prev<100&&curr>=100) notifyCentury(bs.name,curr);
+    else if(prev<50&&curr>=50) notifyHalfCentury(bs.name,curr);
+  }
   flashScore();afterScore();
 }
 function addExtra(type){
@@ -2053,11 +2153,15 @@ function confirmWicket(){
     else inn.nonStriker=nextId;
     if(inn.batsmen[nextId])inn.batsmen[nextId].status='batting';
     toast(`${dname} — ${dstr} ⚡`);
+    // Notify wicket
+    notifyWicket(dname,bs?bs.runs:0,dstr,`${inn.runs}/${inn.wickets}`,ov(inn));
   } else {
     // Missed — clear that end so canScore() will warn until ⚙️ is used
     if(dismissedId===inn.striker)inn.striker=null;
     else inn.nonStriker=null;
     toast(`${dname} out. ⚙️ Tap Manage to set next batsman!`,'warn');
+    // Notify wicket
+    notifyWicket(dname,bs?bs.runs:0,dstr,`${inn.runs}/${inn.wickets}`,ov(inn));
   }
   afterScore();
 }
@@ -2127,6 +2231,9 @@ function swapEnds(inn){let t=inn.striker;inn.striker=inn.nonStriker;inn.nonStrik
 function endInnings(){
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   inn.completed=true;closeM('nov-mo');
+  // Notify innings complete
+  let batTeam=APP.teams.find(t=>t.id===inn.battingTeamId);
+  notifyInningsComplete(batTeam?batTeam.name:'Team',inn.runs,inn.wickets,ov(inn));
   if(inn.number===1){
     toast('Innings 1 complete! Starting Innings 2...');
     saveState();
@@ -2142,6 +2249,8 @@ function determineWinner(m){
   m.status='completed';APP.liveMatch=null;
   document.getElementById('livebadge').classList.add('hidden');
   toast('🏆 '+m.resultText);
+  // Notify match result
+  notifyMatchResult(m.resultText,m.matchType||'League');
   saveState();renderLive();renderHistory();renderMatches();populateSCSelect();
 }
 // ══════════════════════════════════════════════════════════════════════════
@@ -2971,7 +3080,7 @@ function bindActions(){
         // SECURITY: whitelist of allowed functions — NO eval()
         var ALLOWED = {
           doLogin,doRegister,doGuest,doLogout,showForgot,showLogin,showViewer,
-          switchStatTab,
+          switchStatTab,enableNotifications,skipNotifications,toggleNotifications,
           switchTab,fpStep1,fpStep2,
           showTab,saveTournament,addTeam,clearBulk,filterPlayers,
           copyShareLink,openShareLink,updateBowlerMaxLabel,
@@ -3025,6 +3134,74 @@ function bindActions(){
 
 // ══════════════════════════════════════════════════════════════════════════
 //  BOOT
+// ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════
+//  NOTIFICATION UI HELPERS
+// ══════════════════════════════════════════════════════════════════════════
+async function enableNotifications(){
+  let statusEl=document.getElementById('notif-status');
+  if(!('Notification' in window)){
+    if(statusEl)statusEl.textContent='❌ Notifications not supported on this browser/device.';
+    return;
+  }
+  if(statusEl)statusEl.textContent='Requesting permission...';
+  let granted=await requestNotifPermission();
+  if(granted){
+    lsSet('notif_enabled','1');
+    if(statusEl)statusEl.innerHTML='✅ Notifications enabled! You will be alerted for match events.';
+    updateNotifBell();
+    // Send a test notification
+    setTimeout(()=>sendNotif('🏏 Stumply Notifications','You will be notified when matches start, wickets fall and results are announced!','test'),500);
+  } else {
+    if(statusEl)statusEl.innerHTML='❌ Permission denied. Enable notifications for Stumply in your browser settings.';
+  }
+}
+function skipNotifications(){
+  lsSet('notif_enabled','0');
+  let statusEl=document.getElementById('notif-status');
+  if(statusEl)statusEl.textContent='';
+  // Hide the notification prompt
+  let prompt=document.querySelector('#apanel-viewer .bsm.bgld');
+  if(prompt)prompt.closest('div[style*="background:var(--bg2)"]')?.style && (prompt.closest('div[style*="background:var(--bg2)"]').style.display='none');
+}
+async function toggleNotifications(){
+  if(Notification.permission==='granted'){
+    // Already granted — send test
+    sendNotif('🏏 Stumply','Notifications are already enabled!','test');
+    toast('✅ Notifications are ON');
+  } else {
+    await enableNotifications();
+  }
+}
+function updateNotifBell(){
+  let btn=document.getElementById('notif-btn');
+  if(!btn)return;
+  if(!('Notification' in window)){btn.style.display='none';return;}
+  btn.style.display='';
+  if(Notification.permission==='granted'){
+    btn.style.opacity='1';
+    btn.title='Notifications ON — tap to test';
+    btn.textContent='🔔';
+  } else if(Notification.permission==='denied'){
+    btn.style.opacity='0.3';
+    btn.title='Notifications blocked — change in browser settings';
+    btn.textContent='🔕';
+  } else {
+    btn.style.opacity='0.5';
+    btn.title='Tap to enable notifications';
+    btn.textContent='🔔';
+  }
+}
+
+// Show notification prompt for viewers if not yet decided
+function maybePromptNotifications(){
+  if(APP.role!=='viewer')return;
+  if(!('Notification' in window))return;
+  if(Notification.permission==='granted'||Notification.permission==='denied')return;
+  if(lsGet('notif_enabled')==='0')return; // user said no
+  // Already showing on viewer panel — no extra prompt needed
+}
+
 // ══════════════════════════════════════════════════════════════════════════
 // Show warning if localStorage is blocked (private/incognito mode)
 (function(){
