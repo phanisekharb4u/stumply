@@ -328,7 +328,24 @@ tr:hover td{background:rgba(255,255,255,.02)}
         <a id="forgot-link" style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showForgot()">Forgot password?</a>
       </div>
       <div class="divd">or</div>
-      <button class="btnalt" data-action="doGuest()">👁 Watch as Viewer (live sync, read-only)</button>
+      <button class="btnalt" data-action="showViewer()">👁 Watch as Viewer (live sync, read-only)</button>
+    </div>
+    <!-- Viewer Panel -->
+    <div id="apanel-viewer" class="apanel">
+      <div style="font-family:var(--disp);font-size:13px;color:var(--em);margin-bottom:10px;letter-spacing:.5px">👁 WATCH LIVE SCORES</div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.5">
+        Enter the <b style="color:var(--txt)">username</b> of the tournament admin whose live scores you want to watch.
+      </div>
+      <div class="fg">
+        <label>Admin Username</label>
+        <input id="v-uname" type="text" placeholder="e.g. phani_test" autocomplete="off"
+          style="width:100%;background:var(--bg2);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:13px;padding:9px 11px;border-radius:6px;outline:none">
+      </div>
+      <div id="v-err" class="emsg"></div>
+      <button class="btnpri" style="margin-top:8px" data-action="doGuest()">👁 Watch Live →</button>
+      <div style="text-align:center;margin-top:8px">
+        <a style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showLogin()">← Back to Sign In</a>
+      </div>
     </div>
     <!-- Forgot Password -->
     <div id="apanel-forgot" class="apanel">
@@ -500,7 +517,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <div class="fg"><label>Code</label><input class="ifield" id="nt-code" placeholder="MI" maxlength="4"></div>
       <div class="fg"><label>City</label><input class="ifield" id="nt-city" placeholder="Mumbai"></div>
     </div>
-    <p style="font-size:11px;color:var(--dim);margin-bottom:6px">Fill players — blank rows skipped:</p>
+    <p style="font-size:11px;color:var(--dim);margin-bottom:6px">Fill all <b style="color:var(--gold)">11 mandatory players</b> (required) + up to 3 optional substitutes:</p>
     <div style="overflow-x:auto"><table class="bpt"><thead><tr><th>#</th><th style="min-width:140px">Name</th><th>Jersey</th><th style="min-width:110px">Role</th></tr></thead><tbody id="btbody"></tbody></table></div>
     <div style="margin-top:9px;display:flex;gap:7px">
       <button class="bsm bgld" data-action="addTeam()">✅ Add Team</button>
@@ -860,10 +877,18 @@ function refreshView(){
 // ══════════════════════════════════════════════════════════════════════════
 function switchTab(t){
   document.querySelectorAll('.atab').forEach((b,i)=>b.classList.toggle('on',i===(t==='login'?0:1)));
-  document.getElementById('apanel-login').classList.toggle('on',t==='login');
-  document.getElementById('apanel-reg').classList.toggle('on',t==='reg');
-  let fp=document.getElementById('apanel-forgot');if(fp)fp.classList.remove('on');
+  ['apanel-login','apanel-reg','apanel-forgot','apanel-viewer'].forEach(id=>{
+    let el=document.getElementById(id);
+    if(el)el.classList.toggle('on',id==='apanel-'+t);
+  });
   let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
+}
+function showViewer(){
+  ['apanel-login','apanel-reg','apanel-forgot'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
+  document.getElementById('apanel-viewer').classList.add('on');
+  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='none';
+  let vu=document.getElementById('v-uname');if(vu){vu.value='';vu.focus();}
+  let ve=document.getElementById('v-err');if(ve)ve.textContent='';
 }
 function showForgot(){
   ['apanel-login','apanel-reg'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
@@ -882,7 +907,7 @@ function showForgot(){
   let e2=document.getElementById('fp-err2');if(e2)e2.textContent='';
 }
 function showLogin(){
-  document.getElementById('apanel-forgot').classList.remove('on');
+  ['apanel-forgot','apanel-viewer'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
   let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
   switchTab('login');
 }
@@ -971,9 +996,40 @@ function loginAs(uname,name){
   }
 }
 function doGuest(){
-  APP.role='viewer';APP.uname=null;APP.viewUser=null;APP.dname='Viewer';
-  readLive();
-  try{lsSet(LS_SESSION,JSON.stringify({role:'viewer'}));}catch{}
+  let unameEl=document.getElementById('v-uname');
+  let errEl=document.getElementById('v-err');
+  let uname=(unameEl?.value||'').trim().toLowerCase().replace(/[^a-z0-9_]/g,'_');
+  if(errEl)errEl.textContent='';
+  if(!uname){
+    if(errEl)errEl.textContent='Enter the admin username to watch';
+    if(unameEl)unameEl.focus();
+    return;
+  }
+  // Validate: user must exist and have tournament data
+  let users=getUsers();
+  let u=users[uname];
+  if(!u){
+    if(errEl)errEl.textContent='Username not found — check the username and try again';
+    if(unameEl)unameEl.focus();
+    return;
+  }
+  // Set up viewer targeting this user
+  APP.role='viewer';APP.uname=null;APP.viewUser=uname;APP.dname=u.name||uname;
+  // Load their data immediately
+  if(u.data){
+    let d=u.data;
+    APP.tournament=d.tournament||{name:'Tournament',edition:'Season 1',year:2026,overs:20};
+    if(!APP.tournament.overs)APP.tournament.overs=20;
+    APP.teams=d.teams||[];
+    APP.matches=d.matches||[];
+    APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
+    APP._liveTs=d._savedAt||0;
+  } else {
+    // User exists but no data yet
+    APP.tournament={name:`${u.name||uname}'s Tournament`,edition:'Season 1',year:2026,overs:20};
+    APP.teams=[];APP.matches=[];APP.liveMatch=null;
+  }
+  try{lsSet(LS_SESSION,JSON.stringify({role:'viewer',viewUser:uname}));}catch{}
   initApp();
 }
 function doLogout(){
@@ -987,9 +1043,11 @@ function doLogout(){
   ['l-u','l-p','r-n','r-u','r-p','r-p2','fp-u','fp-answer','fp-newpass','fp-newpass2'].forEach(id=>{let e=document.getElementById(id);if(e)e.value='';});
   ['fp-step1','fp-step2','fp-step3'].forEach((id,i)=>{let el=document.getElementById(id);if(el)el.style.display=i===0?'':'none';});
   document.getElementById('l-err').textContent='';
-  // Reset forgot panel
-  let fp=document.getElementById('apanel-forgot');if(fp)fp.classList.remove('on');
+  // Reset forgot and viewer panels
+  ['apanel-forgot','apanel-viewer'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
   let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
+  let vu=document.getElementById('v-uname');if(vu)vu.value='';
+  let ve=document.getElementById('v-err');if(ve)ve.textContent='';
 }
 function initApp(){
   try{
@@ -1053,7 +1111,27 @@ function tryRestore(){
       loadState(s.uname);
       initApp();return true;
     }
-    if(s.role==='viewer'){APP.viewUser=null;doGuest();return true;}
+    if(s.role==='viewer'){
+      // Restore viewer session — pre-fill username if stored
+      let vu=s.viewUser||null;
+      if(vu){
+        let users=getUsers();let u=users[vu];
+        if(u){
+          APP.role='viewer';APP.uname=null;APP.viewUser=vu;APP.dname=u.name||vu;
+          if(u.data){
+            let d=u.data;
+            APP.tournament=d.tournament||{name:'Tournament',edition:'Season 1',year:2026,overs:20};
+            if(!APP.tournament.overs)APP.tournament.overs=20;
+            APP.teams=d.teams||[];APP.matches=d.matches||[];
+            APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
+            APP._liveTs=d._savedAt||0;
+          }
+          initApp();return true;
+        }
+      }
+      // No stored viewUser — show viewer panel
+      showViewer();return true;
+    }
   }catch{}
   return false;
 }
@@ -1144,34 +1222,63 @@ const DJERSEYS=[1,2,3,7,33,8,63,93,11,23,4];
 const ROLES=['Batsman','Bowler','All-rounder','Wicket-keeper'];
 function buildBulkTable(){
   let tb=document.getElementById('btbody');if(!tb)return;tb.innerHTML='';
+  // 11 mandatory players
   for(let i=1;i<=11;i++){
     let ro=ROLES.map(r=>`<option${r===DROLES[i-1]?' selected':''}>${r}</option>`).join('');
-    tb.innerHTML+=`<tr><td class="pn">${i}</td>
-      <td><input class="pi" id="bp-n${i}" placeholder="${DPNAMES[i-1]}"></td>
+    tb.innerHTML+=`<tr style="${i===1?'border-top:2px solid var(--edim)':''}">
+      <td class="pn" style="color:var(--gold)">${i}</td>
+      <td><input class="pi" id="bp-n${i}" placeholder="${DPNAMES[i-1]}" style="border-color:var(--edim)"></td>
       <td><input class="pj" id="bp-j${i}" value="${DJERSEYS[i-1]}" type="number" min="1" max="999"></td>
+      <td><select class="ps" id="bp-r${i}">${ro}</select></td></tr>`;
+  }
+  // Separator row
+  tb.innerHTML+=`<tr><td colspan="4" style="padding:6px 4px;font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:1px;border-top:1px dashed var(--bdr);border-bottom:1px dashed var(--bdr)">
+    ➕ OPTIONAL SUBSTITUTES (12–14)
+  </td></tr>`;
+  // 3 optional substitute rows
+  for(let i=12;i<=14;i++){
+    let ro=ROLES.map(r=>`<option${r==='Batsman'?' selected':''}>${r}</option>`).join('');
+    tb.innerHTML+=`<tr style="opacity:0.7">
+      <td class="pn" style="color:var(--amber)">${i}</td>
+      <td><input class="pi" id="bp-n${i}" placeholder="Sub ${i-11} (optional)"></td>
+      <td><input class="pj" id="bp-j${i}" value="${i*10}" type="number" min="1" max="999"></td>
       <td><select class="ps" id="bp-r${i}">${ro}</select></td></tr>`;
   }
 }
 function clearBulk(){
   ['nt-name','nt-code','nt-city'].forEach(id=>document.getElementById(id).value='');
   for(let i=1;i<=11;i++){document.getElementById('bp-n'+i).value='';document.getElementById('bp-j'+i).value=DJERSEYS[i-1];}
+  for(let i=12;i<=14;i++){let el=document.getElementById('bp-n'+i);if(el)el.value='';let ej=document.getElementById('bp-j'+i);if(ej)ej.value=i*10;}
 }
 function addTeam(){
   let name=document.getElementById('nt-name').value.trim();
   let code=document.getElementById('nt-code').value.trim().toUpperCase();
   let city=document.getElementById('nt-city').value.trim();
   if(!name||!code){toast('Enter team name and code');return;}
-  let players=[];
+  // Validate all 11 mandatory players are filled
+  let mandatory=[];
   for(let i=1;i<=11;i++){
     let n=(document.getElementById('bp-n'+i).value||'').trim();
     let j=parseInt(document.getElementById('bp-j'+i).value)||i;
     let r=document.getElementById('bp-r'+i).value;
-    if(n)players.push({id:'pl_'+Date.now()+'_'+i,name:n,jersey:j,role:r});
+    if(!n){toast(`Player ${i} name is required — all 11 players must be filled`,'warn');
+      document.getElementById('bp-n'+i).focus();return;}
+    mandatory.push({id:'pl_'+Date.now()+'_'+i,name:n,jersey:j,role:r,mandatory:true});
   }
-  if(!players.length){toast('Enter at least 1 player');return;}
+  // Read optional substitutes (12-14)
+  let players=[...mandatory];
+  for(let i=12;i<=14;i++){
+    let el=document.getElementById('bp-n'+i);if(!el)continue;
+    let n=(el.value||'').trim();
+    if(!n)continue; // optional — skip if blank
+    let j=parseInt(document.getElementById('bp-j'+i)?.value)||i;
+    let r=document.getElementById('bp-r'+i)?.value||'Batsman';
+    players.push({id:'pl_'+Date.now()+'_'+i,name:n,jersey:j,role:r,mandatory:false,isSub:true});
+  }
   APP.teams.push({id:'tm_'+Date.now(),name,code,city,players});
   clearBulk();renderTeamList();populatePlayerTeamSel();saveState();
-  toast(`✅ ${name} added with ${players.length} players`);
+  let subCount=players.filter(p=>p.isSub).length;
+  toast(`✅ ${name} added — 11 players${subCount?` + ${subCount} sub${subCount>1?'s':''}`:''}`);
 }
 function deleteTeam(id){APP.teams=APP.teams.filter(t=>t.id!==id);renderTeamList();populatePlayerTeamSel();saveState();}
 function renderTeamList(){
@@ -1264,17 +1371,36 @@ function buildXIRows(side, teamId, prefilledPlayers){
     }
   }
 
-  // Show 11 editable rows — pre-filled from squad players
+  // Show 11 mandatory rows pre-filled from squad, then 3 optional sub slots
   let rows=[];
+  // Mandatory XI (positions 1-11)
   for(let i=0;i<11;i++){
     let p=orderedPlayers[i]||null;
     let nm=p?p.name:'';
     let pid=p?p.id:'';
+    let isSub=p&&p.isSub;
     rows.push(`<div style="display:flex;gap:4px;align-items:center;margin-bottom:2px">
       <span style="font-family:var(--mono);font-size:10px;color:var(--gold);width:18px;text-align:center;flex-shrink:0">${i+1}</span>
-      <input class="ifield xi-inp" data-side="${side}" data-idx="${i}"
+      <input class="ifield xi-inp" data-side="${side}" data-idx="${i}" data-mandatory="1"
+        style="font-size:12px;padding:4px 7px;flex:1;border-color:${nm?'var(--edim)':'var(--bdr)'}"
+        placeholder="Required — Player ${i+1}"
+        value="${nm.replace(/"/g,'&quot;')}"
+        data-orig-id="${pid}">
+    </div>`);
+  }
+  // Separator
+  rows.push(`<div style="font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:1px;padding:5px 0 3px 22px;border-top:1px dashed var(--bdr);margin-top:4px">➕ OPTIONAL SUBS</div>`);
+  // Optional substitutes (slots 12-14)
+  let subs=orderedPlayers.filter(p=>p.isSub);
+  for(let i=0;i<3;i++){
+    let p=subs[i]||null;
+    let nm=p?p.name:'';
+    let pid=p?p.id:'';
+    rows.push(`<div style="display:flex;gap:4px;align-items:center;margin-bottom:2px;opacity:0.75">
+      <span style="font-family:var(--mono);font-size:10px;color:var(--amber);width:18px;text-align:center;flex-shrink:0">${12+i}</span>
+      <input class="ifield xi-inp" data-side="${side}" data-idx="${11+i}" data-mandatory="0"
         style="font-size:12px;padding:4px 7px;flex:1"
-        placeholder="Player ${i+1} name"
+        placeholder="Sub ${i+1} (optional)"
         value="${nm.replace(/"/g,'&quot;')}"
         data-orig-id="${pid}">
     </div>`);
@@ -1302,19 +1428,18 @@ function getXIFromRows(side, teamId){
   let inputs=document.querySelectorAll(`input[data-side="${side}"]`);
   inputs.forEach((inp,i)=>{
     let nm=inp.value.trim();
-    if(!nm)return;
+    if(!nm)return; // skip blank (especially optional sub slots)
+    let isMandatory=inp.getAttribute('data-mandatory')!=='0';
     let origId=inp.getAttribute('data-orig-id');
-    // Try to match to existing squad player
+    // Try to match to existing squad player by id or name
     let existing=origId&&team?team.players.find(p=>p.id===origId):null;
     if(!existing&&team){
-      // Fuzzy match by name
       existing=team.players.find(p=>p.name.toLowerCase()===nm.toLowerCase());
     }
     if(existing){
-      players.push({id:existing.id,name:nm,jersey:existing.jersey,role:existing.role});
+      players.push({id:existing.id,name:nm,jersey:existing.jersey,role:existing.role,isSub:existing.isSub||false});
     } else {
-      // New player not in squad — create with temp id
-      players.push({id:'xi_'+Date.now()+'_'+i,name:nm,jersey:i+1,role:'Batsman'});
+      players.push({id:'xi_'+Date.now()+'_'+i,name:nm,jersey:i+1,role:'Batsman',isSub:!isMandatory});
     }
   });
   return players;
@@ -1345,7 +1470,21 @@ function scheduleMatch(){
   if(!a||!b||a===b){toast('Select two different teams');return;}
   let xiA=getXIFromRows('a',a);
   let xiB=getXIFromRows('b',b);
-  if(xiA.length<1||xiB.length<1){toast('Enter at least 1 player for each team');return;}
+  // Count mandatory XI (first 11 slots) — all must be filled
+  let mandatoryA=document.querySelectorAll(`input[data-side="a"][data-mandatory="1"]`);
+  let mandatoryB=document.querySelectorAll(`input[data-side="b"][data-mandatory="1"]`);
+  let emptyA=[...mandatoryA].filter(el=>!el.value.trim());
+  let emptyB=[...mandatoryB].filter(el=>!el.value.trim());
+  if(emptyA.length>0){
+    toast(`Team A: fill all 11 players (${emptyA.length} missing)`,'warn');
+    emptyA[0].focus();return;
+  }
+  if(emptyB.length>0){
+    toast(`Team B: fill all 11 players (${emptyB.length} missing)`,'warn');
+    emptyB[0].focus();return;
+  }
+  if(xiA.length<11){toast('Team A must have exactly 11 players','warn');return;}
+  if(xiB.length<11){toast('Team B must have exactly 11 players','warn');return;}
   let matchType=document.getElementById('sch-stage').value||'League';
   let venue=document.getElementById('sch-v').value.trim()||'TBD';
   let date=document.getElementById('sch-d').value;
@@ -2140,7 +2279,12 @@ document.addEventListener('keydown',e=>{
   let as=document.getElementById('authscr');
   if(!as||as.style.display==='none')return;
   if(document.getElementById('apanel-login').classList.contains('on'))doLogin();
-  else doRegister();
+  else if(document.getElementById('apanel-reg').classList.contains('on'))doRegister();
+  else if(document.getElementById('apanel-viewer').classList.contains('on'))doGuest();
+  else if(document.getElementById('apanel-forgot').classList.contains('on')){
+    if(document.getElementById('fp-step2').style.display!=='none')fpStep2();
+    else fpStep1();
+  }
 });
 
 
