@@ -727,10 +727,213 @@ tr:hover td{background:#f0faff}
   body{background:#fff;color:#000}
 }
 .hidden{display:none!important}
+
+/* ── Confetti / Celebration overlay ── */
+#celebration-overlay{
+  display:none;position:fixed;inset:0;z-index:900;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;
+  flex-direction:column;padding:20px;
+  animation:fadein .4s;
+}
+#celebration-overlay.on{display:flex}
+.confetti-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.confetti-piece{
+  position:absolute;top:-20px;width:10px;height:10px;border-radius:2px;
+  animation:confettiFall linear forwards;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+}
+.celeb-card{
+  background:#fff;border-radius:24px;padding:32px 28px;
+  max-width:420px;width:100%;text-align:center;
+  box-shadow:0 24px 80px rgba(0,0,0,.35);
+  position:relative;z-index:1;animation:bounceIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes bounceIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+.celeb-trophy{font-size:72px;margin-bottom:8px;animation:trophyBounce 1s ease-in-out infinite alternate}
+@keyframes trophyBounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-8px) scale(1.05)}}
+.celeb-title{font-family:var(--disp);font-size:13px;letter-spacing:3px;color:var(--dim);margin-bottom:6px;text-transform:uppercase}
+.celeb-team{font-family:var(--disp);font-size:30px;letter-spacing:1px;color:var(--em);margin-bottom:4px}
+.celeb-result{font-family:var(--mono);font-size:13px;color:var(--dim);margin-bottom:20px}
+.celeb-btn{background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-family:var(--disp);font-size:16px;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 16px rgba(26,122,46,.35);transition:all .2s}
+.celeb-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(26,122,46,.45)}
+
+/* ── MOTM / Awards modal ── */
+#motm-mo .mb{max-width:520px}
+.motm-card{
+  background:linear-gradient(135deg,#fffbf0,#fff8e1);
+  border:2px solid var(--gdim);border-radius:14px;
+  padding:16px 18px;margin-bottom:10px;
+  display:flex;align-items:center;gap:14px;
+}
+.motm-medal{font-size:36px;flex-shrink:0}
+.motm-info .motm-title{font-family:var(--disp);font-size:10px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase}
+.motm-info .motm-name{font-family:var(--disp);font-size:20px;color:var(--txt);letter-spacing:.5px;margin-top:2px}
+.motm-info .motm-team{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:1px}
+.motm-info .motm-stat{font-family:var(--mono);font-size:12px;color:var(--gold);margin-top:3px;font-weight:700}
+.motm-sel{width:100%;background:var(--bg4);border:1.5px solid var(--bdr);color:var(--txt);font-family:var(--body);font-size:13px;padding:9px 11px;border-radius:8px;outline:none;margin-bottom:10px}
+.motm-sel:focus{border-color:var(--gold)}
+
+/* ── Demo video modal ── */
+#demo-mo .mb{max-width:600px}
+.demo-step{
+  display:flex;gap:13px;align-items:flex-start;
+  padding:12px 0;border-bottom:1px solid var(--bdr);
+}
+.demo-step:last-child{border-bottom:none}
+.demo-step-num{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#1a4a2e,#2d7a4a);
+  color:#fff;font-family:var(--disp);font-size:14px;
+  display:flex;align-items:center;justify-content:center;letter-spacing:0;
+}
+.demo-step-body .demo-step-title{font-family:var(--disp);font-size:14px;letter-spacing:.5px;color:var(--txt);margin-bottom:3px}
+.demo-step-body .demo-step-desc{font-size:12px;color:var(--dim);line-height:1.5}
+.demo-tag{display:inline-block;background:var(--emlt);color:var(--em);border:1px solid var(--edim);border-radius:4px;font-size:10px;font-family:var(--mono);padding:1px 6px;margin:0 2px;vertical-align:middle}
+
+/* ── Language selector ── */
+#lang-btn{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  color:rgba(255,255,255,.8);font-family:var(--body);font-size:12px;
+  padding:4px 10px;border-radius:5px;cursor:pointer;transition:all .2s;
+  white-space:nowrap;
+}
+#lang-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+#lang-mo .mb{max-width:380px}
+.lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.lang-opt{
+  background:var(--bg4);border:1.5px solid var(--bdr);
+  border-radius:10px;padding:12px 14px;cursor:pointer;
+  transition:all .2s;text-align:center;
+}
+.lang-opt:hover{border-color:var(--em);background:var(--emlt)}
+.lang-opt.active{border-color:var(--em);background:var(--emlt);box-shadow:0 0 0 3px rgba(26,122,46,.12)}
+.lang-opt .lang-name{font-size:16px;margin-bottom:3px}
+.lang-opt .lang-native{font-family:var(--body);font-size:14px;color:var(--txt);font-weight:600}
+.lang-opt .lang-en{font-size:11px;color:var(--dim)}
 </style>
 </head>
 <body>
 <noscript><div style="color:#fff;background:#050e1a;padding:40px;text-align:center;font-family:sans-serif">JavaScript is required to run Stumply. Please enable JavaScript in your browser.</div></noscript>
+
+<!-- ══ CELEBRATION OVERLAY ══ -->
+<div id="celebration-overlay">
+  <div class="confetti-wrap" id="confetti-wrap"></div>
+  <div class="celeb-card">
+    <div class="celeb-trophy">🏆</div>
+    <div class="celeb-title" id="celeb-title">Match Result</div>
+    <div class="celeb-team" id="celeb-team">Team Name</div>
+    <div class="celeb-result" id="celeb-result">Won the match</div>
+    <div id="celeb-motm-preview" style="margin:12px 0;padding:10px 14px;background:linear-gradient(135deg,#fffbf0,#fff8e1);border:1px solid var(--gdim);border-radius:10px;font-size:12px;color:var(--dim);display:none">
+      <div style="font-family:var(--disp);font-size:10px;letter-spacing:1.5px;color:var(--dim);margin-bottom:4px">MAN OF THE MATCH</div>
+      <div id="celeb-motm-name" style="font-family:var(--disp);font-size:16px;color:var(--gold)"></div>
+      <div id="celeb-motm-stat" style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:2px"></div>
+    </div>
+    <div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap">
+      <button class="celeb-btn" data-action="closeCelebration()">Continue →</button>
+      <button style="background:var(--goldlt);color:var(--gold);border:1.5px solid var(--gdim);border-radius:10px;padding:12px 20px;font-family:var(--disp);font-size:14px;letter-spacing:.5px;cursor:pointer" data-action="openAfterCelebration()">🏅 Select MOTM</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAN OF THE MATCH MODAL ══ -->
+<div class="mo" id="motm-mo">
+  <div class="mb">
+    <div class="mt gold">🏅 Match Awards</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:14px">Select the best performers for this match. These appear in History and Stats.</p>
+    <div id="motm-auto-cards"></div>
+    <div class="mr" style="margin-top:10px">
+      <label>✏️ Override — Man of the Match</label>
+      <select id="motm-player-sel" class="motm-sel"></select>
+    </div>
+    <div class="mact">
+      <button class="bsm bgld" data-action="saveMOTM()">💾 Save Awards</button>
+      <button class="bsm bdng" data-action="closeM('motm-mo')">Skip</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOURNAMENT COMPLETE MODAL ══ -->
+<div class="mo" id="tourn-complete-mo">
+  <div class="mb" style="max-width:480px;text-align:center">
+    <div style="font-size:60px;margin-bottom:8px">🏆</div>
+    <div class="mt gold" style="text-align:center;font-size:24px">Tournament Complete!</div>
+    <div id="tc-winner" style="font-family:var(--disp);font-size:22px;color:var(--em);margin:8px 0"></div>
+    <div id="tc-result" style="font-family:var(--mono);font-size:13px;color:var(--dim);margin-bottom:16px"></div>
+    <div id="tc-awards" style="text-align:left;margin-bottom:14px"></div>
+    <div class="mact">
+      <button class="bsm bgld" style="flex:1" data-action="closeM('tourn-complete-mo')">🎊 View Full Stats</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HOW TO USE / DEMO MODAL ══ -->
+<div class="mo" id="demo-mo">
+  <div class="mb">
+    <div class="mt" style="color:var(--em)">📖 How to Use Stumply</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:14px">Everything you need to know in 5 steps:</p>
+
+    <div class="demo-step">
+      <div class="demo-step-num">1</div>
+      <div class="demo-step-body">
+        <div class="demo-step-title">📝 Register & Create Tournament</div>
+        <div class="demo-step-desc">Click <span class="demo-tag">Register</span> → enter your name, username, password. After login go to <span class="demo-tag">⚙️ Admin</span> tab → fill tournament name, select overs format (T20, T10, 8-over etc.) → click <span class="demo-tag">💾 Save Tournament</span>.</div>
+      </div>
+    </div>
+    <div class="demo-step">
+      <div class="demo-step-num">2</div>
+      <div class="demo-step-body">
+        <div class="demo-step-title">🏏 Add Teams & Players</div>
+        <div class="demo-step-desc">In <span class="demo-tag">⚙️ Admin</span> tab → fill team name, code (e.g. MI), city → enter all <b>11 player names</b> (required) + up to 3 optional substitutes → click <span class="demo-tag">✅ Add Team</span>. Repeat for all teams.</div>
+      </div>
+    </div>
+    <div class="demo-step">
+      <div class="demo-step-num">3</div>
+      <div class="demo-step-body">
+        <div class="demo-step-title">📋 Schedule Matches</div>
+        <div class="demo-step-desc">Go to <span class="demo-tag">📋 Matches</span> → click <span class="demo-tag">+ Schedule</span> → select Team A, Team B, match stage (League / Semi Final / Final), venue, date → players auto-fill from squad → click <span class="demo-tag">📅 Schedule</span>.</div>
+      </div>
+    </div>
+    <div class="demo-step">
+      <div class="demo-step-num">4</div>
+      <div class="demo-step-body">
+        <div class="demo-step-title">🔴 Score Live</div>
+        <div class="demo-step-desc">Click <span class="demo-tag">▶ Start</span> on a match → set toss → select openers & bowler → use <span class="demo-tag">🔴 Live</span> tab to score ball-by-ball. Tap runs (1,2,4,6), <span class="demo-tag">WIDE</span>, <span class="demo-tag">NO BALL</span>, <span class="demo-tag">⚡ WICKET</span> etc. Use <span class="demo-tag">⚙️ Manage</span> for mid-match changes.</div>
+      </div>
+    </div>
+    <div class="demo-step">
+      <div class="demo-step-num">5</div>
+      <div class="demo-step-body">
+        <div class="demo-step-title">👁 Share Live View</div>
+        <div class="demo-step-desc">In <span class="demo-tag">⚙️ Admin</span> → copy the share link → send to your audience. They open the link, enter your username, and watch scores update live every second — no login needed. Stats &amp; awards are in the <span class="demo-tag">🏆 History</span> tab.</div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="bsm bgld" style="flex:1" data-action="closeM('demo-mo')">Got it! Let's play 🏏</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LANGUAGE SELECTOR MODAL ══ -->
+<div class="mo" id="lang-mo">
+  <div class="mb">
+    <div class="mt" style="color:var(--em)">🌐 Select Language</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:4px">Choose your preferred language for the interface.</p>
+    <div class="lang-grid" id="lang-grid">
+      <!-- populated by JS -->
+    </div>
+    <div style="margin-top:12px;padding:9px 12px;background:var(--bg4);border-radius:8px;font-size:11px;color:var(--dim)">
+      💡 This changes labels and buttons. You can always type player names, team names etc. in any language (Telugu, Tamil, Kannada etc.) at any time.
+    </div>
+    <div class="mact">
+      <button class="bsm bgld" style="flex:1" data-action="closeM('lang-mo')">Done</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══ AUTH ══ -->
 <div id="authscr">
@@ -744,6 +947,10 @@ tr:hover td{background:#f0faff}
     </svg>
     <h1>🏏 Stumply</h1>
     <p class="sub">Stumply — Your cricket tournament, your data</p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap">
+      <button style="background:var(--emlt);color:var(--em);border:1.5px solid var(--edim);border-radius:8px;padding:7px 16px;font-family:var(--disp);font-size:12px;letter-spacing:.5px;cursor:pointer" data-action="openM('demo-mo')">📖 How to Use</button>
+      <button style="background:var(--bg4);color:var(--dim);border:1.5px solid var(--bdr);border-radius:8px;padding:7px 14px;font-family:var(--disp);font-size:12px;cursor:pointer" data-action="openLangModal()">🌐 Language</button>
+    </div>
     <div id="ls-warn" style="display:none;background:rgba(240,160,48,.15);border:1px solid var(--amber);border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--amber);text-align:left">
       ⚠ <b>Private/Incognito mode detected.</b> Your account data will be saved for this session only and won't persist after closing the tab. For full persistence, open in a normal browser window.
     </div>
@@ -757,8 +964,9 @@ tr:hover td{background:#f0faff}
       <div class="fg"><label>Password</label><input id="l-p" type="password" placeholder="••••••••" autocomplete="current-password"></div>
       <div id="l-err" class="emsg"></div>
       <button class="btnpri" style="margin-top:8px" data-action="doLogin()">Sign In →</button>
-      <div style="text-align:center;margin-top:8px">
+      <div style="text-align:center;margin-top:8px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <a id="forgot-link" style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showForgot()">Forgot password?</a>
+        <a style="font-size:12px;color:var(--blue);cursor:pointer;text-decoration:underline" data-action="switchTab('import')">📥 Import from another device</a>
       </div>
       <div class="divd">or</div>
       <button class="btnalt" data-action="showViewer()">👁 Watch as Viewer (live sync, read-only)</button>
@@ -784,6 +992,22 @@ tr:hover td{background:#f0faff}
         </div>
         <div id="notif-status" style="font-size:10px;margin-top:5px;color:var(--em)"></div>
       </div>
+      <div style="text-align:center;margin-top:10px">
+        <a style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showLogin()">← Back to Sign In</a>
+      </div>
+    </div>
+    <!-- Import Account Panel -->
+    <div id="apanel-import" class="apanel">
+      <div style="font-family:var(--disp);font-size:13px;color:var(--blue);margin-bottom:10px;letter-spacing:.5px">📥 IMPORT ACCOUNT</div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.5">
+        Registered on another device? Export your account there (<b>Admin → Export Account</b>) then paste the code below.
+      </div>
+      <div class="fg">
+        <label>Export Code</label>
+        <textarea id="auth-import-code" placeholder="Paste your export code here..." style="width:100%;height:90px;background:var(--bg4);border:1.5px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:11px;padding:9px 11px;border-radius:8px;outline:none;resize:none"></textarea>
+      </div>
+      <div id="auth-import-err" class="emsg"></div>
+      <button class="btnpri" style="margin-top:6px" data-action="importAccountFromAuth()">📥 Import & Sign In →</button>
       <div style="text-align:center;margin-top:10px">
         <a style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showLogin()">← Back to Sign In</a>
       </div>
@@ -863,6 +1087,7 @@ tr:hover td{background:#f0faff}
       style="background:none;border:none;font-size:16px;cursor:pointer;padding:2px 5px;opacity:0.5;display:none">🔔</button>
     <button class="btn-out" data-action="doLogout()">Logout</button>
   </div>
+  <button id="lang-btn" data-action="openLangModal()" title="Change language / భాష మార్చు">🌐</button>
 </div>
 
 <div id="syncbar">🔄 Live sync active — scores update every second &nbsp;|&nbsp; view-only &nbsp;|&nbsp; <a data-action="showTab('live')" style="color:var(--gold);cursor:pointer;text-decoration:underline">▶ Go to Live Scores</a></div>
@@ -957,6 +1182,28 @@ tr:hover td{background:#f0faff}
 <!-- ADMIN -->
 <div id="view-admin" class="view admin-only">
   <div class="stitle">⚙️ Admin Panel</div>
+  <!-- Cross-device account sync -->
+  <div class="card" style="background:linear-gradient(135deg,#fffbf0,#fff8e1);border-color:var(--gdim)">
+    <div class="ch" style="color:var(--gold)">📱 Use on Multiple Devices</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.6">
+      Your data is stored on this device. To use your account on <b style="color:var(--txt)">iPhone, Android, or another browser</b> — export your account here and import it on the other device.
+    </p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="bsm bgld" data-action="exportAccount()">📤 Export Account</button>
+      <button class="bsm bblu" data-action="showImportAccount()">📥 Import Account</button>
+    </div>
+    <div id="export-output" style="display:none;margin-top:12px">
+      <div style="font-size:11px;color:var(--dim);margin-bottom:6px">Copy this code and paste it on your other device:</div>
+      <textarea id="export-code" readonly style="width:100%;height:80px;background:var(--bg4);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:10px;padding:8px;border-radius:6px;outline:none;resize:none;word-break:break-all"></textarea>
+      <button class="bsm bgld" style="margin-top:6px;width:100%" data-action="copyExportCode()">📋 Copy Code</button>
+    </div>
+    <div id="import-panel" style="display:none;margin-top:12px">
+      <div style="font-size:11px;color:var(--dim);margin-bottom:6px">Paste your export code from the other device:</div>
+      <textarea id="import-code" placeholder="Paste code here..." style="width:100%;height:80px;background:var(--bg4);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:10px;padding:8px;border-radius:6px;outline:none;resize:none"></textarea>
+      <div id="import-err" style="color:var(--red);font-size:11px;margin-top:4px"></div>
+      <button class="bsm" style="margin-top:6px;width:100%;background:linear-gradient(135deg,#1a7a2e,#22a03c)" data-action="importAccount()">📥 Import & Sign In</button>
+    </div>
+  </div>
   <div class="card">
     <div class="ch">🏆 Tournament Info</div>
     <div class="frow">
@@ -1398,9 +1645,18 @@ async function hashPassword(password, saltHex){
 }
 async function verifyPassword(password, stored){
   if(!stored)return false;
-  if(!stored.includes('$'))return hp(password)===stored; // legacy accounts
-  let salt=stored.split('$')[0];
-  return(await hashPassword(password,salt))===stored;
+  // Legacy hp() hash (no '$') — direct compare, always works on all browsers
+  if(!stored.includes('$'))return hp(password)===stored;
+  // PBKDF2 hash — try Web Crypto API
+  try{
+    let salt=stored.split('$')[0];
+    let computed=await hashPassword(password,salt);
+    return computed===stored;
+  }catch(e){
+    // Web Crypto unavailable (old iOS WebView, some Android) — cannot verify PBKDF2
+    // Return a special sentinel so doLogin can show a helpful message
+    return '__CRYPTO_UNAVAILABLE__';
+  }
 }
 function bufToHex(buf){return Array.from(buf).map(b=>b.toString(16).padStart(2,'0')).join('');}
 function hexToBuf(hex){let b=new Uint8Array(hex.length/2);for(let i=0;i<b.length;i++)b[i]=parseInt(hex.slice(i*2,i*2+2),16);return b;}
@@ -1534,8 +1790,17 @@ function refreshView(){
 //  AUTH UI
 // ══════════════════════════════════════════════════════════════════════════
 function switchTab(t){
+  // Handle import tab — show import panel, hide tabs
+  if(t==='import'){
+    ['apanel-login','apanel-reg','apanel-forgot','apanel-viewer'].forEach(id=>{
+      document.getElementById(id)?.classList.remove('on');
+    });
+    document.getElementById('apanel-import')?.classList.add('on');
+    let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='none';
+    return;
+  }
   document.querySelectorAll('.atab').forEach((b,i)=>b.classList.toggle('on',i===(t==='login'?0:1)));
-  ['apanel-login','apanel-reg','apanel-forgot','apanel-viewer'].forEach(id=>{
+  ['apanel-login','apanel-reg','apanel-forgot','apanel-viewer','apanel-import'].forEach(id=>{
     let el=document.getElementById(id);
     if(el)el.classList.toggle('on',id==='apanel-'+t);
   });
@@ -1565,7 +1830,7 @@ function showForgot(){
   let e2=document.getElementById('fp-err2');if(e2)e2.textContent='';
 }
 function showLogin(){
-  ['apanel-forgot','apanel-viewer'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
+  ['apanel-forgot','apanel-viewer','apanel-import'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
   let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
   switchTab('login');
 }
@@ -1654,8 +1919,32 @@ function doLogin(){
     err.textContent='Too many failed attempts. Try again in '+mins+' minute'+(mins>1?'s':'')+'.';return;
   }
   let u=getUsers()[uname];
-  if(!u){err.textContent='Invalid username or password';return;}
+  if(!u){
+    err.innerHTML='Username not found on this device.<br><small style="color:var(--dim)">Accounts are stored on each device separately. If you registered on another device, use <b>Export Account</b> on that device and <b>Import</b> here, or register a new account.</small>';
+    return;
+  }
+  // Show loading state on button
+  let loginBtn=document.querySelector('[data-action="doLogin()"]');
+  if(loginBtn){loginBtn.disabled=true;loginBtn.textContent='Signing in...';}
+  function restoreBtn(){if(loginBtn){loginBtn.disabled=false;loginBtn.textContent='Sign In →';}}
+
   verifyPassword(pass,u.hash).then(ok=>{
+    restoreBtn();
+    if(ok==='__CRYPTO_UNAVAILABLE__'){
+      // Web Crypto API not available on this browser/device
+      // Fall back to hp() for legacy accounts, otherwise show helpful message
+      if(!u.hash.includes('$')){
+        // Legacy hash — hp() works fine
+        if(hp(pass)!==u.hash){err.textContent='Invalid username or password';return;}
+        lsSet(rlKey,JSON.stringify({count:0,until:0}));
+        loginAs(uname,u.name);
+      } else {
+        // PBKDF2 hash stored but crypto unavailable — try anyway with hp() check
+        // This won't match but give the user a migration path
+        err.textContent='⚠ Secure login unavailable on this browser. Please use Chrome or Safari (latest) and ensure the site is loaded over HTTPS.';
+      }
+      return;
+    }
     if(!ok){
       rl.count=(rl.count||0)+1;
       if(rl.count>=5){rl.until=Date.now()+15*60*1000;rl.count=0;}
@@ -1668,10 +1957,16 @@ function doLogin(){
     }
     lsSet(rlKey,JSON.stringify({count:0,until:0}));
     loginAs(uname,u.name);
-  }).catch(()=>{
-    if(u.hash!==hp(pass)){err.textContent='Invalid username or password';return;}
-    lsSet(rlKey,JSON.stringify({count:0,until:0}));
-    loginAs(uname,u.name);
+  }).catch(e=>{
+    restoreBtn();
+    // Promise rejection — try direct hp() fallback
+    if(!u.hash.includes('$')&&hp(pass)===u.hash){
+      lsSet(rlKey,JSON.stringify({count:0,until:0}));
+      loginAs(uname,u.name);
+      return;
+    }
+    console.error('Login error:',e);
+    err.textContent='Login error. Please check your internet connection and try again.';
   });
 }
 function loginAs(uname,name){
@@ -1838,14 +2133,29 @@ function tryRestore(){
 function showTab(t){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  let v=document.getElementById('view-'+t);if(v)v.classList.add('active');
-  document.querySelectorAll('.tab-btn').forEach(b=>{if(b.getAttribute('onclick')?.includes("'"+t+"'"))b.classList.add('active');});
-  if(t==='live')renderLive();
-  if(t==='home')renderHome();
-  if(t==='matches')renderMatches();
-  if(t==='scorecard')populateSCSelect();
-  if(t==='history')renderHistory();
-  if(t==='admin'){renderTeamList();filterPlayers();}
+  // Show the target view
+  let v=document.getElementById('view-'+t);
+  if(v)v.classList.add('active');
+  // Mark the correct tab button active — buttons use data-action (not onclick)
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    let act=b.getAttribute('data-action')||b.getAttribute('onclick')||'';
+    if(act.includes("'"+t+"'"))b.classList.add('active');
+  });
+  // Render content for this tab
+  if(t==='live')    { renderLive(); return; }
+  if(t==='home')    { renderHome(); return; }
+  if(t==='matches') { renderMatches(); return; }
+  if(t==='scorecard'){ populateSCSelect(); renderSC(); return; }
+  if(t==='history') { renderHistory(); return; }
+  if(t==='admin'){
+    // Small delay on mobile to ensure DOM is ready after CSS transition
+    if(APP.role!=='admin'){toast('Admin access only');return;}
+    setTimeout(()=>{
+      try{renderTeamList();}catch(e){console.error('renderTeamList:',e);}
+      try{filterPlayers();}catch(e){console.error('filterPlayers:',e);}
+      try{buildBulkTable();}catch(e){}
+    },50);
+  }
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -2638,18 +2948,6 @@ function endInnings(){
     setTimeout(()=>startInnings(2,inn.bowlingTeamId,inn.battingTeamId),1500);
   } else {determineWinner(m);}
   renderLive();
-}
-function determineWinner(m){
-  let i1=m.innings[0],i2=m.innings[1];if(!i2)return;
-  if(i2.runs>i1.runs){m.winner=i2.battingTeamId;m.resultText=`${gtn(i2.battingTeamId)} won by ${10-i2.wickets} wickets`;}
-  else if(i1.runs>i2.runs){m.winner=i1.battingTeamId;m.resultText=`${gtn(i1.battingTeamId)} won by ${i1.runs-i2.runs} runs`;}
-  else{m.winner='tie';m.resultText='Match Tied!';}
-  m.status='completed';APP.liveMatch=null;
-  document.getElementById('livebadge').classList.add('hidden');
-  toast('🏆 '+m.resultText);
-  // Notify match result
-  notifyMatchResult(m.resultText,m.matchType||'League');
-  saveState();renderLive();renderHistory();renderMatches();populateSCSelect();
 }
 // ══════════════════════════════════════════════════════════════════════════
 //  DISCARD / ABANDON MATCH
@@ -3478,7 +3776,8 @@ function bindActions(){
         // SECURITY: whitelist of allowed functions — NO eval()
         var ALLOWED = {
           doLogin,doRegister,doGuest,doLogout,showForgot,showLogin,showViewer,
-          switchStatTab,enableNotifications,skipNotifications,toggleNotifications,
+          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,exportAccount,copyExportCode,showImportAccount,importAccount,importAccountFromAuth,
+          deleteTeam,delPlayer,deleteMatch,confirmDeleteMatch,moveMatch,startMatch,showMHist,openEditMatch,openDiscard,openManage,triggerRetiredHurt,enableNotifications,skipNotifications,toggleNotifications,
           switchTab,fpStep1,fpStep2,
           showTab,saveTournament,addTeam,clearBulk,filterPlayers,
           copyShareLink,openShareLink,updateBowlerMaxLabel,
@@ -3601,11 +3900,408 @@ function maybePromptNotifications(){
 }
 
 // ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════
+//  LANGUAGE SYSTEM
+// ══════════════════════════════════════════════════════════════════════════
+const LANGS={
+  en:{name:'English',native:'English',flag:'🇬🇧',
+    'Sign In':'Sign In','Register':'Register','Username':'Username',
+    'Password':'Password','Logout':'Logout','Home':'🏠 Home',
+    'Matches':'📋 Matches','Live':'🔴 Live','Scores':'📊 Scores',
+    'History':'🏆 History','Admin':'⚙️ Admin','Save Tournament':'💾 Save Tournament',
+    'Add Team':'✅ Add Team','Schedule':'📅 Schedule','Start':'▶ Start',
+    'WICKET':'⚡ WICKET','WIDE':'WIDE','NO BALL':'NO BALL','BYE':'BYE','LEG BYE':'LEG BYE',
+    'Manage':'⚙️ Manage','Forgot password?':'Forgot password?',
+    'Watch as Viewer':'👁 Watch as Viewer','How to Use':'📖 How to Use',
+    'Tournament Name':'Tournament Name','Team Name':'Team Name',
+    'Player':'Player','Venue':'Venue','Date':'Date','Umpire':'Umpire','Language selected':'Language set',
+  },
+  te:{name:'Telugu',native:'తెలుగు',flag:'🇮🇳',
+    'Sign In':'సైన్ ఇన్','Register':'నమోదు','Username':'వాడుకరి పేరు',
+    'Password':'పాస్‌వర్డ్','Logout':'నిష్క్రమించు','Home':'🏠 హోమ్',
+    'Matches':'📋 మ్యాచ్‌లు','Live':'🔴 లైవ్','Scores':'📊 స్కోర్లు',
+    'History':'🏆 చరిత్ర','Admin':'⚙️ అడ్మిన్','Save Tournament':'💾 సేవ్ చేయి',
+    'Add Team':'✅ జట్టు చేర్చు','Schedule':'📅 షెడ్యూల్','Start':'▶ ప్రారంభించు',
+    'WICKET':'⚡ వికెట్','WIDE':'వైడ్','NO BALL':'నో బాల్','BYE':'బై','LEG BYE':'లెగ్ బై',
+    'Manage':'⚙️ నిర్వహించు','Forgot password?':'పాస్‌వర్డ్ మర్చిపోయారా?',
+    'Watch as Viewer':'👁 వీక్షకుడిగా చూడు','How to Use':'📖 ఎలా వాడాలి',
+    'Tournament Name':'టోర్నమెంట్ పేరు','Team Name':'జట్టు పేరు',
+    'Player':'ఆటగాడు','Venue':'స్థలం','Date':'తేదీ','Umpire':'అంపైర్',
+  },
+  ta:{name:'Tamil',native:'தமிழ்',flag:'🇮🇳',
+    'Sign In':'உள்நுழை','Register':'பதிவு','Username':'பயனர் பெயர்',
+    'Password':'கடவுச்சொல்','Logout':'வெளியேறு','Home':'🏠 முகப்பு',
+    'Matches':'📋 போட்டிகள்','Live':'🔴 நேரலை','Scores':'📊 மதிப்பெண்கள்',
+    'History':'🏆 வரலாறு','Admin':'⚙️ நிர்வாகி','Save Tournament':'💾 சேமி',
+    'Add Team':'✅ அணி சேர்','Schedule':'📅 அட்டவணை','Start':'▶ தொடங்கு',
+    'WICKET':'⚡ விக்கெட்','WIDE':'வைட்','NO BALL':'நோ பால்','BYE':'பை','LEG BYE':'லெக் பை',
+    'Manage':'⚙️ நிர்வகி','Forgot password?':'கடவுச்சொல் மறந்தீர்களா?',
+    'Watch as Viewer':'👁 பார்வையாளராக','How to Use':'📖 பயன்படுத்துவது எப்படி',
+    'Tournament Name':'போட்டி பெயர்','Team Name':'அணி பெயர்',
+    'Player':'வீரர்','Venue':'இடம்','Date':'தேதி','Umpire':'நடுவர்',
+  },
+  kn:{name:'Kannada',native:'ಕನ್ನಡ',flag:'🇮🇳',
+    'Sign In':'ಸೈನ್ ಇನ್','Register':'ನೋಂದಣಿ','Username':'ಬಳಕೆದಾರ ಹೆಸರು',
+    'Password':'ಪಾಸ್‌ವರ್ಡ್','Logout':'ಲಾಗ್ ಔಟ್','Home':'🏠 ಮುಖ್ಯ',
+    'Matches':'📋 ಪಂದ್ಯಗಳು','Live':'🔴 ನೇರ','Scores':'📊 ಸ್ಕೋರ್‌ಗಳು',
+    'History':'🏆 ಇತಿಹಾಸ','Admin':'⚙️ ಆಡಳಿತ','Save Tournament':'💾 ಉಳಿಸು',
+    'Add Team':'✅ ತಂಡ ಸೇರಿಸು','Schedule':'📅 ಶೆಡ್ಯೂಲ್','Start':'▶ ಪ್ರಾರಂಭಿಸು',
+    'WICKET':'⚡ ವಿಕೆಟ್','WIDE':'ವೈಡ್','NO BALL':'ನೋ ಬಾಲ್','BYE':'ಬೈ','LEG BYE':'ಲೆಗ್ ಬೈ',
+    'Manage':'⚙️ ನಿರ್ವಹಿಸು','Forgot password?':'ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?',
+    'Watch as Viewer':'👁 ವೀಕ್ಷಕರಾಗಿ','How to Use':'📖 ಹೇಗೆ ಬಳಸಬೇಕು',
+    'Tournament Name':'ಟೂರ್ನಮೆಂಟ್ ಹೆಸರು','Team Name':'ತಂಡದ ಹೆಸರು',
+    'Player':'ಆಟಗಾರ','Venue':'ಸ್ಥಳ','Date':'ದಿನಾಂಕ','Umpire':'ಅಂಪೈರ್',
+  },
+  ml:{name:'Malayalam',native:'മലയാളം',flag:'🇮🇳',
+    'Sign In':'സൈൻ ഇൻ','Register':'രജിസ്റ്റർ','Username':'ഉപയോക്തൃ നാമം',
+    'Password':'പാസ്‌വേഡ്','Logout':'ലോഗൗട്ട്','Home':'🏠 ഹോം',
+    'Matches':'📋 മത്സരങ്ങൾ','Live':'🔴 തൽസമയം','Scores':'📊 സ്കോറുകൾ',
+    'History':'🏆 ചരിത്രം','Admin':'⚙️ അഡ്മിൻ','Save Tournament':'💾 സേവ് ചെയ്യുക',
+    'Add Team':'✅ ടീം ചേർക്കുക','Schedule':'📅 ഷെഡ്യൂൾ','Start':'▶ ആരംഭിക്കുക',
+    'WICKET':'⚡ വിക്കറ്റ്','WIDE':'വൈഡ്','NO BALL':'നോ ബോൾ','BYE':'ബൈ','LEG BYE':'ലെഗ് ബൈ',
+    'Manage':'⚙️ കൈകാര്യം','Forgot password?':'പാസ്‌വേഡ് മറന്നോ?',
+    'Watch as Viewer':'👁 കാഴ്ചക്കാരനായി','How to Use':'📖 എങ്ങനെ ഉപയോഗിക്കാം',
+    'Tournament Name':'ടൂർണമെന്റ് നാമം','Team Name':'ടീം നാമം',
+    'Player':'കളിക്കാരൻ','Venue':'സ്ഥലം','Date':'തീയതി','Umpire':'അമ്പയർ',
+  },
+  hi:{name:'Hindi',native:'हिन्दी',flag:'🇮🇳',
+    'Sign In':'साइन इन','Register':'रजिस्टर','Username':'उपयोगकर्ता नाम',
+    'Password':'पासवर्ड','Logout':'लॉग आउट','Home':'🏠 होम',
+    'Matches':'📋 मैच','Live':'🔴 लाइव','Scores':'📊 स्कोर',
+    'History':'🏆 इतिहास','Admin':'⚙️ एडमिन','Save Tournament':'💾 सहेजें',
+    'Add Team':'✅ टीम जोड़ें','Schedule':'📅 शेड्यूल','Start':'▶ शुरू करें',
+    'WICKET':'⚡ विकेट','WIDE':'वाइड','NO BALL':'नो बॉल','BYE':'बाई','LEG BYE':'लेग बाई',
+    'Manage':'⚙️ प्रबंधन','Forgot password?':'पासवर्ड भूल गए?',
+    'Watch as Viewer':'👁 दर्शक के रूप में','How to Use':'📖 कैसे उपयोग करें',
+    'Tournament Name':'टूर्नामेंट का नाम','Team Name':'टीम का नाम',
+    'Player':'खिलाड़ी','Venue':'स्थान','Date':'तारीख','Umpire':'अंपायर',
+  },
+};
+let CURRENT_LANG=lsGet('stumply_lang')||'en';
+
+function t(key){return(LANGS[CURRENT_LANG]||LANGS.en)[key]||key;}
+
+function applyLanguage(){
+  // Update topbar tabs
+  let tabMap={'home':'Home','matches':'Matches','live':'Live','scorecard':'Scores','history':'History','admin':'Admin'};
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    let act=btn.getAttribute('data-action')||'';
+    let tab=act.match(/showTab\('(\w+)'\)/)?.[1];
+    if(tab&&tabMap[tab]){
+      // Keep any badge spans
+      let badge=btn.querySelector('.live-badge');
+      btn.childNodes[0].textContent=t(tabMap[tab]);
+      if(badge)btn.appendChild(badge);
+    }
+  });
+  // Auth labels
+  let authMap={'l-u-label':'Username','l-p-label':'Password'};
+  // Scoring buttons
+  let scoreMap={'btn-wide':'WIDE','btn-noball':'NO BALL','btn-bye':'BYE','btn-legbye':'LEG BYE'};
+  Object.entries(scoreMap).forEach(([id,key])=>{let el=document.getElementById(id);if(el)el.textContent=t(key);});
+  // Logout
+  let lo=document.querySelector('.btn-out[data-action="doLogout()"]');if(lo)lo.textContent=t('Logout');
+  // Extra buttons in live view — by data-action
+  document.querySelectorAll('.bex[data-action]').forEach(el=>{
+    let act=el.getAttribute('data-action')||'';
+    if(act.includes('wide'))el.textContent=t('WIDE');
+    else if(act.includes('noball'))el.textContent=t('NO BALL');
+    else if(act.includes('bye')&&!act.includes('legbye'))el.textContent=t('BYE');
+    else if(act.includes('legbye'))el.textContent=t('LEG BYE');
+  });
+  // Body lang attribute for font support
+  document.documentElement.lang=CURRENT_LANG;
+}
+
+function openLangModal(){
+  let grid=document.getElementById('lang-grid');
+  grid.innerHTML=Object.entries(LANGS).map(([code,lang])=>`
+    <div class="lang-opt${code===CURRENT_LANG?' active':''}" onclick="setLang('${code}')">
+      <div class="lang-name">${lang.flag}</div>
+      <div class="lang-native">${lang.native}</div>
+      <div class="lang-en">${lang.name}</div>
+    </div>`).join('');
+  openM('lang-mo');
+}
+function setLang(code){
+  CURRENT_LANG=code;
+  lsSet('stumply_lang',code);
+  applyLanguage();
+  document.getElementById('lang-btn').textContent='🌐';
+  // Update active state
+  document.querySelectorAll('.lang-opt').forEach(el=>{
+    el.classList.toggle('active',el.getAttribute('onclick')===`setLang('${code}')`);
+  });
+  toast(LANGS[code]?.native+' '+t('Language selected')||'Language set');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  CELEBRATION & MATCH AWARDS
+// ══════════════════════════════════════════════════════════════════════════
+let _lastCompletedMatch=null;
+
+function showCelebration(m){
+  _lastCompletedMatch=m;
+  let winTeam=m.winner&&m.winner!=='tie'&&m.winner!=='no_result'
+    ? APP.teams.find(t=>t.id===m.winner) : null;
+  let el=document.getElementById('celebration-overlay');
+  let titleEl=document.getElementById('celeb-title');
+  let teamEl=document.getElementById('celeb-team');
+  let resultEl=document.getElementById('celeb-result');
+
+  if(m.winner==='tie'){
+    titleEl.textContent='Match Tied!';
+    teamEl.textContent='🤝 Both Teams';
+    teamEl.style.color='var(--amber)';
+    resultEl.textContent=m.resultText||"It's a tie!";
+  } else if(m.winner==='no_result'){
+    titleEl.textContent='No Result';
+    teamEl.textContent='Match Abandoned';
+    teamEl.style.color='var(--dim)';
+    resultEl.textContent=m.resultText||'No result';
+  } else {
+    let isFinal=m.matchType==='Final';
+    titleEl.textContent=isFinal?'🏆 Champions!':'Match Won!';
+    teamEl.textContent=winTeam?winTeam.name:'Winner';
+    teamEl.style.color=isFinal?'var(--gold)':'var(--em)';
+    resultEl.textContent=m.resultText||'Won the match';
+  }
+
+  // Auto MOTM preview
+  let motm=autoPickMOTM(m);
+  let motmPrev=document.getElementById('celeb-motm-preview');
+  if(motm&&motm.name){
+    document.getElementById('celeb-motm-name').textContent=motm.name;
+    document.getElementById('celeb-motm-stat').textContent=motm.stat;
+    motmPrev.style.display='block';
+    m.motm=motm.pid;
+  } else {
+    motmPrev.style.display='none';
+  }
+
+  // Confetti
+  launchConfetti(m.winner==='tie'?'amber':m.matchType==='Final'?'gold':'green');
+
+  el.classList.add('on');
+
+  // Auto-close after 12 seconds
+  setTimeout(()=>{
+    if(el.classList.contains('on'))closeCelebration();
+  },12000);
+
+  // If final match — show tournament completion
+  if(m.matchType==='Final'){
+    setTimeout(()=>showTournamentComplete(m),14000);
+  }
+}
+
+function closeCelebration(){
+  document.getElementById('celebration-overlay').classList.remove('on');
+  let wrap=document.getElementById('confetti-wrap');
+  if(wrap)wrap.innerHTML='';
+}
+function openAfterCelebration(){
+  closeCelebration();
+  setTimeout(()=>openMOTM(),300);
+}
+
+function launchConfetti(type){
+  let wrap=document.getElementById('confetti-wrap');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  let colors=type==='gold'?['#f5c842','#e09500','#fff','#f0a030','#ffd700']:
+             type==='amber'?['#f0a030','#e09500','#f5c842','#d4720a']:
+             ['#1a7a2e','#22a03c','#f5c842','#fff','#00c97a','#e8f4fd'];
+  for(let i=0;i<80;i++){
+    let p=document.createElement('div');
+    p.className='confetti-piece';
+    p.style.cssText=`
+      left:${Math.random()*100}%;
+      width:${6+Math.random()*10}px;
+      height:${6+Math.random()*10}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+      animation:confettiFall ${2+Math.random()*3}s ${Math.random()*2}s linear forwards;
+      opacity:${0.7+Math.random()*0.3};
+    `;
+    wrap.appendChild(p);
+  }
+}
+
+// ── Auto-pick MOTM from stats ─────────────────────────────────────────
+function autoPickMOTM(m){
+  let best=null,bestScore=0;
+  // Check batsmen from both innings
+  m.innings.forEach(inn=>{
+    Object.entries(inn.batsmen||{}).forEach(([pid,b])=>{
+      if(b.status==='yet')return;
+      // Score = runs + (6s*6) + (4s*2) + (not out bonus 10)
+      let score=(b.runs||0)+(b.sixes||0)*6+(b.fours||0)*2+(b.status!=='out'?10:0);
+      if(score>bestScore){bestScore=score;best={pid,name:b.name,stat:`${b.runs||0} runs (${b.balls||0}b)`,score};}
+    });
+  });
+  // Check bowlers
+  m.innings.forEach(inn=>{
+    Object.entries(inn.bowlers||{}).forEach(([pid,bw])=>{
+      let score=(bw.wickets||0)*25 - (bw.runs||0)*0.5 + (bw.maidens||0)*10;
+      if(score>bestScore){bestScore=score;best={pid,name:bw.name,stat:`${bw.wickets||0} wkts / ${bw.runs||0} runs`,score};}
+    });
+  });
+  return best;
+}
+
+function openMOTM(){
+  let m=_lastCompletedMatch;if(!m)return;
+  // Show auto-suggestion cards
+  let auto=autoPickMOTM(m);
+  let cards=document.getElementById('motm-auto-cards');
+  if(auto&&auto.name){
+    cards.innerHTML=`<div class="motm-card">
+      <div class="motm-medal">🏅</div>
+      <div class="motm-info">
+        <div class="motm-title">Suggested Man of the Match</div>
+        <div class="motm-name">${esc(auto.name)}</div>
+        <div class="motm-stat">${esc(auto.stat)}</div>
+      </div>
+    </div>`;
+  } else {
+    cards.innerHTML='';
+  }
+  // Populate player dropdown
+  let sel=document.getElementById('motm-player-sel');
+  sel.innerHTML='<option value="">— Select player —</option>';
+  m.innings.forEach((inn,ii)=>{
+    let batTeam=APP.teams.find(t=>t.id===inn.battingTeamId);
+    Object.entries(inn.batsmen||{}).forEach(([pid,b])=>{
+      if(b.status==='yet')return;
+      sel.innerHTML+=`<option value="${pid}">${esc(b.name)} (${batTeam?batTeam.code:'?'}) — ${b.runs||0}R</option>`;
+    });
+  });
+  // Pre-select auto pick
+  if(auto)sel.value=auto.pid||'';
+  openM('motm-mo');
+}
+
+function saveMOTM(){
+  let m=_lastCompletedMatch;if(!m)return;
+  let pid=document.getElementById('motm-player-sel').value;
+  if(pid) m.motm=pid;
+  closeM('motm-mo');
+  saveState();
+  toast('🏅 Man of the Match saved!');
+}
+
+// ── Tournament Complete ───────────────────────────────────────────────
+function showTournamentComplete(finalMatch){
+  let winTeam=APP.teams.find(t=>t.id===finalMatch.winner);
+  document.getElementById('tc-winner').textContent=winTeam?winTeam.name:'Champions!';
+  document.getElementById('tc-result').textContent=finalMatch.resultText||'Tournament Complete';
+
+  // Quick awards summary
+  let {batting,bowling}=collectPlayerStats();
+  batting.sort((a,b)=>b.runs-a.runs);
+  bowling.sort((a,b)=>b.wickets-a.wickets);
+  let oc=batting[0],pc=bowling[0];
+  let html='';
+  if(oc)html+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:24px">🟠</span><div><div style="font-size:9px;color:var(--dim);letter-spacing:1px;font-family:var(--disp)">ORANGE CAP</div><div style="font-family:var(--disp);font-size:15px">${esc(oc.name)}</div><div style="font-family:var(--mono);font-size:11px;color:var(--dim)">${oc.runs} runs</div></div></div>`;
+  if(pc)html+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0"><span style="font-size:24px">🟣</span><div><div style="font-size:9px;color:var(--dim);letter-spacing:1px;font-family:var(--disp)">PURPLE CAP</div><div style="font-family:var(--disp);font-size:15px">${esc(pc.name)}</div><div style="font-family:var(--mono);font-size:11px;color:var(--dim)">${pc.wickets} wickets</div></div></div>`;
+  document.getElementById('tc-awards').innerHTML=html;
+  launchConfetti('gold');
+  openM('tourn-complete-mo');
+}
+
+// ── Update determineWinner to trigger celebration ─────────────────────
+// (Patch: override the celebration call point)
+const _origDetermineWinner=determineWinner;
+function determineWinner(m){
+  let i1=m.innings[0],i2=m.innings[1];if(!i2)return;
+  let wktsLeft=10-i2.wickets;
+  if(i2.runs>i1.runs){
+    m.winner=i2.battingTeamId;
+    m.resultText=`${gtn(i2.battingTeamId)} won by ${wktsLeft} wicket${wktsLeft===1?'':'s'}`;
+  } else if(i1.runs>i2.runs){
+    let margin=i1.runs-i2.runs;
+    m.winner=i1.battingTeamId;
+    m.resultText=`${gtn(i1.battingTeamId)} won by ${margin} run${margin===1?'':'s'}`;
+  } else {
+    m.winner='tie';m.resultText='Match Tied!';
+  }
+  m.status='completed';APP.liveMatch=null;
+  document.getElementById('livebadge').classList.add('hidden');
+  notifyMatchResult(m.resultText,m.matchType||'League');
+  saveState();renderLive();renderHistory();renderMatches();populateSCSelect();
+  // Show celebration overlay after brief delay
+  setTimeout(()=>showCelebration(m),800);
+}
+
+// ── Update bindActions ALLOWED whitelist ─────────────────────────────────
+// (done via the existing ALLOWED object — just add new functions)
+// ══════════════════════════════════════════════════════════════════════════
+//  EXPORT / IMPORT ACCOUNT (cross-device support)
+// ══════════════════════════════════════════════════════════════════════════
+function exportAccount(){
+  if(!APP.uname){toast('Sign in first');return;}
+  let users=getUsers();
+  let u=users[APP.uname];if(!u){toast('Account not found');return;}
+  // Export: user record + current data
+  let exportObj={v:1,uname:APP.uname,user:u};
+  let json=JSON.stringify(exportObj);
+  // Base64 encode for easy copy-paste
+  let code=btoa(unescape(encodeURIComponent(json)));
+  let el=document.getElementById('export-output');
+  let ta=document.getElementById('export-code');
+  if(el)el.style.display='block';
+  if(ta)ta.value=code;
+  // Try native share/download
+  toast('✅ Export code ready — copy and paste on your other device');
+}
+function copyExportCode(){
+  let ta=document.getElementById('export-code');if(!ta)return;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(ta.value).then(()=>toast('✅ Code copied to clipboard!')).catch(()=>{ta.select();document.execCommand('copy');toast('✅ Copied!');});
+  } else {
+    ta.select();document.execCommand('copy');toast('✅ Copied!');
+  }
+}
+function showImportAccount(){
+  let ip=document.getElementById('import-panel');
+  if(ip)ip.style.display=ip.style.display==='none'?'block':'none';
+}
+function _doImport(code, errElId){
+  let errEl=document.getElementById(errElId);
+  if(errEl)errEl.textContent='';
+  if(!code.trim()){if(errEl)errEl.textContent='Please paste your export code';return;}
+  try{
+    let json=decodeURIComponent(escape(atob(code.trim())));
+    let obj=JSON.parse(json);
+    if(!obj.v||!obj.uname||!obj.user){if(errEl)errEl.textContent='Invalid export code';return;}
+    let users=getUsers();
+    // Import/overwrite the user record
+    users[obj.uname]=obj.user;
+    putUsers(users);
+    toast('✅ Account imported! Signing you in...');
+    setTimeout(()=>loginAs(obj.uname,obj.user.name),600);
+  }catch(e){
+    if(errEl)errEl.textContent='Invalid code. Please export again from the other device.';
+    console.error('Import error:',e);
+  }
+}
+function importAccount(){
+  let code=document.getElementById('import-code')?.value||'';
+  _doImport(code,'import-err');
+}
+function importAccountFromAuth(){
+  let code=document.getElementById('auth-import-code')?.value||'';
+  _doImport(code,'auth-import-err');
+}
+
 // Show warning if localStorage is blocked (private/incognito mode)
 (function(){
   try{var t='__cs_ls_test__';localStorage.setItem(t,t);localStorage.removeItem(t);}
   catch(e){var w=document.getElementById('ls-warn');if(w)w.style.display='block';}
 })();
+// Apply saved language immediately (before login)
+(function(){try{CURRENT_LANG=lsGet('stumply_lang')||'en';applyLanguage();}catch(e){}})();
 // Register service worker for PWA/offline support
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
