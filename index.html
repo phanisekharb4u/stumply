@@ -871,50 +871,143 @@ tr:hover td{background:#f0faff}
   </div>
 </div>
 
-<!-- ══ HOW TO USE / DEMO MODAL ══ -->
+<!-- ══ HOW TO USE ══ -->
 <div class="mo" id="demo-mo">
-  <div class="mb">
-    <div class="mt" style="color:var(--em)">📖 How to Use Stumply</div>
-    <p style="font-size:12px;color:var(--dim);margin-bottom:14px">Everything you need to know in 5 steps:</p>
+  <div class="mb" style="max-width:560px;padding:0;overflow:hidden;border-radius:18px">
 
-    <div class="demo-step">
-      <div class="demo-step-num">1</div>
-      <div class="demo-step-body">
-        <div class="demo-step-title">📝 Register & Create Tournament</div>
-        <div class="demo-step-desc">Click <span class="demo-tag">Register</span> → enter your name, username, password. After login go to <span class="demo-tag">⚙️ Admin</span> tab → fill tournament name, select overs format (T20, T10, 8-over etc.) → click <span class="demo-tag">💾 Save Tournament</span>.</div>
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#1a4a2e,#2d7a4a);padding:22px 24px 18px;position:relative">
+      <div style="font-family:var(--disp);font-size:22px;letter-spacing:2px;color:#fff">📖 HOW TO USE STUMPLY</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px">Follow these steps to run your cricket tournament</div>
+      <button data-action="closeM('demo-mo')" style="position:absolute;top:14px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
+    </div>
+
+    <!-- Steps -->
+    <div style="padding:6px 0 4px;overflow-y:auto;max-height:70vh">
+
+      <!-- Step 1 -->
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--bdr)">
+        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#e8f5eb,#f5fbf6);display:flex;flex-direction:column;align-items:center;padding-top:18px">
+          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+          <div style="width:2px;flex:1;background:var(--edim);margin-top:6px"></div>
+        </div>
+        <div style="padding:16px 18px 18px 12px;flex:1">
+          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--em);margin-bottom:8px">⚙️ Create Your Tournament</div>
+          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
+            After logging in, click the <span style="background:var(--emlt);color:var(--em);border:1px solid var(--edim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">⚙️ Admin</span> tab in the top navigation.
+          </div>
+          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
+            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
+              ① Enter your <b>Tournament Name</b> (e.g. "Street Cricket Cup 2026")<br>
+              ② Enter <b>Edition</b> (e.g. "Season 1") and <b>Year</b><br>
+              ③ Select <b>Overs Format</b> — T20, T10, 8-over, or Custom<br>
+              ④ Click <span style="background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;border-radius:4px;font-size:11px;padding:2px 8px;font-family:var(--disp)">💾 Save Tournament</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="demo-step">
-      <div class="demo-step-num">2</div>
-      <div class="demo-step-body">
-        <div class="demo-step-title">🏏 Add Teams & Players</div>
-        <div class="demo-step-desc">In <span class="demo-tag">⚙️ Admin</span> tab → fill team name, code (e.g. MI), city → enter all <b>11 player names</b> (required) + up to 3 optional substitutes → click <span class="demo-tag">✅ Add Team</span>. Repeat for all teams.</div>
+
+      <!-- Step 2 -->
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--bdr)">
+        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#f0f8ff,#f5faff);display:flex;flex-direction:column;align-items:center;padding-top:18px">
+          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1565c0,#2979d4);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+          <div style="width:2px;flex:1;background:var(--bdr2);margin-top:6px"></div>
+        </div>
+        <div style="padding:16px 18px 18px 12px;flex:1">
+          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--blue);margin-bottom:8px">🏏 Add Teams &amp; Players</div>
+          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
+            Still in <span style="background:var(--bg4);border:1px solid var(--bdr);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">⚙️ Admin</span>, scroll down to <b>Add Teams</b>.
+          </div>
+          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
+            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
+              ① Enter <b>Team Name</b>, <b>Code</b> (2-3 letters, e.g. MI), <b>City</b><br>
+              ② Enter <b>11 player names</b> — these are required (numbered in gold)<br>
+              ③ Optionally add up to 3 substitutes (numbered in amber)<br>
+              ④ Click <span style="background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;border-radius:4px;font-size:11px;padding:2px 8px;font-family:var(--disp)">✅ Add Team</span><br>
+              ⑤ Repeat for every team in your tournament
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="demo-step">
-      <div class="demo-step-num">3</div>
-      <div class="demo-step-body">
-        <div class="demo-step-title">📋 Schedule Matches</div>
-        <div class="demo-step-desc">Go to <span class="demo-tag">📋 Matches</span> → click <span class="demo-tag">+ Schedule</span> → select Team A, Team B, match stage (League / Semi Final / Final), venue, date → players auto-fill from squad → click <span class="demo-tag">📅 Schedule</span>.</div>
+
+      <!-- Step 3 -->
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--bdr)">
+        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#fff8e1,#fffdf5);display:flex;flex-direction:column;align-items:center;padding-top:18px">
+          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#c17f00,#e09500);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+          <div style="width:2px;flex:1;background:var(--gdim);margin-top:6px"></div>
+        </div>
+        <div style="padding:16px 18px 18px 12px;flex:1">
+          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--gold);margin-bottom:8px">📋 Schedule a Match</div>
+          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
+            Click the <span style="background:var(--bg4);border:1px solid var(--bdr);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">📋 Matches</span> tab, then click <span style="background:var(--emlt);color:var(--em);border:1px solid var(--edim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">+ Schedule</span>.
+          </div>
+          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
+            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
+              ① Select <b>Team A</b> and <b>Team B</b> from your teams<br>
+              ② Choose <b>Match Stage</b> — League, Quarter Final, Semi Final, Final<br>
+              ③ Enter <b>Venue</b>, <b>Date</b>, and <b>Umpire names</b><br>
+              ④ Playing XI is auto-filled — adjust if needed<br>
+              ⑤ Click <span style="background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;border-radius:4px;font-size:11px;padding:2px 8px;font-family:var(--disp)">📅 Schedule</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="demo-step">
-      <div class="demo-step-num">4</div>
-      <div class="demo-step-body">
-        <div class="demo-step-title">🔴 Score Live</div>
-        <div class="demo-step-desc">Click <span class="demo-tag">▶ Start</span> on a match → set toss → select openers & bowler → use <span class="demo-tag">🔴 Live</span> tab to score ball-by-ball. Tap runs (1,2,4,6), <span class="demo-tag">WIDE</span>, <span class="demo-tag">NO BALL</span>, <span class="demo-tag">⚡ WICKET</span> etc. Use <span class="demo-tag">⚙️ Manage</span> for mid-match changes.</div>
+
+      <!-- Step 4 -->
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--bdr)">
+        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#fdecea,#fff8f8);display:flex;flex-direction:column;align-items:center;padding-top:18px">
+          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+          <div style="width:2px;flex:1;background:rgba(192,57,43,.25);margin-top:6px"></div>
+        </div>
+        <div style="padding:16px 18px 18px 12px;flex:1">
+          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--red);margin-bottom:8px">🔴 Score the Match Live</div>
+          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
+            Click <span style="background:var(--emlt);color:var(--em);border:1px solid var(--edim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">▶ Start</span> on the match card.
+          </div>
+          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
+            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
+              ① Set the <b>toss</b> — who won and chose to bat or bowl<br>
+              ② Select <b>2 opening batsmen</b> and the <b>opening bowler</b><br>
+              ③ The <span style="background:var(--redlt);color:var(--red);border:1px solid rgba(192,57,43,.3);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">🔴 Live</span> tab opens automatically<br>
+              ④ Tap the scoring buttons for each ball:<br>
+              &nbsp;&nbsp;&nbsp;• <b>Dot, 1, 2, 3, 4, 6</b> — for runs<br>
+              &nbsp;&nbsp;&nbsp;• <b>WIDE / NO BALL / BYE / LEG BYE</b> — for extras<br>
+              &nbsp;&nbsp;&nbsp;• <b>⚡ WICKET</b> — enter dismissal details<br>
+              ⑤ <b>Score updates automatically</b> after every ball — viewers see it live!
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="demo-step">
-      <div class="demo-step-num">5</div>
-      <div class="demo-step-body">
-        <div class="demo-step-title">👁 Share Live View</div>
-        <div class="demo-step-desc">In <span class="demo-tag">⚙️ Admin</span> → copy the share link → send to your audience. They open the link, enter your username, and watch scores update live every second — no login needed. Stats &amp; awards are in the <span class="demo-tag">🏆 History</span> tab.</div>
+
+      <!-- Step 5 -->
+      <div style="display:flex;gap:0">
+        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#f3e5f5,#fdf5ff);display:flex;flex-direction:column;align-items:center;padding-top:18px">
+          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6a1b9a,#8e24aa);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+        </div>
+        <div style="padding:16px 18px 22px 12px;flex:1">
+          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--purple);margin-bottom:8px">👁 Share Live Scores</div>
+          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
+            Share the link so anyone can watch scores update in real time.
+          </div>
+          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
+            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
+              ① In <span style="background:var(--bg4);border:1px solid var(--bdr);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">⚙️ Admin</span> → scroll to <b>Share Link</b> → click <b>📋 Copy Link</b><br>
+              ② Send the link to friends via WhatsApp / SMS<br>
+              ③ They open it → enter your username → scores update every second<br>
+              ④ No login needed for viewers — read-only access<br>
+              ⑤ After the match ends → <span style="background:var(--goldlt);color:var(--gold);border:1px solid var(--gdim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">🏅 Select MOTM</span> → view full stats in <b>🏆 History</b>
+            </div>
+          </div>
+        </div>
       </div>
+
+    </div><!-- end steps -->
+
+    <!-- Footer -->
+    <div style="padding:14px 20px;border-top:1px solid var(--bdr);display:flex;gap:9px">
+      <button class="btnpri" style="flex:1;margin:0;padding:11px" data-action="closeM('demo-mo')">✅ Got it — Let's play cricket! 🏏</button>
     </div>
-    <div class="mact">
-      <button class="bsm bgld" style="flex:1" data-action="closeM('demo-mo')">Got it! Let's play 🏏</button>
-    </div>
+
   </div>
 </div>
 
@@ -1182,11 +1275,41 @@ tr:hover td{background:#f0faff}
 <!-- ADMIN -->
 <div id="view-admin" class="view admin-only">
   <div class="stitle">⚙️ Admin Panel</div>
-  <!-- Cross-device account sync -->
-  <div class="card" style="background:linear-gradient(135deg,#fffbf0,#fff8e1);border-color:var(--gdim)">
-    <div class="ch" style="color:var(--gold)">📱 Use on Multiple Devices</div>
+  <!-- Cloud Sync -->
+  <div class="card" style="background:linear-gradient(135deg,#e8f4fd,#ddeeff);border-color:var(--bdr2)" id="cloud-sync-card">
+    <div class="ch" style="color:var(--blue)">☁️ Cloud Sync — All Devices</div>
+    <div id="cloud-status-bar" style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span id="cloud-dot" style="width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0"></span>
+      <span id="cloud-status-txt" style="font-size:12px;color:var(--dim)">Not connected — scores saved on this device only</span>
+    </div>
     <p style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.6">
-      Your data is stored on this device. To use your account on <b style="color:var(--txt)">iPhone, Android, or another browser</b> — export your account here and import it on the other device.
+      Connect a <b style="color:var(--txt)">free Firebase database</b> to sync your tournament across iPhone, Android, tablets and laptops automatically — no export needed.
+    </p>
+    <div id="firebase-setup-panel">
+      <div style="font-size:11px;color:var(--dim);margin-bottom:8px;line-height:1.6">
+        ① Go to <b style="color:var(--blue)">console.firebase.google.com</b> → Create project → Realtime Database → Create database (test mode) → Copy your Database URL<br>
+        ② Paste it below and click Connect:
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <input id="firebase-url-input" type="url" placeholder="https://your-project-default-rtdb.firebaseio.com"
+          style="flex:1;min-width:200px;background:#fff;border:1.5px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:11px;padding:8px 10px;border-radius:8px;outline:none">
+        <button class="bsm bblu" data-action="connectFirebase()" style="white-space:nowrap">☁️ Connect</button>
+      </div>
+      <div id="firebase-err" style="color:var(--red);font-size:11px;margin-top:5px"></div>
+    </div>
+    <div id="firebase-connected-panel" style="display:none">
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <button class="bsm" style="background:var(--emlt);color:var(--em);border:1px solid var(--edim)" data-action="syncNow()">🔄 Sync Now</button>
+        <button class="bsm bdng" data-action="disconnectFirebase()">✕ Disconnect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cross-device account sync (local export/import) -->
+  <div class="card" style="background:linear-gradient(135deg,#fffbf0,#fff8e1);border-color:var(--gdim)">
+    <div class="ch" style="color:var(--gold)">📱 Use on Multiple Devices (Local)</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.6">
+      No Firebase? Export your account here and import it on the other device manually.
     </p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="bsm bgld" data-action="exportAccount()">📤 Export Account</button>
@@ -1752,6 +1875,8 @@ function startSync(){
       doSync();
     }
   });
+  // 4) If Firebase is configured, start cross-device pull
+  if(FB_URL && APP.viewUser) startFirebasePull();
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -2083,6 +2208,9 @@ function initApp(){
   buildBulkTable();renderHome();renderMatches();renderTeamList();
   populatePlayerTeamSel();populateSCSelect();renderHistory();
   updateNotifBell();
+  CURRENT_LANG=lsGet('stumply_lang')||'en';
+  setTimeout(applyLanguage,150);
+  setTimeout(initFirebase,300);
   showTab('home');
   }catch(e){
     console.error('initApp error:',e);
@@ -3776,7 +3904,7 @@ function bindActions(){
         // SECURITY: whitelist of allowed functions — NO eval()
         var ALLOWED = {
           doLogin,doRegister,doGuest,doLogout,showForgot,showLogin,showViewer,
-          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,exportAccount,copyExportCode,showImportAccount,importAccount,importAccountFromAuth,
+          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,exportAccount,copyExportCode,showImportAccount,importAccount,importAccountFromAuth,connectFirebase,disconnectFirebase,syncNow,
           deleteTeam,delPlayer,deleteMatch,confirmDeleteMatch,moveMatch,startMatch,showMHist,openEditMatch,openDiscard,openManage,triggerRetiredHurt,enableNotifications,skipNotifications,toggleNotifications,
           switchTab,fpStep1,fpStep2,
           showTab,saveTournament,addTeam,clearBulk,filterPlayers,
@@ -3789,6 +3917,7 @@ function bindActions(){
           openEditMatch,deleteMatch,confirmDeleteMatch,moveMatch,
           populateSCSelect,renderSC,showMHist,
           closeM:function(id){document.getElementById(id)?.classList.remove('on');},
+          openM:function(id){document.getElementById(id)?.classList.add('on');},
         };
         var fn = ALLOWED[fnName];
         if(typeof fn !== 'function'){ console.warn('Blocked action:', fnName); return; }
@@ -3905,76 +4034,358 @@ function maybePromptNotifications(){
 // ══════════════════════════════════════════════════════════════════════════
 const LANGS={
   en:{name:'English',native:'English',flag:'🇬🇧',
-    'Sign In':'Sign In','Register':'Register','Username':'Username',
-    'Password':'Password','Logout':'Logout','Home':'🏠 Home',
-    'Matches':'📋 Matches','Live':'🔴 Live','Scores':'📊 Scores',
-    'History':'🏆 History','Admin':'⚙️ Admin','Save Tournament':'💾 Save Tournament',
-    'Add Team':'✅ Add Team','Schedule':'📅 Schedule','Start':'▶ Start',
-    'WICKET':'⚡ WICKET','WIDE':'WIDE','NO BALL':'NO BALL','BYE':'BYE','LEG BYE':'LEG BYE',
-    'Manage':'⚙️ Manage','Forgot password?':'Forgot password?',
-    'Watch as Viewer':'👁 Watch as Viewer','How to Use':'📖 How to Use',
-    'Tournament Name':'Tournament Name','Team Name':'Team Name',
-    'Player':'Player','Venue':'Venue','Date':'Date','Umpire':'Umpire','Language selected':'Language set',
+    // Nav
+    'Home':'🏠 Home','Matches':'📋 Matches','Live':'🔴 Live','Scores':'📊 Scores','History':'🏆 History','Admin':'⚙️ Admin',
+    // Auth
+    'Sign In':'Sign In','Register':'Register','Logout':'Logout',
+    'Username':'Username','Password':'Password','Your Name':'Your Name',
+    'Forgot password?':'Forgot password?','Watch as Viewer':'👁 Watch as Viewer',
+    'How to Use':'📖 How to Use','Language':'🌐 Language',
+    'Create Account':'Create Account →','Sign In →':'Sign In →',
+    'Watch Live →':'👁 Watch Live →','Continue →':'Continue →',
+    'Reset Password →':'Reset Password →','Import & Sign In →':'📥 Import & Sign In →',
+    'Import from another device':'📥 Import from another device',
+    'Back to Sign In':'← Back to Sign In',
+    'enter username':'your_username','enter password':'••••••••',
+    'Security Question':'Security Question','Your Answer':'Your answer (remember this!)',
+    // Tournament
+    'Tournament Name':'Tournament Name','Edition':'Edition e.g. Season 1',
+    'Year':'Year','Overs Format':'Overs Format','Save Tournament':'💾 Save Tournament',
+    // Teams
+    'Team Name':'Team Name','Team Code':'Code (2-3 letters)','City':'City',
+    'Add Team':'✅ Add Team','Clear':'🗑 Clear',
+    'Player Name':'Player Name','Jersey #':'Jersey #','Role':'Role',
+    // Matches
+    'Schedule Match':'📅 Schedule Match','+ Schedule':'+ Schedule',
+    'Match Stage':'Match Stage','Venue':'Venue','Date':'Date',
+    'Umpires':'Umpires','Start':'▶ Start','Edit':'✏️ Edit','Delete':'Delete',
+    'Team A':'Team A Playing XI','Team B':'Team B Playing XI',
+    // Live scoring
+    'DOT':'DOT','WIDE':'WIDE','NO BALL':'NO BALL','BYE':'BYE','LEG BYE':'LEG BYE',
+    'WICKET':'⚡ WICKET','Manage':'⚙️ Manage Players / Bowler',
+    'Retired Hurt':'🚑 Retired Hurt','Ball-by-Ball':'🎯 Ball-by-Ball Entry',
+    'ON STRIKE':'★ ON STRIKE','non-striker':'(non-striker)','Bowling':'(Bowling)',
+    'THIS OVER:':'THIS OVER:','Actions:':'⚡ Actions:',
+    'Target:':'🎯 Target:','Need:':'Need:','CRR:':'CRR:','RRR:':'RRR:',
+    'P-ship:':'P-ship:','FoW:':'FoW:',
+    // Toss/Setup
+    'Toss Won By':'Toss Won By','Decision':'Decision',
+    'Bat':'Bat','Bowl':'Bowl','Confirm Toss':'✅ Confirm Toss',
+    'Batting Team':'Batting Team','Bowling Team':'Bowling Team',
+    'Select Opener 1':'Select Opener 1','Select Opener 2':'Select Opener 2',
+    'Opening Bowler':'Opening Bowler','Start Innings':'▶ Start Innings',
+    'Select Bowler':'Select New Bowler','Confirm Over':'✅ Confirm Over',
+    // Wicket
+    'Dismissal Type':'Dismissal Type','Next Batsman':'Next Batsman',
+    'Fielder Name':'Fielder Name (optional)','Confirm Wicket':'✅ Confirm Wicket',
+    // Manage
+    'Set Striker':'Set Striker','Set Non-Striker':'Set Non-Striker',
+    'Change Bowler':'Change Bowler','Apply':'✅ Apply',
+    // History/Stats
+    'Completed Matches':'Completed Matches','Points Table':'Points Table',
+    'Batting':'🏏 Batting','Bowling':'🎳 Bowling','Fielding':'🧤 Fielding','Awards':'🏅 Awards',
+    'Player (batting)':'Player','M':'M','Inn':'Inn','Runs':'Runs','Balls':'Balls',
+    'Avg':'Avg','SR':'SR','HS':'HS','100s':'100s','50s':'50s','6s':'6s','4s':'4s','Ducks':'Ducks','NO':'NO',
+    'Wkts':'Wkts','Best':'Best','Eco':'Eco','Mdns':'Mdns','Wds':'Wds','NBs':'NBs',
+    'Catches':'Catches','Stumpings':'Stumpings','Run Outs':'Run Outs','Total':'Total',
+    'Tournament Champion':'🏆 TOURNAMENT CHAMPION','Orange Cap':'🟠 Orange Cap — Most Runs',
+    'Purple Cap':'🟣 Purple Cap — Most Wickets','Man of the Match':'🏅 Man of the Match',
+    'Match Awards':'🏅 Match Awards','Save Awards':'💾 Save Awards','Skip':'Skip',
+    // Admin
+    'Tournament Details':'🏆 Tournament Details','Add Teams':'➕ Add Teams',
+    'Manage Players':'👤 Manage Players','Share Link':'🔗 Share Link',
+    'Export Account':'📤 Export Account','Import Account':'📥 Import Account',
+    'Copy Link':'📋 Copy Link','Open Link':'🔗 Open',
+    'Copy Code':'📋 Copy Code',
+    // Misc
+    'Player':'Player','Umpire':'Umpire','Cancel':'Cancel','Close':'✕ Close',
+    'Save':'Save','Confirm':'Confirm','No Result':'No Result',
+    'Language selected':'selected',
   },
+
   te:{name:'Telugu',native:'తెలుగు',flag:'🇮🇳',
-    'Sign In':'సైన్ ఇన్','Register':'నమోదు','Username':'వాడుకరి పేరు',
-    'Password':'పాస్‌వర్డ్','Logout':'నిష్క్రమించు','Home':'🏠 హోమ్',
-    'Matches':'📋 మ్యాచ్‌లు','Live':'🔴 లైవ్','Scores':'📊 స్కోర్లు',
-    'History':'🏆 చరిత్ర','Admin':'⚙️ అడ్మిన్','Save Tournament':'💾 సేవ్ చేయి',
-    'Add Team':'✅ జట్టు చేర్చు','Schedule':'📅 షెడ్యూల్','Start':'▶ ప్రారంభించు',
-    'WICKET':'⚡ వికెట్','WIDE':'వైడ్','NO BALL':'నో బాల్','BYE':'బై','LEG BYE':'లెగ్ బై',
-    'Manage':'⚙️ నిర్వహించు','Forgot password?':'పాస్‌వర్డ్ మర్చిపోయారా?',
-    'Watch as Viewer':'👁 వీక్షకుడిగా చూడు','How to Use':'📖 ఎలా వాడాలి',
-    'Tournament Name':'టోర్నమెంట్ పేరు','Team Name':'జట్టు పేరు',
-    'Player':'ఆటగాడు','Venue':'స్థలం','Date':'తేదీ','Umpire':'అంపైర్',
+    'Home':'🏠 హోమ్','Matches':'📋 మ్యాచ్‌లు','Live':'🔴 లైవ్','Scores':'📊 స్కోర్లు','History':'🏆 చరిత్ర','Admin':'⚙️ అడ్మిన్',
+    'Sign In':'సైన్ ఇన్','Register':'నమోదు','Logout':'నిష్క్రమించు',
+    'Username':'వాడుకరి పేరు','Password':'పాస్‌వర్డ్','Your Name':'మీ పేరు',
+    'Forgot password?':'పాస్‌వర్డ్ మర్చిపోయారా?','Watch as Viewer':'👁 వీక్షకుడిగా చూడు',
+    'How to Use':'📖 ఎలా వాడాలి','Language':'🌐 భాష',
+    'Create Account':'ఖాతా సృష్టించు →','Sign In →':'సైన్ ఇన్ →',
+    'Watch Live →':'👁 లైవ్ చూడు →','Continue →':'కొనసాగు →',
+    'Reset Password →':'పాస్‌వర్డ్ రీసెట్ →','Import & Sign In →':'📥 దిగుమతి & సైన్ ఇన్ →',
+    'Import from another device':'📥 మరో డివైస్ నుండి దిగుమతి',
+    'Back to Sign In':'← సైన్ ఇన్‌కు తిరిగి',
+    'enter username':'మీ_వాడుకరి_పేరు','enter password':'••••••••',
+    'Security Question':'భద్రతా ప్రశ్న','Your Answer':'మీ సమాధానం',
+    'Tournament Name':'టోర్నమెంట్ పేరు','Edition':'ఎడిషన్ ఉదా. సీజన్ 1',
+    'Year':'సంవత్సరం','Overs Format':'ఓవర్ ఫార్మాట్','Save Tournament':'💾 సేవ్ చేయి',
+    'Team Name':'జట్టు పేరు','Team Code':'కోడ్ (2-3 అక్షరాలు)','City':'నగరం',
+    'Add Team':'✅ జట్టు చేర్చు','Clear':'🗑 తొలగించు',
+    'Player Name':'ఆటగాడు పేరు','Jersey #':'జెర్సీ నం.','Role':'పాత్ర',
+    'Schedule Match':'📅 మ్యాచ్ షెడ్యూల్','+ Schedule':'+ షెడ్యూల్',
+    'Match Stage':'మ్యాచ్ దశ','Venue':'మైదానం','Date':'తేదీ',
+    'Umpires':'అంపైర్లు','Start':'▶ ప్రారంభించు','Edit':'✏️ మార్చు','Delete':'తొలగించు',
+    'Team A':'జట్టు A ఆడే XI','Team B':'జట్టు B ఆడే XI',
+    'DOT':'డాట్','WIDE':'వైడ్','NO BALL':'నో బాల్','BYE':'బై','LEG BYE':'లెగ్ బై',
+    'WICKET':'⚡ వికెట్','Manage':'⚙️ ఆటగాళ్ళను నిర్వహించు',
+    'Retired Hurt':'🚑 గాయపడి విరమించు','Ball-by-Ball':'🎯 బాల్-బై-బాల్ నమోదు',
+    'ON STRIKE':'★ స్ట్రైక్‌లో','non-striker':'(నాన్-స్ట్రైకర్)','Bowling':'(బౌలింగ్)',
+    'THIS OVER:':'ఈ ఓవర్:','Actions:':'⚡ చర్యలు:',
+    'Target:':'🎯 లక్ష్యం:','Need:':'కావాలి:','CRR:':'ప్రస్తుత రన్‌రేట్:','RRR:':'అవసరమైన రేట్:',
+    'P-ship:':'భాగస్వామ్యం:','FoW:':'వికెట్ పతనం:',
+    'Toss Won By':'టాస్ గెలిచినది','Decision':'నిర్ణయం',
+    'Bat':'బ్యాటింగ్','Bowl':'బౌలింగ్','Confirm Toss':'✅ టాస్ నిర్ధారించు',
+    'Batting Team':'బ్యాటింగ్ జట్టు','Bowling Team':'బౌలింగ్ జట్టు',
+    'Select Opener 1':'ఓపెనర్ 1 ఎంచుకో','Select Opener 2':'ఓపెనర్ 2 ఎంచుకో',
+    'Opening Bowler':'ప్రారంభ బౌలర్','Start Innings':'▶ ఇన్నింగ్స్ ప్రారంభించు',
+    'Select Bowler':'కొత్త బౌలర్ ఎంచుకో','Confirm Over':'✅ ఓవర్ నిర్ధారించు',
+    'Dismissal Type':'విఫలమైన విధానం','Next Batsman':'తదుపరి బ్యాట్స్‌మన్',
+    'Fielder Name':'ఫీల్డర్ పేరు (ఐచ్ఛికం)','Confirm Wicket':'✅ వికెట్ నిర్ధారించు',
+    'Set Striker':'స్ట్రైకర్ సెట్ చేయి','Set Non-Striker':'నాన్-స్ట్రైకర్ సెట్ చేయి',
+    'Change Bowler':'బౌలర్ మార్చు','Apply':'✅ వర్తింపజేయి',
+    'Completed Matches':'పూర్తయిన మ్యాచ్‌లు','Points Table':'పాయింట్ల పట్టిక',
+    'Batting':'🏏 బ్యాటింగ్','Bowling':'🎳 బౌలింగ్','Fielding':'🧤 ఫీల్డింగ్','Awards':'🏅 అవార్డులు',
+    'Player (batting)':'ఆటగాడు','M':'మ్యా','Inn':'ఇన్','Runs':'పరుగులు','Balls':'బంతులు',
+    'Avg':'సగటు','SR':'స్ట్రైక్ రేట్','HS':'అత్యధిక స్కోర్','100s':'శతకాలు','50s':'అర్ధ శతకాలు','6s':'సిక్సర్లు','4s':'ఫోర్లు','Ducks':'డక్‌లు','NO':'నాటౌట్',
+    'Wkts':'వికెట్లు','Best':'అత్యుత్తమ','Eco':'ఎకానమీ','Mdns':'మెయిడన్లు','Wds':'వైడ్లు','NBs':'నో బాల్లు',
+    'Catches':'క్యాచ్‌లు','Stumpings':'స్టంపింగ్లు','Run Outs':'రన్ అవుట్లు','Total':'మొత్తం',
+    'Tournament Champion':'🏆 టోర్నమెంట్ విజేత','Orange Cap':'🟠 ఆరంజ్ క్యాప్ — అత్యధిక పరుగులు',
+    'Purple Cap':'🟣 పర్పుల్ క్యాప్ — అత్యధిక వికెట్లు','Man of the Match':'🏅 మ్యాచ్ హీరో',
+    'Match Awards':'🏅 మ్యాచ్ అవార్డులు','Save Awards':'💾 అవార్డులు సేవ్ చేయి','Skip':'దాటవేయి',
+    'Tournament Details':'🏆 టోర్నమెంట్ వివరాలు','Add Teams':'➕ జట్లను చేర్చు',
+    'Manage Players':'👤 ఆటగాళ్ళను నిర్వహించు','Share Link':'🔗 షేర్ లింక్',
+    'Export Account':'📤 ఖాతా ఎగుమతి','Import Account':'📥 ఖాతా దిగుమతి',
+    'Copy Link':'📋 లింక్ కాపీ చేయి','Open Link':'🔗 తెరువు','Copy Code':'📋 కోడ్ కాపీ చేయి',
+    'Player':'ఆటగాడు','Umpire':'అంపైర్','Cancel':'రద్దు చేయి','Close':'✕ మూసివేయి',
+    'Save':'సేవ్ చేయి','Confirm':'నిర్ధారించు','No Result':'ఫలితం లేదు',
+    'Language selected':'ఎంచుకోబడింది',
   },
+
   ta:{name:'Tamil',native:'தமிழ்',flag:'🇮🇳',
-    'Sign In':'உள்நுழை','Register':'பதிவு','Username':'பயனர் பெயர்',
-    'Password':'கடவுச்சொல்','Logout':'வெளியேறு','Home':'🏠 முகப்பு',
-    'Matches':'📋 போட்டிகள்','Live':'🔴 நேரலை','Scores':'📊 மதிப்பெண்கள்',
-    'History':'🏆 வரலாறு','Admin':'⚙️ நிர்வாகி','Save Tournament':'💾 சேமி',
-    'Add Team':'✅ அணி சேர்','Schedule':'📅 அட்டவணை','Start':'▶ தொடங்கு',
-    'WICKET':'⚡ விக்கெட்','WIDE':'வைட்','NO BALL':'நோ பால்','BYE':'பை','LEG BYE':'லெக் பை',
-    'Manage':'⚙️ நிர்வகி','Forgot password?':'கடவுச்சொல் மறந்தீர்களா?',
-    'Watch as Viewer':'👁 பார்வையாளராக','How to Use':'📖 பயன்படுத்துவது எப்படி',
-    'Tournament Name':'போட்டி பெயர்','Team Name':'அணி பெயர்',
-    'Player':'வீரர்','Venue':'இடம்','Date':'தேதி','Umpire':'நடுவர்',
+    'Home':'🏠 முகப்பு','Matches':'📋 போட்டிகள்','Live':'🔴 நேரலை','Scores':'📊 மதிப்பெண்கள்','History':'🏆 வரலாறு','Admin':'⚙️ நிர்வாகி',
+    'Sign In':'உள்நுழை','Register':'பதிவு','Logout':'வெளியேறு',
+    'Username':'பயனர் பெயர்','Password':'கடவுச்சொல்','Your Name':'உங்கள் பெயர்',
+    'Forgot password?':'கடவுச்சொல் மறந்தீர்களா?','Watch as Viewer':'👁 பார்வையாளராக',
+    'How to Use':'📖 பயன்படுத்துவது எப்படி','Language':'🌐 மொழி',
+    'Create Account':'கணக்கு உருவாக்கு →','Sign In →':'உள்நுழை →',
+    'Watch Live →':'👁 நேரலை பார் →','Continue →':'தொடர் →',
+    'Reset Password →':'கடவுச்சொல் மீட்டமை →','Import & Sign In →':'📥 இறக்கு & உள்நுழை →',
+    'Import from another device':'📥 மற்றொரு சாதனத்திலிருந்து இறக்கு',
+    'Back to Sign In':'← உள்நுழைவுக்கு திரும்பு',
+    'enter username':'பயனர்_பெயர்','enter password':'••••••••',
+    'Security Question':'பாதுகாப்பு கேள்வி','Your Answer':'உங்கள் பதில்',
+    'Tournament Name':'போட்டி பெயர்','Edition':'பதிப்பு எ.கா. சீசன் 1',
+    'Year':'ஆண்டு','Overs Format':'ஓவர் வடிவம்','Save Tournament':'💾 சேமி',
+    'Team Name':'அணி பெயர்','Team Code':'குறியீடு (2-3 எழுத்துகள்)','City':'நகரம்',
+    'Add Team':'✅ அணி சேர்','Clear':'🗑 அழி',
+    'Player Name':'வீரர் பெயர்','Jersey #':'ஜெர்சி எண்','Role':'பாத்திரம்',
+    'Schedule Match':'📅 போட்டி அட்டவணை','+ Schedule':'+ அட்டவணை',
+    'Match Stage':'போட்டி கட்டம்','Venue':'இடம்','Date':'தேதி',
+    'Umpires':'நடுவர்கள்','Start':'▶ தொடங்கு','Edit':'✏️ திருத்து','Delete':'நீக்கு',
+    'Team A':'அணி A விளையாடும் XI','Team B':'அணி B விளையாடும் XI',
+    'DOT':'டாட்','WIDE':'வைட்','NO BALL':'நோ பால்','BYE':'பை','LEG BYE':'லெக் பை',
+    'WICKET':'⚡ விக்கெட்','Manage':'⚙️ வீரர்களை நிர்வகி',
+    'Retired Hurt':'🚑 காயத்துடன் விலகு','Ball-by-Ball':'🎯 பந்து-பந்து நமோது',
+    'ON STRIKE':'★ ஸ்ட்ரைக்கில்','non-striker':'(நான்-ஸ்ட்ரைக்கர்)','Bowling':'(பந்துவீச்சு)',
+    'THIS OVER:':'இந்த ஓவர்:','Actions:':'⚡ செயல்கள்:',
+    'Target:':'🎯 இலக்கு:','Need:':'தேவை:','CRR:':'தற்போதைய RR:','RRR:':'தேவையான RR:',
+    'P-ship:':'கூட்டணி:','FoW:':'விக்கெட் வீழ்ச்சி:',
+    'Toss Won By':'நாணயம் வென்றது','Decision':'முடிவு',
+    'Bat':'பேட்டிங்','Bowl':'பந்துவீச்சு','Confirm Toss':'✅ நாணயம் உறுதி செய்',
+    'Batting Team':'பேட்டிங் அணி','Bowling Team':'பந்துவீச்சு அணி',
+    'Select Opener 1':'ஓபனர் 1 தேர்வு','Select Opener 2':'ஓபனர் 2 தேர்வு',
+    'Opening Bowler':'தொடக்க பந்துவீச்சாளர்','Start Innings':'▶ இன்னிங்ஸ் தொடங்கு',
+    'Select Bowler':'புதிய பந்துவீச்சாளர் தேர்வு','Confirm Over':'✅ ஓவர் உறுதி செய்',
+    'Dismissal Type':'வெளியேற்றும் முறை','Next Batsman':'அடுத்த வீரர்',
+    'Fielder Name':'வயல் வீரர் பெயர்','Confirm Wicket':'✅ விக்கெட் உறுதி செய்',
+    'Set Striker':'ஸ்ட்ரைக்கர் அமை','Set Non-Striker':'நான்-ஸ்ட்ரைக்கர் அமை',
+    'Change Bowler':'பந்துவீச்சாளர் மாற்று','Apply':'✅ பயன்படுத்து',
+    'Completed Matches':'முடிந்த போட்டிகள்','Points Table':'புள்ளி அட்டவணை',
+    'Batting':'🏏 பேட்டிங்','Bowling':'🎳 பந்துவீச்சு','Fielding':'🧤 வயல்','Awards':'🏅 விருதுகள்',
+    'Player (batting)':'வீரர்','M':'ம','Inn':'இன்','Runs':'ஓட்டங்கள்','Balls':'பந்துகள்',
+    'Avg':'சராசரி','SR':'ஸ்ட்ரைக் ரேட்','HS':'உயர் மதிப்பெண்','100s':'சதங்கள்','50s':'அரை சதங்கள்','6s':'சிக்சர்கள்','4s':'நான்கு','Ducks':'டக்குகள்','NO':'நாட் அவுட்',
+    'Wkts':'விக்கெட்கள்','Best':'சிறந்த','Eco':'பொருளாதாரம்','Mdns':'மெய்டன்கள்','Wds':'வைட்கள்','NBs':'நோ பால்கள்',
+    'Catches':'கேட்ச்கள்','Stumpings':'ஸ்டம்பிங்கள்','Run Outs':'ரன் அவுட்கள்','Total':'மொத்தம்',
+    'Tournament Champion':'🏆 போட்டி சாம்பியன்','Orange Cap':'🟠 ஆரஞ்சு தொப்பி','Purple Cap':'🟣 ஊதா தொப்பி',
+    'Man of the Match':'🏅 போட்டியின் சிறந்த வீரர்',
+    'Match Awards':'🏅 போட்டி விருதுகள்','Save Awards':'💾 விருதுகள் சேமி','Skip':'தவிர்',
+    'Tournament Details':'🏆 போட்டி விவரங்கள்','Add Teams':'➕ அணிகளை சேர்',
+    'Manage Players':'👤 வீரர்களை நிர்வகி','Share Link':'🔗 பகிர் இணைப்பு',
+    'Export Account':'📤 கணக்கு ஏற்றுமதி','Import Account':'📥 கணக்கு இறக்குமதி',
+    'Copy Link':'📋 இணைப்பு நகல்','Open Link':'🔗 திற','Copy Code':'📋 குறியீடு நகல்',
+    'Player':'வீரர்','Umpire':'நடுவர்','Cancel':'ரத்து','Close':'✕ மூடு',
+    'Save':'சேமி','Confirm':'உறுதி','No Result':'முடிவு இல்லை',
+    'Language selected':'தேர்ந்தெடுக்கப்பட்டது',
   },
+
   kn:{name:'Kannada',native:'ಕನ್ನಡ',flag:'🇮🇳',
-    'Sign In':'ಸೈನ್ ಇನ್','Register':'ನೋಂದಣಿ','Username':'ಬಳಕೆದಾರ ಹೆಸರು',
-    'Password':'ಪಾಸ್‌ವರ್ಡ್','Logout':'ಲಾಗ್ ಔಟ್','Home':'🏠 ಮುಖ್ಯ',
-    'Matches':'📋 ಪಂದ್ಯಗಳು','Live':'🔴 ನೇರ','Scores':'📊 ಸ್ಕೋರ್‌ಗಳು',
-    'History':'🏆 ಇತಿಹಾಸ','Admin':'⚙️ ಆಡಳಿತ','Save Tournament':'💾 ಉಳಿಸು',
-    'Add Team':'✅ ತಂಡ ಸೇರಿಸು','Schedule':'📅 ಶೆಡ್ಯೂಲ್','Start':'▶ ಪ್ರಾರಂಭಿಸು',
-    'WICKET':'⚡ ವಿಕೆಟ್','WIDE':'ವೈಡ್','NO BALL':'ನೋ ಬಾಲ್','BYE':'ಬೈ','LEG BYE':'ಲೆಗ್ ಬೈ',
-    'Manage':'⚙️ ನಿರ್ವಹಿಸು','Forgot password?':'ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?',
-    'Watch as Viewer':'👁 ವೀಕ್ಷಕರಾಗಿ','How to Use':'📖 ಹೇಗೆ ಬಳಸಬೇಕು',
-    'Tournament Name':'ಟೂರ್ನಮೆಂಟ್ ಹೆಸರು','Team Name':'ತಂಡದ ಹೆಸರು',
-    'Player':'ಆಟಗಾರ','Venue':'ಸ್ಥಳ','Date':'ದಿನಾಂಕ','Umpire':'ಅಂಪೈರ್',
+    'Home':'🏠 ಮುಖ್ಯ','Matches':'📋 ಪಂದ್ಯಗಳು','Live':'🔴 ನೇರ','Scores':'📊 ಸ್ಕೋರ್‌ಗಳು','History':'🏆 ಇತಿಹಾಸ','Admin':'⚙️ ಆಡಳಿತ',
+    'Sign In':'ಸೈನ್ ಇನ್','Register':'ನೋಂದಣಿ','Logout':'ಲಾಗ್ ಔಟ್',
+    'Username':'ಬಳಕೆದಾರ ಹೆಸರು','Password':'ಪಾಸ್‌ವರ್ಡ್','Your Name':'ನಿಮ್ಮ ಹೆಸರು',
+    'Forgot password?':'ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?','Watch as Viewer':'👁 ವೀಕ್ಷಕರಾಗಿ',
+    'How to Use':'📖 ಹೇಗೆ ಬಳಸಬೇಕು','Language':'🌐 ಭಾಷೆ',
+    'Create Account':'ಖಾತೆ ರಚಿಸಿ →','Sign In →':'ಸೈನ್ ಇನ್ →',
+    'Watch Live →':'👁 ನೇರ ನೋಡಿ →','Continue →':'ಮುಂದುವರಿ →',
+    'Reset Password →':'ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸಿ →','Import & Sign In →':'📥 ಆಮದು & ಸೈನ್ ಇನ್ →',
+    'Import from another device':'📥 ಇನ್ನೊಂದು ಸಾಧನದಿಂದ ಆಮದು',
+    'Back to Sign In':'← ಸೈನ್ ಇನ್‌ಗೆ ಹಿಂತಿರುಗಿ',
+    'enter username':'ಬಳಕೆದಾರ_ಹೆಸರು','enter password':'••••••••',
+    'Security Question':'ಭದ್ರತಾ ಪ್ರಶ್ನೆ','Your Answer':'ನಿಮ್ಮ ಉತ್ತರ',
+    'Tournament Name':'ಟೂರ್ನಮೆಂಟ್ ಹೆಸರು','Edition':'ಆವೃತ್ತಿ','Year':'ವರ್ಷ',
+    'Overs Format':'ಓವರ್ ಸ್ವರೂಪ','Save Tournament':'💾 ಉಳಿಸಿ',
+    'Team Name':'ತಂಡದ ಹೆಸರು','Team Code':'ಕೋಡ್ (2-3 ಅಕ್ಷರಗಳು)','City':'ನಗರ',
+    'Add Team':'✅ ತಂಡ ಸೇರಿಸು','Clear':'🗑 ಅಳಿಸಿ',
+    'Player Name':'ಆಟಗಾರ ಹೆಸರು','Jersey #':'ಜೆರ್ಸಿ ಸಂ.','Role':'ಪಾತ್ರ',
+    'Schedule Match':'📅 ಪಂದ್ಯ ವೇಳಾಪಟ್ಟಿ','+ Schedule':'+ ವೇಳಾಪಟ್ಟಿ',
+    'Match Stage':'ಪಂದ್ಯ ಹಂತ','Venue':'ಸ್ಥಳ','Date':'ದಿನಾಂಕ',
+    'Umpires':'ಅಂಪೈರ್‌ಗಳು','Start':'▶ ಪ್ರಾರಂಭಿಸಿ','Edit':'✏️ ಸಂಪಾದಿಸಿ','Delete':'ಅಳಿಸಿ',
+    'Team A':'ತಂಡ A ಆಡುವ XI','Team B':'ತಂಡ B ಆಡುವ XI',
+    'DOT':'ಡಾಟ್','WIDE':'ವೈಡ್','NO BALL':'ನೋ ಬಾಲ್','BYE':'ಬೈ','LEG BYE':'ಲೆಗ್ ಬೈ',
+    'WICKET':'⚡ ವಿಕೆಟ್','Manage':'⚙️ ಆಟಗಾರರನ್ನು ನಿರ್ವಹಿಸಿ',
+    'Retired Hurt':'🚑 ಗಾಯಗೊಂಡು ನಿವೃತ್ತಿ','Ball-by-Ball':'🎯 ಚೆಂಡು-ಚೆಂಡು ದಾಖಲು',
+    'ON STRIKE':'★ ಸ್ಟ್ರೈಕ್‌ನಲ್ಲಿ','non-striker':'(ನಾನ್-ಸ್ಟ್ರೈಕರ್)','Bowling':'(ಬೌಲಿಂಗ್)',
+    'THIS OVER:':'ಈ ಓವರ್:','Actions:':'⚡ ಕ್ರಿಯೆಗಳು:',
+    'Target:':'🎯 ಗುರಿ:','Need:':'ಬೇಕು:','CRR:':'ಪ್ರಸ್ತುತ RR:','RRR:':'ಅಗತ್ಯ RR:',
+    'P-ship:':'ಜೋಡಿ:','FoW:':'ವಿಕೆಟ್ ಪತನ:',
+    'Toss Won By':'ಟಾಸ್ ಗೆದ್ದವರು','Decision':'ನಿರ್ಧಾರ',
+    'Bat':'ಬ್ಯಾಟಿಂಗ್','Bowl':'ಬೌಲಿಂಗ್','Confirm Toss':'✅ ಟಾಸ್ ಖಚಿತಪಡಿಸಿ',
+    'Batting Team':'ಬ್ಯಾಟಿಂಗ್ ತಂಡ','Bowling Team':'ಬೌಲಿಂಗ್ ತಂಡ',
+    'Select Opener 1':'ಓಪನರ್ 1 ಆಯ್ಕೆ','Select Opener 2':'ಓಪನರ್ 2 ಆಯ್ಕೆ',
+    'Opening Bowler':'ಆರಂಭಿಕ ಬೌಲರ್','Start Innings':'▶ ಇನ್ನಿಂಗ್ಸ್ ಪ್ರಾರಂಭಿಸಿ',
+    'Select Bowler':'ಹೊಸ ಬೌಲರ್ ಆಯ್ಕೆ','Confirm Over':'✅ ಓವರ್ ಖಚಿತಪಡಿಸಿ',
+    'Dismissal Type':'ಔಟ್ ವಿಧಾನ','Next Batsman':'ಮುಂದಿನ ಬ್ಯಾಟ್ಸ್‌ಮನ್',
+    'Fielder Name':'ಕ್ಷೇತ್ರ ಆಟಗಾರ ಹೆಸರು','Confirm Wicket':'✅ ವಿಕೆಟ್ ಖಚಿತಪಡಿಸಿ',
+    'Set Striker':'ಸ್ಟ್ರೈಕರ್ ಹೊಂದಿಸಿ','Set Non-Striker':'ನಾನ್-ಸ್ಟ್ರೈಕರ್ ಹೊಂದಿಸಿ',
+    'Change Bowler':'ಬೌಲರ್ ಬದಲಿಸಿ','Apply':'✅ ಅನ್ವಯಿಸಿ',
+    'Completed Matches':'ಮುಗಿದ ಪಂದ್ಯಗಳು','Points Table':'ಅಂಕ ಪಟ್ಟಿ',
+    'Batting':'🏏 ಬ್ಯಾಟಿಂಗ್','Bowling':'🎳 ಬೌಲಿಂಗ್','Fielding':'🧤 ಕ್ಷೇತ್ರ','Awards':'🏅 ಪ್ರಶಸ್ತಿಗಳು',
+    'Player (batting)':'ಆಟಗಾರ','M':'ಪ','Inn':'ಇನ್','Runs':'ರನ್ಗಳು','Balls':'ಎಸೆತಗಳು',
+    'Avg':'ಸರಾಸರಿ','SR':'ಸ್ಟ್ರೈಕ್ ರೇಟ್','HS':'ಅತ್ಯಧಿಕ','100s':'ಶತಕಗಳು','50s':'ಅರ್ಧ ಶತಕಗಳು','6s':'ಸಿಕ್ಸರ್‌ಗಳು','4s':'ಫೋರ್‌ಗಳು','Ducks':'ಡಕ್‌ಗಳು','NO':'ನಾಟ್ ಔಟ್',
+    'Wkts':'ವಿಕೆಟ್‌ಗಳು','Best':'ಅತ್ಯುತ್ತಮ','Eco':'ಎಕಾನಮಿ','Mdns':'ಮೇಡನ್‌ಗಳು','Wds':'ವೈಡ್‌ಗಳು','NBs':'ನೋ ಬಾಲ್‌ಗಳು',
+    'Catches':'ಕ್ಯಾಚ್‌ಗಳು','Stumpings':'ಸ್ಟಂಪಿಂಗ್‌ಗಳು','Run Outs':'ರನ್ ಔಟ್‌ಗಳು','Total':'ಒಟ್ಟು',
+    'Tournament Champion':'🏆 ಟೂರ್ನಮೆಂಟ್ ವಿಜೇತ','Orange Cap':'🟠 ಆರೆಂಜ್ ಕ್ಯಾಪ್','Purple Cap':'🟣 ಪರ್ಪಲ್ ಕ್ಯಾಪ್',
+    'Man of the Match':'🏅 ಪಂದ್ಯದ ಅತ್ಯುತ್ತಮ ಆಟಗಾರ',
+    'Match Awards':'🏅 ಪಂದ್ಯ ಪ್ರಶಸ್ತಿಗಳು','Save Awards':'💾 ಪ್ರಶಸ್ತಿಗಳು ಉಳಿಸಿ','Skip':'ಬಿಡಿ',
+    'Tournament Details':'🏆 ಟೂರ್ನಮೆಂಟ್ ವಿವರಗಳು','Add Teams':'➕ ತಂಡಗಳನ್ನು ಸೇರಿಸಿ',
+    'Manage Players':'👤 ಆಟಗಾರರನ್ನು ನಿರ್ವಹಿಸಿ','Share Link':'🔗 ಷೇರ್ ಲಿಂಕ್',
+    'Export Account':'📤 ಖಾತೆ ರಫ್ತು','Import Account':'📥 ಖಾತೆ ಆಮದು',
+    'Copy Link':'📋 ಲಿಂಕ್ ನಕಲು','Open Link':'🔗 ತೆರೆ','Copy Code':'📋 ಕೋಡ್ ನಕಲು',
+    'Player':'ಆಟಗಾರ','Umpire':'ಅಂಪೈರ್','Cancel':'ರದ್ದು','Close':'✕ ಮುಚ್ಚಿ',
+    'Save':'ಉಳಿಸಿ','Confirm':'ಖಚಿತಪಡಿಸಿ','No Result':'ಫಲಿತಾಂಶ ಇಲ್ಲ',
+    'Language selected':'ಆಯ್ಕೆಯಾಗಿದೆ',
   },
+
   ml:{name:'Malayalam',native:'മലയാളം',flag:'🇮🇳',
-    'Sign In':'സൈൻ ഇൻ','Register':'രജിസ്റ്റർ','Username':'ഉപയോക്തൃ നാമം',
-    'Password':'പാസ്‌വേഡ്','Logout':'ലോഗൗട്ട്','Home':'🏠 ഹോം',
-    'Matches':'📋 മത്സരങ്ങൾ','Live':'🔴 തൽസമയം','Scores':'📊 സ്കോറുകൾ',
-    'History':'🏆 ചരിത്രം','Admin':'⚙️ അഡ്മിൻ','Save Tournament':'💾 സേവ് ചെയ്യുക',
-    'Add Team':'✅ ടീം ചേർക്കുക','Schedule':'📅 ഷെഡ്യൂൾ','Start':'▶ ആരംഭിക്കുക',
-    'WICKET':'⚡ വിക്കറ്റ്','WIDE':'വൈഡ്','NO BALL':'നോ ബോൾ','BYE':'ബൈ','LEG BYE':'ലെഗ് ബൈ',
-    'Manage':'⚙️ കൈകാര്യം','Forgot password?':'പാസ്‌വേഡ് മറന്നോ?',
-    'Watch as Viewer':'👁 കാഴ്ചക്കാരനായി','How to Use':'📖 എങ്ങനെ ഉപയോഗിക്കാം',
-    'Tournament Name':'ടൂർണമെന്റ് നാമം','Team Name':'ടീം നാമം',
-    'Player':'കളിക്കാരൻ','Venue':'സ്ഥലം','Date':'തീയതി','Umpire':'അമ്പയർ',
+    'Home':'🏠 ഹോം','Matches':'📋 മത്സരങ്ങൾ','Live':'🔴 തൽസമയം','Scores':'📊 സ്കോറുകൾ','History':'🏆 ചരിത്രം','Admin':'⚙️ അഡ്മിൻ',
+    'Sign In':'സൈൻ ഇൻ','Register':'രജിസ്റ്റർ','Logout':'ലോഗൗട്ട്',
+    'Username':'ഉപയോക്തൃ നാമം','Password':'പാസ്‌വേഡ്','Your Name':'നിങ്ങളുടെ പേര്',
+    'Forgot password?':'പാസ്‌വേഡ് മറന്നോ?','Watch as Viewer':'👁 കാഴ്ചക്കാരനായി',
+    'How to Use':'📖 എങ്ങനെ ഉപയോഗിക്കാം','Language':'🌐 ഭാഷ',
+    'Create Account':'അക്കൗണ്ട് ഉണ്ടാക്കുക →','Sign In →':'സൈൻ ഇൻ →',
+    'Watch Live →':'👁 തൽസമയം കാണുക →','Continue →':'തുടരുക →',
+    'Reset Password →':'പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക →','Import & Sign In →':'📥 ഇറക്കുമതി & സൈൻ ഇൻ →',
+    'Import from another device':'📥 മറ്റൊരു ഉപകരണത്തിൽ നിന്ന് ഇറക്കുമതി',
+    'Back to Sign In':'← സൈൻ ഇൻ ലേക്ക് തിരിച്ചു',
+    'enter username':'ഉപയോക്തൃ_നാമം','enter password':'••••••••',
+    'Security Question':'സുരക്ഷാ ചോദ്യം','Your Answer':'നിങ്ങളുടെ ഉത്തരം',
+    'Tournament Name':'ടൂർണമെന്റ് നാമം','Edition':'എഡിഷൻ','Year':'വർഷം',
+    'Overs Format':'ഓവർ ഫോർമാറ്റ്','Save Tournament':'💾 സേവ് ചെയ്യുക',
+    'Team Name':'ടീം നാമം','Team Code':'കോഡ് (2-3 അക്ഷരങ്ങൾ)','City':'നഗരം',
+    'Add Team':'✅ ടീം ചേർക്കുക','Clear':'🗑 മായ്ക്കുക',
+    'Player Name':'കളിക്കാരന്റെ പേര്','Jersey #':'ജഴ്സി നം.','Role':'ദൗത്യം',
+    'Schedule Match':'📅 മത്സരം ഷെഡ്യൂൾ','+ Schedule':'+ ഷെഡ്യൂൾ',
+    'Match Stage':'മത്സരഘട്ടം','Venue':'സ്ഥലം','Date':'തീയതി',
+    'Umpires':'അമ്പയർമാർ','Start':'▶ ആരംഭിക്കുക','Edit':'✏️ തിരുത്തുക','Delete':'ഇല്ലാക്കുക',
+    'Team A':'ടീം A കളിക്കുന്ന XI','Team B':'ടീം B കളിക്കുന്ന XI',
+    'DOT':'ഡോട്ട്','WIDE':'വൈഡ്','NO BALL':'നോ ബോൾ','BYE':'ബൈ','LEG BYE':'ലെഗ് ബൈ',
+    'WICKET':'⚡ വിക്കറ്റ്','Manage':'⚙️ കളിക്കാരെ നിയന്ത്രിക്കുക',
+    'Retired Hurt':'🚑 പരിക്കോടെ വിരമിക്കുക','Ball-by-Ball':'🎯 പന്ത്-വഴി-പന്ത് രേഖ',
+    'ON STRIKE':'★ സ്ട്രൈക്കിൽ','non-striker':'(നോൺ-സ്ട്രൈക്കർ)','Bowling':'(ബൗളിംഗ്)',
+    'THIS OVER:':'ഈ ഓവർ:','Actions:':'⚡ പ്രവൃത്തികൾ:',
+    'Target:':'🎯 ലക്ഷ്യം:','Need:':'വേണം:','CRR:':'നിലവിൽ RR:','RRR:':'ആവശ്യ RR:',
+    'P-ship:':'പങ്കാളിത്തം:','FoW:':'വിക്കറ്റ് പതനം:',
+    'Toss Won By':'ടോസ് നേടിയത്','Decision':'തീരുമാനം',
+    'Bat':'ബാറ്റിംഗ്','Bowl':'ബൗളിംഗ്','Confirm Toss':'✅ ടോസ് സ്ഥിരീകരിക്കുക',
+    'Batting Team':'ബാറ്റിംഗ് ടീം','Bowling Team':'ബൗളിംഗ് ടീം',
+    'Select Opener 1':'ഓപ്പണർ 1 തിരഞ്ഞെടുക്കുക','Select Opener 2':'ഓപ്പണർ 2 തിരഞ്ഞെടുക്കുക',
+    'Opening Bowler':'ആദ്യ ബൗളർ','Start Innings':'▶ ഇന്നിംഗ്സ് ആരംഭിക്കുക',
+    'Select Bowler':'പുതിയ ബൗളർ','Confirm Over':'✅ ഓവർ സ്ഥിരീകരിക്കുക',
+    'Dismissal Type':'ഔട്ട് രീതി','Next Batsman':'അടുത്ത ബാറ്റ്സ്മൻ',
+    'Fielder Name':'ഫീൽഡർ പേര്','Confirm Wicket':'✅ വിക്കറ്റ് സ്ഥിരീകരിക്കുക',
+    'Set Striker':'സ്ട്രൈക്കർ സജ്ജമാക്കുക','Set Non-Striker':'നോൺ-സ്ട്രൈക്കർ സജ്ജമാക്കുക',
+    'Change Bowler':'ബൗളർ മാറ്റുക','Apply':'✅ പ്രയോഗിക്കുക',
+    'Completed Matches':'പൂർത്തിയായ മത്സരങ്ങൾ','Points Table':'പോയിന്റ് പട്ടിക',
+    'Batting':'🏏 ബാറ്റിംഗ്','Bowling':'🎳 ബൗളിംഗ്','Fielding':'🧤 ഫീൽഡിംഗ്','Awards':'🏅 അവാർഡുകൾ',
+    'Player (batting)':'കളിക്കാരൻ','M':'മ','Inn':'ഇൻ','Runs':'റൺസ്','Balls':'പന്തുകൾ',
+    'Avg':'ശരാശരി','SR':'സ്ട്രൈക്ക് റേറ്റ്','HS':'ഉയർന്ന','100s':'സെഞ്ചുറികൾ','50s':'അർദ്ധ സെഞ്ചുറികൾ','6s':'സിക്സറുകൾ','4s':'ഫോറുകൾ','Ducks':'ഡക്കുകൾ','NO':'നോട്ടൗട്ട്',
+    'Wkts':'വിക്കറ്റുകൾ','Best':'മികച്ചത്','Eco':'ഇക്കണോമി','Mdns':'മെയ്ഡൻ','Wds':'വൈഡുകൾ','NBs':'നോ ബോളുകൾ',
+    'Catches':'ക്യാച്ചുകൾ','Stumpings':'സ്റ്റംപിംഗ്','Run Outs':'റൺ ഔട്ടുകൾ','Total':'ആകെ',
+    'Tournament Champion':'🏆 ടൂർണമെന്റ് ചാമ്പ്യൻ','Orange Cap':'🟠 ഓറഞ്ച് ക്യാപ്','Purple Cap':'🟣 പർപ്പിൾ ക്യാപ്',
+    'Man of the Match':'🏅 മത്സരത്തിലെ മികച്ച കളിക്കാരൻ',
+    'Match Awards':'🏅 മത്സര അവാർഡുകൾ','Save Awards':'💾 അവാർഡുകൾ സേവ്','Skip':'ഒഴിവാക്കുക',
+    'Tournament Details':'🏆 ടൂർണമെന്റ് വിവരങ്ങൾ','Add Teams':'➕ ടീമുകൾ ചേർക്കുക',
+    'Manage Players':'👤 കളിക്കാരെ നിയന്ത്രിക്കുക','Share Link':'🔗 ഷെയർ ലിങ്ക്',
+    'Export Account':'📤 അക്കൗണ്ട് എക്സ്പോർട്ട്','Import Account':'📥 അക്കൗണ്ട് ഇംപോർട്ട്',
+    'Copy Link':'📋 ലിങ്ക് കോപ്പി','Open Link':'🔗 തുറക്കുക','Copy Code':'📋 കോഡ് കോപ്പി',
+    'Player':'കളിക്കാരൻ','Umpire':'അമ്പയർ','Cancel':'റദ്ദാക്കുക','Close':'✕ അടയ്ക്കുക',
+    'Save':'സേവ്','Confirm':'സ്ഥിരീകരിക്കുക','No Result':'ഫലമില്ല',
+    'Language selected':'തിരഞ്ഞെടുത്തു',
   },
+
   hi:{name:'Hindi',native:'हिन्दी',flag:'🇮🇳',
-    'Sign In':'साइन इन','Register':'रजिस्टर','Username':'उपयोगकर्ता नाम',
-    'Password':'पासवर्ड','Logout':'लॉग आउट','Home':'🏠 होम',
-    'Matches':'📋 मैच','Live':'🔴 लाइव','Scores':'📊 स्कोर',
-    'History':'🏆 इतिहास','Admin':'⚙️ एडमिन','Save Tournament':'💾 सहेजें',
-    'Add Team':'✅ टीम जोड़ें','Schedule':'📅 शेड्यूल','Start':'▶ शुरू करें',
-    'WICKET':'⚡ विकेट','WIDE':'वाइड','NO BALL':'नो बॉल','BYE':'बाई','LEG BYE':'लेग बाई',
-    'Manage':'⚙️ प्रबंधन','Forgot password?':'पासवर्ड भूल गए?',
-    'Watch as Viewer':'👁 दर्शक के रूप में','How to Use':'📖 कैसे उपयोग करें',
-    'Tournament Name':'टूर्नामेंट का नाम','Team Name':'टीम का नाम',
-    'Player':'खिलाड़ी','Venue':'स्थान','Date':'तारीख','Umpire':'अंपायर',
+    'Home':'🏠 होम','Matches':'📋 मैच','Live':'🔴 लाइव','Scores':'📊 स्कोर','History':'🏆 इतिहास','Admin':'⚙️ एडमिन',
+    'Sign In':'साइन इन','Register':'रजिस्टर','Logout':'लॉग आउट',
+    'Username':'उपयोगकर्ता नाम','Password':'पासवर्ड','Your Name':'आपका नाम',
+    'Forgot password?':'पासवर्ड भूल गए?','Watch as Viewer':'👁 दर्शक के रूप में',
+    'How to Use':'📖 कैसे उपयोग करें','Language':'🌐 भाषा',
+    'Create Account':'खाता बनाएं →','Sign In →':'साइन इन →',
+    'Watch Live →':'👁 लाइव देखें →','Continue →':'जारी रखें →',
+    'Reset Password →':'पासवर्ड रीसेट →','Import & Sign In →':'📥 आयात & साइन इन →',
+    'Import from another device':'📥 दूसरे डिवाइस से आयात',
+    'Back to Sign In':'← साइन इन पर वापस',
+    'enter username':'आपका_उपयोगकर्ता_नाम','enter password':'••••••••',
+    'Security Question':'सुरक्षा प्रश्न','Your Answer':'आपका उत्तर',
+    'Tournament Name':'टूर्नामेंट का नाम','Edition':'संस्करण','Year':'वर्ष',
+    'Overs Format':'ओवर प्रारूप','Save Tournament':'💾 सहेजें',
+    'Team Name':'टीम का नाम','Team Code':'कोड (2-3 अक्षर)','City':'शहर',
+    'Add Team':'✅ टीम जोड़ें','Clear':'🗑 साफ करें',
+    'Player Name':'खिलाड़ी का नाम','Jersey #':'जर्सी नं.','Role':'भूमिका',
+    'Schedule Match':'📅 मैच शेड्यूल','+ Schedule':'+ शेड्यूल',
+    'Match Stage':'मैच चरण','Venue':'स्थान','Date':'तारीख',
+    'Umpires':'अंपायर','Start':'▶ शुरू करें','Edit':'✏️ संपादित करें','Delete':'हटाएं',
+    'Team A':'टीम A की XI','Team B':'टीम B की XI',
+    'DOT':'डॉट','WIDE':'वाइड','NO BALL':'नो बॉल','BYE':'बाई','LEG BYE':'लेग बाई',
+    'WICKET':'⚡ विकेट','Manage':'⚙️ खिलाड़ियों को प्रबंधित करें',
+    'Retired Hurt':'🚑 चोटिल होकर रिटायर','Ball-by-Ball':'🎯 गेंद-दर-गेंद',
+    'ON STRIKE':'★ स्ट्राइक पर','non-striker':'(नॉन-स्ट्राइकर)','Bowling':'(गेंदबाजी)',
+    'THIS OVER:':'इस ओवर:','Actions:':'⚡ कार्रवाइयाँ:',
+    'Target:':'🎯 लक्ष्य:','Need:':'चाहिए:','CRR:':'मौजूदा RR:','RRR:':'जरूरी RR:',
+    'P-ship:':'साझेदारी:','FoW:':'विकेट का पतन:',
+    'Toss Won By':'टॉस जीता','Decision':'निर्णय',
+    'Bat':'बल्लेबाजी','Bowl':'गेंदबाजी','Confirm Toss':'✅ टॉस पुष्टि करें',
+    'Batting Team':'बल्लेबाजी टीम','Bowling Team':'गेंदबाजी टीम',
+    'Select Opener 1':'ओपनर 1 चुनें','Select Opener 2':'ओपनर 2 चुनें',
+    'Opening Bowler':'शुरुआती गेंदबाज','Start Innings':'▶ पारी शुरू करें',
+    'Select Bowler':'नया गेंदबाज चुनें','Confirm Over':'✅ ओवर पुष्टि करें',
+    'Dismissal Type':'आउट होने का तरीका','Next Batsman':'अगला बल्लेबाज',
+    'Fielder Name':'क्षेत्ररक्षक का नाम','Confirm Wicket':'✅ विकेट पुष्टि करें',
+    'Set Striker':'स्ट्राइकर सेट करें','Set Non-Striker':'नॉन-स्ट्राइकर सेट करें',
+    'Change Bowler':'गेंदबाज बदलें','Apply':'✅ लागू करें',
+    'Completed Matches':'पूरे हुए मैच','Points Table':'अंक तालिका',
+    'Batting':'🏏 बल्लेबाजी','Bowling':'🎳 गेंदबाजी','Fielding':'🧤 क्षेत्ररक्षण','Awards':'🏅 पुरस्कार',
+    'Player (batting)':'खिलाड़ी','M':'म','Inn':'पारी','Runs':'रन','Balls':'गेंदें',
+    'Avg':'औसत','SR':'स्ट्राइक रेट','HS':'उच्च स्कोर','100s':'शतक','50s':'अर्धशतक','6s':'छक्के','4s':'चौके','Ducks':'डक','NO':'नॉट आउट',
+    'Wkts':'विकेट','Best':'सर्वश्रेष्ठ','Eco':'अर्थव्यवस्था','Mdns':'मेडन','Wds':'वाइड','NBs':'नो बॉल',
+    'Catches':'कैच','Stumpings':'स्टंपिंग','Run Outs':'रन आउट','Total':'कुल',
+    'Tournament Champion':'🏆 टूर्नामेंट चैंपियन','Orange Cap':'🟠 ऑरेंज कैप','Purple Cap':'🟣 पर्पल कैप',
+    'Man of the Match':'🏅 मैन ऑफ द मैच',
+    'Match Awards':'🏅 मैच पुरस्कार','Save Awards':'💾 पुरस्कार सहेजें','Skip':'छोड़ें',
+    'Tournament Details':'🏆 टूर्नामेंट विवरण','Add Teams':'➕ टीमें जोड़ें',
+    'Manage Players':'👤 खिलाड़ियों को प्रबंधित करें','Share Link':'🔗 शेयर लिंक',
+    'Export Account':'📤 खाता निर्यात','Import Account':'📥 खाता आयात',
+    'Copy Link':'📋 लिंक कॉपी करें','Open Link':'🔗 खोलें','Copy Code':'📋 कोड कॉपी करें',
+    'Player':'खिलाड़ी','Umpire':'अंपायर','Cancel':'रद्द करें','Close':'✕ बंद करें',
+    'Save':'सहेजें','Confirm':'पुष्टि करें','No Result':'कोई परिणाम नहीं',
+    'Language selected':'चुना गया',
   },
 };
 let CURRENT_LANG=lsGet('stumply_lang')||'en';
@@ -3982,35 +4393,146 @@ let CURRENT_LANG=lsGet('stumply_lang')||'en';
 function t(key){return(LANGS[CURRENT_LANG]||LANGS.en)[key]||key;}
 
 function applyLanguage(){
-  // Update topbar tabs
-  let tabMap={'home':'Home','matches':'Matches','live':'Live','scorecard':'Scores','history':'History','admin':'Admin'};
+  const L=LANGS[CURRENT_LANG]||LANGS.en;
+  document.documentElement.lang=CURRENT_LANG;
+
+  // ── Helper: set text preserving child elements (badges etc) ──────
+  function setText(el,txt){
+    if(!el)return;
+    // Remove only text nodes, keep element children
+    Array.from(el.childNodes).filter(n=>n.nodeType===3).forEach(n=>n.remove());
+    el.insertBefore(document.createTextNode(txt),el.firstChild);
+  }
+
+  // ── 1. Nav tab buttons ────────────────────────────────────────────
+  const tabMap={'home':'Home','matches':'Matches','live':'Live','scorecard':'Scores','history':'History','admin':'Admin'};
   document.querySelectorAll('.tab-btn').forEach(btn=>{
     let act=btn.getAttribute('data-action')||'';
     let tab=act.match(/showTab\('(\w+)'\)/)?.[1];
-    if(tab&&tabMap[tab]){
-      // Keep any badge spans
-      let badge=btn.querySelector('.live-badge');
-      btn.childNodes[0].textContent=t(tabMap[tab]);
-      if(badge)btn.appendChild(badge);
-    }
+    if(tab&&tabMap[tab])setText(btn,L[tabMap[tab]]||tabMap[tab]);
   });
-  // Auth labels
-  let authMap={'l-u-label':'Username','l-p-label':'Password'};
-  // Scoring buttons
-  let scoreMap={'btn-wide':'WIDE','btn-noball':'NO BALL','btn-bye':'BYE','btn-legbye':'LEG BYE'};
-  Object.entries(scoreMap).forEach(([id,key])=>{let el=document.getElementById(id);if(el)el.textContent=t(key);});
-  // Logout
-  let lo=document.querySelector('.btn-out[data-action="doLogout()"]');if(lo)lo.textContent=t('Logout');
-  // Extra buttons in live view — by data-action
-  document.querySelectorAll('.bex[data-action]').forEach(el=>{
-    let act=el.getAttribute('data-action')||'';
-    if(act.includes('wide'))el.textContent=t('WIDE');
-    else if(act.includes('noball'))el.textContent=t('NO BALL');
-    else if(act.includes('bye')&&!act.includes('legbye'))el.textContent=t('BYE');
-    else if(act.includes('legbye'))el.textContent=t('LEG BYE');
+
+  // ── 2. Stat sub-tabs ─────────────────────────────────────────────
+  const statTabMap={'stab-matches':'Completed Matches','stab-points':'Points Table',
+    'stab-batting':'Batting','stab-bowling':'Bowling','stab-fielding':'Fielding','stab-awards':'Awards'};
+  Object.entries(statTabMap).forEach(([id,key])=>{
+    let el=document.getElementById(id);if(el)el.textContent=L[key]||key;
   });
-  // Body lang attribute for font support
-  document.documentElement.lang=CURRENT_LANG;
+
+  // ── 3. Auth screen ────────────────────────────────────────────────
+  // Tab buttons
+  document.querySelectorAll('.atab').forEach(btn=>{
+    let act=btn.getAttribute('data-action')||'';
+    if(act.includes("'login'"))btn.textContent=L['Sign In']||'Sign In';
+    else if(act.includes("'reg'"))btn.textContent=L['Register']||'Register';
+  });
+  // Labels by element ID mapping
+  const labelMap={
+    'l-u':'l-u','l-p':'l-p',
+  };
+  // Find all .fg labels and translate by their content
+  document.querySelectorAll('.fg label, .mr label').forEach(lbl=>{
+    let txt=(lbl.textContent||'').trim();
+    if(L[txt])lbl.textContent=L[txt];
+  });
+  // Placeholders
+  const phMap={
+    'l-u':'enter username','l-p':'enter password',
+    'r-n':'Your Name','r-u':'enter username','r-p':'enter password','r-p2':'enter password',
+    'fp-u':'enter username','fp-answer':'Your Answer','fp-newpass':'enter password','fp-newpass2':'enter password',
+    'v-uname':'enter username',
+  };
+  Object.entries(phMap).forEach(([id,key])=>{
+    let el=document.getElementById(id);
+    if(el&&L[key])el.placeholder=L[key];
+  });
+  // Buttons in auth
+  const authBtnMap={
+    'btnpri-login':'Sign In →','btnpri-register':'Create Account',
+  };
+  // Translate primary buttons by their current text
+  document.querySelectorAll('.btnpri,.btnalt,.atab').forEach(btn=>{
+    let txt=(btn.textContent||'').trim().replace(/\s+/g,' ');
+    // Check against known English keys
+    let found=Object.entries(L).find(([k,v])=>k===txt);
+    if(found)btn.textContent=found[1];
+  });
+  // Forgot/viewer/back links
+  document.querySelectorAll('a[data-action]').forEach(a=>{
+    let txt=(a.textContent||'').trim();
+    if(L[txt])a.textContent=L[txt];
+    // Special cases
+    let act=a.getAttribute('data-action')||'';
+    if(act.includes('showForgot')&&L['Forgot password?'])a.textContent=L['Forgot password?'];
+    if(act.includes('showViewer')&&L['Watch as Viewer'])a.textContent=L['Watch as Viewer'];
+    if(act.includes('showLogin')&&txt.includes('Back'))a.textContent=L['Back to Sign In']||txt;
+    if(act.includes("'import'")&&txt.includes('Import'))a.textContent=L['Import from another device']||txt;
+  });
+
+  // ── 4. Topbar: Logout button ──────────────────────────────────────
+  let lo=document.querySelector('.btn-out');if(lo)lo.textContent=L['Logout']||'Logout';
+
+  // ── 5. Live scoring buttons ───────────────────────────────────────
+  // Extra buttons (Wide/No Ball/Bye/Leg Bye)
+  document.querySelectorAll('.bex').forEach(el=>{
+    let act=el.getAttribute('data-action')||el.getAttribute('onclick')||'';
+    let txt=(el.textContent||'').trim();
+    if(act.includes('wide')||txt==='WIDE'||txt===L['WIDE'])el.textContent=L['WIDE']||'WIDE';
+    else if(act.includes('noball')||txt==='NO BALL'||txt===L['NO BALL'])el.textContent=L['NO BALL']||'NO BALL';
+    else if(act.includes('legbye')||txt==='LEG BYE'||txt===L['LEG BYE'])el.textContent=L['LEG BYE']||'LEG BYE';
+    else if(act.includes('bye')||txt==='BYE'||txt===L['BYE'])el.textContent=L['BYE']||'BYE';
+  });
+  // Wicket button
+  document.querySelectorAll('.bwkt').forEach(el=>{
+    el.textContent=L['WICKET']||'⚡ WICKET';
+  });
+
+  // ── 6. All .ch section headings ───────────────────────────────────
+  document.querySelectorAll('.ch').forEach(el=>{
+    let txt=(el.textContent||'').trim();
+    if(L[txt])el.textContent=L[txt];
+  });
+
+  // ── 7. All .stitle page titles ────────────────────────────────────
+  document.querySelectorAll('.stitle').forEach(el=>{
+    let txt=(el.textContent||'').trim();
+    if(L[txt])el.textContent=L[txt];
+  });
+
+  // ── 8. All .mt modal titles ───────────────────────────────────────
+  document.querySelectorAll('.mt').forEach(el=>{
+    let txt=(el.textContent||'').trim();
+    if(L[txt])el.textContent=L[txt];
+  });
+
+  // ── 9. All buttons — translate by current text ────────────────────
+  document.querySelectorAll('button:not(.tab-btn):not(.atab):not(.stab-btn):not(.lang-opt *):not(.sbtn)').forEach(btn=>{
+    let txt=(btn.textContent||'').trim().replace(/\s+/g,' ');
+    if(L[txt])btn.textContent=L[txt];
+  });
+
+  // ── 10. All form labels ───────────────────────────────────────────
+  document.querySelectorAll('label').forEach(lbl=>{
+    let txt=(lbl.textContent||'').trim();
+    if(L[txt])lbl.textContent=L[txt];
+  });
+
+  // ── 11. How to Use / Language buttons on auth screen ─────────────
+  document.querySelectorAll('[data-action*="demo-mo"], [data-action*="openLangModal"]').forEach(btn=>{
+    let txt=(btn.textContent||'').trim();
+    if(txt.includes('How to')||txt.includes('Use'))btn.textContent=L['How to Use']||txt;
+    if(txt.includes('Language')||txt.includes('🌐'))btn.textContent=L['Language']||txt;
+  });
+
+  // ── 12. Language button in topbar ─────────────────────────────────
+  let langBtn=document.getElementById('lang-btn');
+  if(langBtn)langBtn.title=L['Language']||'Language';
+
+  // ── 13. Re-render live view if active (updates dynamic labels) ────
+  try{
+    let liveView=document.getElementById('view-live');
+    if(liveView&&liveView.classList.contains('active'))renderLive();
+  }catch(e){}
 }
 
 function openLangModal(){
@@ -4236,6 +4758,217 @@ function determineWinner(m){
 
 // ── Update bindActions ALLOWED whitelist ─────────────────────────────────
 // (done via the existing ALLOWED object — just add new functions)
+// ══════════════════════════════════════════════════════════════════════════
+//  CLOUD SYNC — Firebase Realtime Database
+//  Enables real-time sync across ALL devices (iPhone/Android/laptop/tablet)
+//  Free tier: 1GB storage, 10GB/month — plenty for cricket tournaments
+// ══════════════════════════════════════════════════════════════════════════
+const LS_FB_URL = 'stumply_fb_url';  // stored Firebase DB URL
+let FB_URL = null;      // active Firebase base URL
+let FB_PUSH_TIMER = null;
+let FB_PULL_TIMER = null;
+let _fbConnected = false;
+
+function fbUrl(path){ return FB_URL ? FB_URL.replace(/\/$/, '') + path + '.json' : null; }
+
+// ── Connect to Firebase ───────────────────────────────────────────────
+function connectFirebase(){
+  let inp = document.getElementById('firebase-url-input');
+  let err = document.getElementById('firebase-err');
+  if(err) err.textContent = '';
+  let url = (inp ? inp.value : '').trim().replace(/\/$/, '');
+  if(!url){ if(err) err.textContent = 'Please enter your Firebase Database URL'; return; }
+  if(!url.startsWith('https://') || !url.includes('firebaseio.com')){
+    if(err) err.textContent = 'URL must be: https://your-project-default-rtdb.firebaseio.com'; return;
+  }
+  // Test the connection with a small write
+  let testUrl = url + '/stumply_test.json';
+  fetch(testUrl, {method:'PUT', body:JSON.stringify({ts:Date.now()}), headers:{'Content-Type':'application/json'}})
+    .then(r => r.ok ? r.json() : Promise.reject('HTTP '+r.status))
+    .then(() => {
+      FB_URL = url;
+      lsSet(LS_FB_URL, url);
+      _fbConnected = true;
+      updateCloudStatus('connected');
+      if(inp) inp.value = '';
+      document.getElementById('firebase-setup-panel').style.display = 'none';
+      document.getElementById('firebase-connected-panel').style.display = '';
+      toast('☁️ Firebase connected! Syncing now...');
+      // Push current data up immediately
+      pushToFirebase();
+      // Start pull polling
+      startFirebasePull();
+    })
+    .catch(e => {
+      if(err) err.textContent = 'Connection failed. Check URL and make sure Realtime Database is enabled in test mode. Error: '+e;
+      updateCloudStatus('error');
+    });
+}
+
+function disconnectFirebase(){
+  FB_URL = null;
+  lsSet(LS_FB_URL, '');
+  _fbConnected = false;
+  if(FB_PULL_TIMER){ clearInterval(FB_PULL_TIMER); FB_PULL_TIMER = null; }
+  updateCloudStatus('disconnected');
+  document.getElementById('firebase-setup-panel').style.display = '';
+  document.getElementById('firebase-connected-panel').style.display = 'none';
+  toast('Disconnected from Firebase');
+}
+
+function updateCloudStatus(state){
+  let dot = document.getElementById('cloud-dot');
+  let txt = document.getElementById('cloud-status-txt');
+  if(!dot || !txt) return;
+  const states = {
+    'connected':    ['#22a03c', '☁️ Cloud sync active — all devices syncing automatically'],
+    'syncing':      ['#f0a030', '🔄 Syncing...'],
+    'error':        ['#e84040', '⚠ Sync error — check Firebase URL'],
+    'disconnected': ['#9e9e9e', 'Not connected — scores saved on this device only'],
+    'offline':      ['#f0a030', '📡 Offline — will sync when connection returns'],
+  };
+  let [color, message] = states[state] || states['disconnected'];
+  dot.style.background = color;
+  txt.textContent = message;
+}
+
+// ── Push data TO Firebase ─────────────────────────────────────────────
+function pushToFirebase(){
+  if(!FB_URL || !APP.uname) return;
+  let url = fbUrl('/users/'+APP.uname);
+  if(!url) return;
+  let payload = {
+    name:    APP.dname,
+    hash:    getUsers()[APP.uname]?.hash || '',
+    data: {
+      tournament: APP.tournament,
+      teams:      APP.teams,
+      matches:    APP.matches,
+      liveId:     APP.liveMatch ? APP.liveMatch.id : null,
+      _savedAt:   Date.now(),
+    }
+  };
+  updateCloudStatus('syncing');
+  fetch(url, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+    headers: {'Content-Type':'application/json'}
+  })
+  .then(r => r.ok ? updateCloudStatus('connected') : updateCloudStatus('error'))
+  .catch(() => updateCloudStatus('offline'));
+}
+
+// ── Pull data FROM Firebase (for viewer or login on new device) ────────
+function pullFromFirebase(uname, callback){
+  if(!FB_URL) { callback(null); return; }
+  let url = fbUrl('/users/'+uname);
+  if(!url){ callback(null); return; }
+  fetch(url)
+    .then(r => r.ok ? r.json() : null)
+    .then(data => callback(data))
+    .catch(() => callback(null));
+}
+
+// ── Pull live data for VIEWER (cross-device real-time) ────────────────
+function pullLiveFromFirebase(viewUser, callback){
+  if(!FB_URL){ callback(null); return; }
+  let url = fbUrl('/users/'+viewUser);
+  fetch(url)
+    .then(r => r.ok ? r.json() : null)
+    .then(data => callback(data))
+    .catch(() => callback(null));
+}
+
+// ── Start Firebase pull polling for viewer ────────────────────────────
+function startFirebasePull(){
+  if(FB_PULL_TIMER) clearInterval(FB_PULL_TIMER);
+  FB_PULL_TIMER = setInterval(()=>{
+    if(!APP.viewUser || !FB_URL) return;
+    pullLiveFromFirebase(APP.viewUser, fbData => {
+      if(!fbData || !fbData.data) return;
+      let d = fbData.data;
+      let newTs = d._savedAt || 0;
+      if(newTs <= APP._liveTs) return; // no new data
+      APP.tournament = d.tournament || APP.tournament;
+      if(!APP.tournament.overs) APP.tournament.overs = 20;
+      APP.teams   = d.teams   || APP.teams;
+      APP.matches = d.matches || APP.matches;
+      APP.liveMatch = d.liveId ? (APP.matches.find(m=>m.id===d.liveId)||null) : null;
+      APP._liveTs = newTs;
+      APP.dname   = fbData.name || APP.viewUser;
+      // Trigger UI update
+      let hasLive = APP.matches.some(m=>m.status==='live');
+      document.getElementById('livebadge').classList.toggle('hidden', !hasLive);
+      renderHome(); renderMatches(); renderLive(); populateSCSelect();
+      if(hasLive && APP.liveMatch){
+        let lv = document.getElementById('view-live');
+        if(lv && !lv.classList.contains('active')) showTab('live');
+      }
+    });
+  }, 1500); // poll every 1.5s from Firebase
+}
+
+// ── syncNow: manual push ──────────────────────────────────────────────
+function syncNow(){
+  if(!FB_URL){ toast('Connect Firebase first'); return; }
+  pushToFirebase();
+  toast('🔄 Syncing to cloud...');
+}
+
+// ── Init Firebase on load ─────────────────────────────────────────────
+function initFirebase(){
+  let savedUrl = lsGet(LS_FB_URL);
+  if(!savedUrl) return;
+  FB_URL = savedUrl;
+  _fbConnected = true;
+  updateCloudStatus('connected');
+  // Update admin panel UI if visible
+  let setupPanel = document.getElementById('firebase-setup-panel');
+  let connPanel  = document.getElementById('firebase-connected-panel');
+  if(setupPanel) setupPanel.style.display = 'none';
+  if(connPanel)  connPanel.style.display  = '';
+  // If viewer, start Firebase pull
+  if(APP.role === 'viewer' && APP.viewUser) startFirebasePull();
+}
+
+// ── Patch saveState to also push to Firebase ─────────────────────────
+const _origSaveState = saveState;
+function saveState(){
+  _origSaveState();
+  // Push to Firebase (debounced — max once per 500ms)
+  if(FB_URL && APP.uname){
+    if(FB_PUSH_TIMER) clearTimeout(FB_PUSH_TIMER);
+    FB_PUSH_TIMER = setTimeout(pushToFirebase, 500);
+  }
+}
+
+// ── Patch loginAs to pull from Firebase first (cross-device login) ─────
+const _origLoginAs = loginAs;
+function loginAs(uname, name){
+  // Try to load from Firebase first if connected
+  if(FB_URL){
+    let fbUrlForUser = fbUrl('/users/'+uname);
+    if(fbUrlForUser){
+      fetch(fbUrlForUser)
+        .then(r => r.ok ? r.json() : null)
+        .then(fbData => {
+          if(fbData && fbData.data && (fbData.data._savedAt||0) > (userGet(uname)?.data?._savedAt||0)){
+            // Firebase has newer data — merge it to localStorage first
+            let users = getUsers();
+            if(!users[uname]) users[uname] = {hash:fbData.hash||'',name:fbData.name||name,secQ:'',secA:'',data:null};
+            users[uname].data = fbData.data;
+            putUsers(users);
+            toast('☁️ Loaded latest data from cloud');
+          }
+          _origLoginAs(uname, name);
+        })
+        .catch(() => _origLoginAs(uname, name));
+      return;
+    }
+  }
+  _origLoginAs(uname, name);
+}
+
 // ══════════════════════════════════════════════════════════════════════════
 //  EXPORT / IMPORT ACCOUNT (cross-device support)
 // ══════════════════════════════════════════════════════════════════════════
