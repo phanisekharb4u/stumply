@@ -1,14 +1,39 @@
 # Stumply
 
-Local cricket tournament app: teams, fixtures, ball-by-ball live scoring, scorecards, points table, stats and awards.
+Cricket tournament app: teams, fixtures, ball-by-ball live scoring, scorecards, points table, stats and awards.
 
-- **Admin** registers on their device and scores matches.
-- **Viewers** open the share link from the Admin tab (`?view=<username>`). For viewers on other devices, connect cloud sync in the Admin tab first; the share link then includes the sync address.
+- **Admins** register with an email and password, can run any number of tournaments, and score matches.
+- **Viewers** need no account. They open a tournament's share link (`?t=<id>`, from the Admin tab) or enter the admin's username, and scores update live.
+- Only the owner of a tournament can change it. This is enforced by the database rules, not by the page.
+
+## One-time Firebase setup
+
+1. Go to <https://console.firebase.google.com>, create a project (Analytics not needed).
+2. **Build → Authentication → Get started → Sign-in method → Email/Password → Enable.**
+3. **Build → Realtime Database → Create database.** Pick a location, start in **locked mode**.
+4. In Realtime Database open the **Rules** tab, replace everything with the contents of `database.rules.json`, and **Publish**.
+5. **Project settings (gear icon) → General → Your apps → Web (`</>`)**, register an app, and copy `apiKey` and `databaseURL` from the config shown.
+6. Paste those two values into `firebase-config.js` and deploy.
 
 ## Deploy
-Static site: `index.html`, `sw.js`, `manifest.json`, icons. `vercel.json` sets the Content-Security-Policy.
+
+Static site, no build step: `index.html`, `firebase-config.js`, `sw.js`, `manifest.json`, icons. `vercel.json` sets the Content-Security-Policy.
+
+## Data layout
+
+| Path | Who can read | Who can write |
+|---|---|---|
+| `/tournaments/{id}` | anyone | its owner |
+| `/userTournaments/{uid}` (list shown to viewers) | anyone | that user |
+| `/usernames/{name}` → uid | anyone | first to claim it |
+| `/users/{uid}` (name, username) | that user | that user |
+
+## Moving from the earlier version
+
+The earlier version kept accounts and data in the browser. After registering, open the **Admin** tab on the device you used before: a "Data found on this device" card offers to import each old tournament into your new account.
 
 ## Known limits
-- Accounts and data live in the admin's browser storage; admin rights are not enforced by a server.
-- Cloud sync uses a Firebase Realtime Database in test mode, which anyone with the address can read or write.
-- One tournament per account; 11-a-side only.
+
+- 11-a-side only.
+- One scorer at a time per tournament; if two devices score the same match, the last save wins.
+- Notifications fire only while the app is open; there is no push server.
