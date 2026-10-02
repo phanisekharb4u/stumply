@@ -407,29 +407,29 @@ tr:hover td{background:#f0faff}
 /* Batsman/Bowler cards */
 .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .bcard{
-  background:rgba(255,255,255,.08);
+  background:#12324a;
   border:1px solid rgba(255,255,255,.12);
   border-radius:10px;padding:12px;position:relative;
   backdrop-filter:blur(4px);
 }
 .bcard.sk{
-  border-color:rgba(240,180,0,.5);
-  background:rgba(240,180,0,.08);
+  border-color:rgba(240,180,0,.7);
+  background:#1c3a2a;
   box-shadow:0 0 0 1px rgba(240,180,0,.2);
 }
 .skm{position:absolute;top:6px;right:8px;font-family:var(--mono);font-size:9px;color:var(--gold2);font-weight:700}
 .bnm{font-family:var(--disp);font-size:14px;color:#fff;margin-bottom:4px;letter-spacing:.5px}
-.bst{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.5)}
+.bst{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.75)}
 .bst span{color:var(--gold2);font-size:13px;font-weight:700}
 .bwlcard{
-  background:rgba(21,101,192,.15);
+  background:#102a4a;
   border:1px solid rgba(41,121,212,.3);
   border-radius:10px;padding:12px;margin-bottom:12px;
 }
 .bwlnm{font-family:var(--disp);font-size:14px;color:#7eb8ff;margin-bottom:4px;letter-spacing:.5px}
 
 /* Over log balls */
-.overlog{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.overlog{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;align-items:center;background:#12324a;border-radius:10px;padding:8px 10px;min-height:44px}
 .ball{
   width:30px;height:30px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
@@ -444,16 +444,16 @@ tr:hover td{background:#f0faff}
 .ball.wkt{background:rgba(192,57,43,.3);border-color:#c0392b;color:#ff8a80;font-weight:900;box-shadow:0 0 8px rgba(192,57,43,.4)}
 .ball.wide,.ball.nb{background:rgba(212,114,10,.2);border-color:rgba(212,114,10,.6);color:#ffb74d;font-size:9px}
 .ball.fh{background:rgba(26,122,46,.3);border-color:var(--em2);color:#69f0ae;font-size:8px}
-.olbl{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.35);margin-right:4px}
+.olbl{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7);margin-right:4px}
 
 /* Run rate bar */
 .rbar{
   display:flex;gap:14px;flex-wrap:wrap;
-  background:rgba(255,255,255,.06);
+  background:#12324a;
   border:1px solid rgba(255,255,255,.10);
   border-radius:8px;padding:8px 14px;margin-bottom:12px;
 }
-.ri{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.45)}
+.ri{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.75)}
 .ri span{color:var(--em2);font-size:12px;font-weight:700}
 
 /* Scoring buttons */
@@ -1418,7 +1418,9 @@ tr:hover td{background:#f0faff}
 <div class="mo" id="ex-mo">
   <div class="mb">
     <div class="mt gold" id="ex-title">Extra</div>
-    <div class="mr"><label>Runs off this delivery</label><input class="ifield" id="ex-runs" type="number" value="1" min="0" max="7"></div>
+    <div class="mr"><label>Runs off this delivery</label><input class="ifield" id="ex-runs" type="number" value="1" min="1" max="8" inputmode="numeric">
+      <div id="ex-hint" style="font-size:11px;color:var(--dim);margin-top:5px"></div></div>
+    <div class="mr" id="ex-bat-row" style="display:none"><label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px"><input type="checkbox" id="ex-bat" style="width:18px;height:18px"> Runs came off the bat (credit the batter)</label></div>
     <div class="mact">
       <button class="bsm bgld" data-action="confirmExtra()">✔ OK</button>
       <button class="bsm bdng" data-action="closeM('ex-mo')">✕ Cancel</button>
@@ -1817,7 +1819,7 @@ function loadViewerState(){
       let newTs=d._savedAt||0;
       // Always reload if: new timestamp OR live match in progress (score changes every ball)
       let hasLiveInData=!!(d.liveId);
-      if(newTs<=APP._liveTs&&APP.teams.length>0&&!hasLiveInData)return false; // no change
+      if(newTs<=APP._liveTs&&APP.teams.length>0)return false; // no change
       APP.tournament=d.tournament||{name:'Tournament',edition:'Season 1',year:2026,overs:20};
       if(!APP.tournament.overs)APP.tournament.overs=20;
       APP.teams=d.teams||[];
@@ -1839,6 +1841,18 @@ function loadViewerState(){
     return true;
   }catch{return false;}
 }
+// Refresh whatever the viewer is looking at; jump to Live only ONCE when a
+// new match goes live, so they stay free to browse scorecards and stats.
+let _autoNavLiveId=null;
+function viewerAfterUpdate(hasLive){
+  let a=activeTabName();
+  if(a==='scorecard')renderSC();
+  else if(a==='history')renderHistory();
+  if(hasLive&&APP.liveMatch&&_autoNavLiveId!==APP.liveMatch.id){
+    _autoNavLiveId=APP.liveMatch.id;
+    if(a!=='live')showTab('live');
+  }
+}
 function startSync(){
   if(syncTimer)clearInterval(syncTimer);
 
@@ -1853,12 +1867,7 @@ function startSync(){
     populateSCSelect();
     // Render live view — always, so score is ready when viewer switches tab
     renderLive();
-    // If a match is live, auto-navigate viewer to Live tab
-    if(hasLive && APP.liveMatch){
-      let liveTab=document.getElementById('view-live');
-      let alreadyOnLive=liveTab&&liveTab.classList.contains('active');
-      if(!alreadyOnLive) showTab('live');
-    }
+    viewerAfterUpdate(hasLive);
   }
 
   // 1) Immediate sync on start
@@ -1879,7 +1888,7 @@ function startSync(){
 // ══════════════════════════════════════════════════════════════════════════
 //  SAVE / LOAD per-user
 // ══════════════════════════════════════════════════════════════════════════
-function saveState(){
+function _baseSaveState(){
   if(APP.role!=='admin'||!APP.uname)return;
   userSave(APP.uname,{
     tournament:APP.tournament,teams:APP.teams,matches:APP.matches,
@@ -2091,7 +2100,7 @@ function doLogin(){
     err.textContent='Login error. Please check your internet connection and try again.';
   });
 }
-function loginAs(uname,name){
+function _baseLoginAs(uname,name){
   try{
     APP.role='admin';APP.uname=uname;APP.dname=name;
     if(!loadState(uname)||!APP.teams.length){
@@ -2160,6 +2169,8 @@ function doLogout(){
   let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
   let vu=document.getElementById('v-uname');if(vu)vu.value='';
   let ve=document.getElementById('v-err');if(ve)ve.textContent='';
+  let ro=document.getElementById('r-ok');if(ro)ro.textContent='';
+  switchTab('login'); // always return to the sign-in panel
 }
 function initApp(){
   try{
@@ -2208,7 +2219,8 @@ function initApp(){
   CURRENT_LANG=lsGet('stumply_lang')||'en';
   setTimeout(applyLanguage,150);
   setTimeout(initFirebase,300);
-  showTab('home');
+  if(APP.role==='viewer'&&APP.liveMatch){_autoNavLiveId=APP.liveMatch.id;showTab('live');}
+  else showTab('home');
   }catch(e){
     console.error('initApp error:',e);
     // Ensure auth screen is hidden and app is shown even if something fails
@@ -2321,7 +2333,7 @@ function updateShareLink(){
   let el=document.getElementById('share-url');if(!el||!APP.uname)return;
   let base=getBaseUrl();
   if(base){
-    el.value=base+'?view='+encodeURIComponent(APP.uname);
+    el.value=base+'?view='+encodeURIComponent(APP.uname)+(FB_URL?'&db='+encodeURIComponent(FB_URL):'');
     el.style.color='var(--em)';
     el.removeAttribute('title');
   } else {
@@ -2657,17 +2669,17 @@ function renderMatches(){
         let mt=m.matchType||'League';
     let mtColor=mt==='Final'?'var(--gold)':mt==='Semi Final'?'var(--purple)':mt==='Quarter Final'||mt==='Round of 16'?'var(--blue)':mt.startsWith('Group')?'var(--amber)':'var(--em)';
     let mtBg=mt==='Final'?'rgba(240,192,64,.2)':mt==='Semi Final'?'rgba(160,64,240,.2)':mt==='Quarter Final'||mt==='Round of 16'?'rgba(64,144,240,.2)':mt.startsWith('Group')?'rgba(240,160,48,.2)':'rgba(0,201,122,.15)';
-    let stageBadge=`<span style="font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:8px;background:${mtBg};color:${mtColor};border:1px solid ${mtColor};margin-right:4px">${mt.toUpperCase()}</span>`;
+    let stageBadge=`<span style="font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:8px;background:${mtBg};color:${mtColor};border:1px solid ${mtColor};margin-right:4px">${esc(mt.toUpperCase())}</span>`;
     let stag=m.status==='live'?'<span class="tag tr">🔴 LIVE</span>':m.status==='completed'?'<span class="tag tg">✅ DONE</span>':'<span class="tag tb">UPCOMING</span>';
-    let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`<div style="font-family:var(--mono);font-size:11px;color:var(--dim)">${t?t.code:'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})</div>`;}).join('');
-    let wr=m.resultText?`<div style="color:var(--em);font-size:12px;margin-top:3px">🏆 ${m.resultText}</div>`:'';
+    let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`<div style="font-family:var(--mono);font-size:11px;color:var(--dim)">${t?esc(t.code):'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})</div>`;}).join('');
+    let wr=m.resultText?`<div style="color:var(--em);font-size:12px;margin-top:3px">🏆 ${esc(m.resultText)}</div>${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:11px;color:var(--dim);margin-top:2px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}`:'';
     let ab='';
     if(APP.role==='admin'){
       if(m.status==='scheduled'){
         ab+=`<button class="bsm bgld" onclick="startMatch('${m.id}')">▶ Start</button>`;
         ab+=`<button class="bsm bblu" onclick="openEditMatch('${m.id}')">✏️ Edit</button>`;
         ab+=`<button class="bsm bdng" onclick="deleteMatch('${m.id}')">🗑 Delete</button>`;
-        let prev=APP.matches.slice(0,idx).findLast(x=>x.status==='scheduled');
+        let prev=APP.matches.slice(0,idx).reverse().find(x=>x.status==='scheduled');
         let next=APP.matches.slice(idx+1).find(x=>x.status==='scheduled');
         if(prev)ab+=`<button class="bsm" style="background:var(--bg2);color:var(--dim);border:1px solid var(--bdr);padding:6px 9px" onclick="moveMatch('${m.id}',-1)" title="Move up">↑</button>`;
         if(next)ab+=`<button class="bsm" style="background:var(--bg2);color:var(--dim);border:1px solid var(--bdr);padding:6px 9px" onclick="moveMatch('${m.id}',1)" title="Move down">↓</button>`;
@@ -2679,7 +2691,7 @@ function renderMatches(){
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
           ${stageBadge}
-          <div style="font-family:var(--disp);font-size:14px">${tA.name} <span style="color:var(--dim)">vs</span> ${tB.name}</div>
+          <div style="font-family:var(--disp);font-size:14px">${esc(tA.name)} <span style="color:var(--dim)">vs</span> ${esc(tB.name)}</div>
         </div>
         <div style="margin-left:auto">${stag}</div>
       </div>
@@ -2754,7 +2766,7 @@ function startMatch(mid){
   let m=APP.matches.find(x=>x.id===mid);if(!m)return;
   let live=APP.matches.find(x=>x.status==='live');
   if(live&&live.id!==mid){toast('A match is already live!');return;}
-  APP.liveMatch=m;m.status='live';
+  APP.liveMatch=m;m.status='live';_undoStack=[];
   let opts=[m.teamAId,m.teamBId].map(id=>{let t=APP.teams.find(x=>x.id===id);return`<option value="${id}">${esc(t?t.name:id)}</option>`;}).join('');
   document.getElementById('toss-w').innerHTML=opts;
   openM('toss-mo');
@@ -2846,7 +2858,7 @@ function openManage(){
   let bwlPlayers2=getMatchXI(m,inn.bowlingTeamId);
   let bwlOpts=bwlPlayers2.map(p=>{
     let b=inn.bowlers[p.id],used=b?b.overs:0,bmx=bowlerMaxOvers(APP.tournament.overs||20),maxed=used>=bmx;
-    return`<option value="${p.id}" ${p.id===inn.currentBowler?'selected':''} ${maxed?'disabled':''}>${p.name} — ${used} ov${maxed?' ⛔('+bmx+')':p.id===inn.currentBowler?' (current)':''}</option>`;
+    return`<option value="${p.id}" ${p.id===inn.currentBowler?'selected':''} ${maxed?'disabled':''}>${esc(p.name)} — ${used} ov${maxed?' ⛔('+bmx+')':p.id===inn.currentBowler?' (current)':''}</option>`;
   }).join('');
   document.getElementById('mg-bwl').innerHTML=bwlOpts;
   document.getElementById('mg-bwarn').textContent='';
@@ -2882,8 +2894,39 @@ function applyBowler(){
 // ══════════════════════════════════════════════════════════════════════════
 //  SCORING ENGINE  (ICC rules)
 // ══════════════════════════════════════════════════════════════════════════
+// ── Undo: snapshot of the live match taken before every scoring action ──
+let _undoStack=[];
+let _inn2Timer=null;
+function pushUndo(){
+  let m=APP.liveMatch;if(!m)return;
+  try{
+    _undoStack.push({id:m.id,snap:JSON.stringify(m),fh:!!APP.pendingFreeHit});
+    if(_undoStack.length>30)_undoStack.shift();
+  }catch(e){}
+}
+function undoLast(){
+  if(APP.role!=='admin'){toast('Only admin can score');return;}
+  let u=_undoStack.pop();
+  if(!u){toast('Nothing to undo','warn');return;}
+  let idx=APP.matches.findIndex(x=>x.id===u.id);
+  if(idx<0||APP.matches.some(x=>x.status==='live'&&x.id!==u.id)){_undoStack=[];toast('Nothing to undo','warn');return;}
+  if(_inn2Timer){clearTimeout(_inn2Timer);_inn2Timer=null;}
+  let m=JSON.parse(u.snap);
+  APP.matches[idx]=m;APP.liveMatch=m;
+  APP.pendingFreeHit=u.fh;APP.pendingExtra=null;
+  ['nov-mo','ins-mo','wkt-mo','ex-mo','mg-mo','motm-mo','tourn-complete-mo'].forEach(id=>{let e=document.getElementById(id);if(e)e.classList.remove('on');});
+  try{closeCelebration();}catch(e){}
+  document.getElementById('livebadge').classList.remove('hidden');
+  saveState();renderLive();renderMatches();renderHistory();populateSCSelect();renderHome();
+  toast('↩ Last entry undone');
+}
+// Second innings ends as soon as the target is reached
+function checkChase(inn){
+  if(inn&&!inn.completed&&inn.number===2&&inn.target&&inn.runs>=inn.target)endInnings();
+}
 function addRun(r){
   if(!canScore())return;
+  pushUndo();
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   inn.runs+=r;
   let bs=inn.batsmen[inn.striker];
@@ -2900,6 +2943,7 @@ function addRun(r){
     if(prev<100&&curr>=100) notifyCentury(bs.name,curr);
     else if(prev<50&&curr>=50) notifyHalfCentury(bs.name,curr);
   }
+  checkChase(inn);
   flashScore();afterScore();
 }
 function addExtra(type){
@@ -2907,28 +2951,62 @@ function addExtra(type){
   APP.pendingExtra=type;
   document.getElementById('ex-title').textContent=type==='wide'?'Wide':type==='noball'?'No Ball':type==='bye'?'Bye':'Leg Bye';
   document.getElementById('ex-runs').value=1;
+  let br=document.getElementById('ex-bat-row');if(br)br.style.display=type==='noball'?'':'none';
+  let bc2=document.getElementById('ex-bat');if(bc2)bc2.checked=false;
+  let hint=document.getElementById('ex-hint');
+  if(hint)hint.textContent=(type==='wide'||type==='noball')
+    ?'Total for this delivery, including the 1 penalty run. Example: '+(type==='wide'?'wide + 2 run':'no ball + 2 run')+' = 3.'
+    :'Runs taken as '+(type==='bye'?'byes':'leg byes')+'.';
   openM('ex-mo');
 }
 function confirmExtra(){
-  let type=APP.pendingExtra,runs=parseInt(document.getElementById('ex-runs').value)||1;
+  let type=APP.pendingExtra,runs=parseInt(document.getElementById('ex-runs').value);
+  if(isNaN(runs)||runs<1)runs=1;
+  if(runs>8)runs=8;
+  let offBat=type==='noball'&&!!document.getElementById('ex-bat')?.checked;
   closeM('ex-mo');
+  if(!type||!canScore())return;
+  pushUndo();
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
-  inn.runs+=runs;inn.extras.total+=runs;inn.extras[type]=(inn.extras[type]||0)+runs;
   let bw=inn.bowlers[inn.currentBowler];
-  if(bw){bw.runs+=runs;if(type==='wide')bw.wides++;if(type==='noball')bw.noballs++;}
-  inn.currentPartnership.runs+=runs;
+  let bs=inn.batsmen[inn.striker];
+  inn.runs+=runs;inn.currentPartnership.runs+=runs;
   if(type==='wide'||type==='noball'){
+    // 1 penalty run + anything the batters ran / hit
+    let taken=runs-1;
+    let batRuns=offBat?taken:0;
+    let exRuns=runs-batRuns;
+    inn.extras.total+=exRuns;inn.extras[type]=(inn.extras[type]||0)+exRuns;
+    if(type==='wide'){
+      if(bw){bw.runs+=runs;bw.wides++;}
+    } else {
+      // No ball: bowler is charged the penalty and runs off the bat (not byes)
+      if(bw){bw.runs+=1+batRuns;bw.noballs++;}
+      if(bs){
+        bs.balls++;bs.runs+=batRuns;
+        if(batRuns===4)bs.fours++;if(batRuns===6)bs.sixes++;
+        let prev=bs.runs-batRuns;
+        if(prev<100&&bs.runs>=100)notifyCentury(bs.name,bs.runs);
+        else if(prev<50&&bs.runs>=50)notifyHalfCentury(bs.name,bs.runs);
+      }
+      APP.pendingFreeHit=true;
+    }
     inn.thisOver.push(type==='wide'?'wd':'nb');
-    if(type==='noball')APP.pendingFreeHit=true;
-    if(runs%2===1)swapEnds(inn);
+    // Strike changes only on runs actually taken, not on the penalty run
+    if(taken%2===1)swapEnds(inn);
     // wide/noball: NO advBall — not a legal delivery
   } else {
+    // Byes / leg byes: legal delivery, not charged to the bowler
+    inn.extras.total+=runs;inn.extras[type]=(inn.extras[type]||0)+runs;
     inn.currentPartnership.balls++;
     inn.thisOver.push(type==='bye'?`B${runs}`:`LB${runs}`);
-    let bs=inn.batsmen[inn.striker];if(bs)bs.balls++;
-    advBall(inn); // bye/legbye ARE legal deliveries
+    if(bs)bs.balls++;
+    APP.pendingFreeHit=false;
+    advBall(inn);
     if(runs%2===1)swapEnds(inn);
   }
+  APP.pendingExtra=null;
+  checkChase(inn);
   flashScore();afterScore();
 }
 function triggerWicket(){
@@ -2958,6 +3036,8 @@ function onDismChange(){
   document.getElementById('wkt-rorow').style.display=t==='Run Out'?'':'none';
 }
 function confirmWicket(){
+  if(!canScore()){closeM('wkt-mo');return;}
+  pushUndo();
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   let type=document.getElementById('wkt-type').value;
   let fielder=document.getElementById('wkt-fld').value.trim();
@@ -2969,14 +3049,17 @@ function confirmWicket(){
   let bname=bw?bw.name:'?';
   let dstr=buildDism(type,bname,fielder);
   let bs=inn.batsmen[dismissedId];
-  if(bs){bs.status='out';bs.dismissal=dstr;bs.balls++;}
+  if(bs){bs.status='out';bs.dismissal=dstr;}
+  // The striker faced this ball, whoever is dismissed
+  let facer=inn.batsmen[inn.striker];if(facer)facer.balls++;
+  inn.currentPartnership.balls++;
+  APP.pendingFreeHit=false;
   if(['Bowled','Caught','LBW','Stumped','Hit Wicket'].includes(type)&&bw)bw.wickets++;
   inn.wickets++;
   inn.fallOfWickets.push({score:inn.runs,wicket:inn.wickets,batsman:dname,over:ov(inn)});
   inn.partnerships.push({...inn.currentPartnership});
   inn.currentPartnership={runs:0,balls:0};
   inn.thisOver.push('W');
-  if(bw)bw.balls++;
   advBall(inn);
   closeM('wkt-mo');
   if(inn.wickets>=10){endInnings();return;}
@@ -3035,7 +3118,7 @@ function promptNewOver(inn){
   let bwlPlayers=getMatchXI(APP.liveMatch,inn.bowlingTeamId);
   let opts=bwlPlayers.map(p=>{
     let b=inn.bowlers[p.id],used=b?b.overs:0,bmx=bowlerMaxOvers(APP.tournament.overs||20),mx=used>=bmx,cur=p.id===inn.currentBowler;
-    return`<option value="${p.id}" ${mx||cur?'disabled':''}>${p.name} — ${used} ov${mx?' (MAX '+bmx+')':cur?' (prev)':''}</option>`;
+    return`<option value="${p.id}" ${mx||cur?'disabled':''}>${esc(p.name)} — ${used} ov${mx?' (MAX '+bmx+')':cur?' (prev)':''}</option>`;
   }).join('');
   document.getElementById('nov-bwl').innerHTML=opts;
   document.getElementById('nov-warn').textContent='';
@@ -3055,6 +3138,7 @@ function triggerRetiredHurt(){
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   if(!inn||inn.completed||!inn.striker)return;
   let bs=inn.batsmen[inn.striker];if(!bs)return;
+  pushUndo();
   bs.status='retired';bs.dismissal='retired hurt';
   inn.striker=null;
   toast(`${esc(bs.name)} retired hurt — use ⚙️ Manage to set next batsman`,'warn');
@@ -3070,7 +3154,7 @@ function endInnings(){
   if(inn.number===1){
     toast('Innings 1 complete! Starting Innings 2...');
     saveState();
-    setTimeout(()=>startInnings(2,inn.bowlingTeamId,inn.battingTeamId),1500);
+    _inn2Timer=setTimeout(()=>{_inn2Timer=null;if(APP.liveMatch===m&&inn.completed&&m.innings.length===1)startInnings(2,inn.bowlingTeamId,inn.battingTeamId);},1500);
   } else {determineWinner(m);}
   renderLive();
 }
@@ -3159,7 +3243,8 @@ function renderLive(){
   let el=document.getElementById('livecont');
   if(!APP.liveMatch){
     el.innerHTML=`<div style="text-align:center;padding:60px 0;color:var(--dim)">No live match.<br>
-      <span style="font-size:12px">${APP.role==='admin'?'Go to Matches and start a match.':'Waiting for admin. Auto-updates every 2s.'}</span>
+      <span style="font-size:12px">${APP.role==='admin'?'Go to Matches and start a match.':'Waiting for admin. Updates automatically.'}</span>
+      ${APP.role==='admin'&&_undoStack.length?'<br><button class="bsm" style="margin-top:14px" onclick="undoLast()">↩ Undo last ball (reopen match)</button>':''}
     </div>`;return;
   }
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
@@ -3176,12 +3261,12 @@ function renderLive(){
     rrrH=`<div class="ri">RRR:<span style="color:${parseFloat(rrr)>parseFloat(crr)?'var(--red)':'var(--em)'}">${rrr}</span></div>
       <div class="ri">Need:<span>${need} off ${bl}b</span></div>`;
   }
-  let tossStr=m.toss?`<span style="font-size:10px;font-family:var(--mono);color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${m.toss.decision.toUpperCase()}</span>`:'';
+  let tossStr=m.toss?`<span style="font-size:10px;font-family:var(--mono);color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${esc(String(m.toss.decision).toUpperCase())}</span>`:'';
   let lmt=m.matchType||'League';
   let lmtcol=lmt==='Final'?'var(--gold)':lmt==='Semi Final'?'var(--purple)':lmt==='Quarter Final'?'var(--blue)':lmt.startsWith('Group')?'var(--amber)':'var(--em)';
-  let stageBanner=lmt!=='League'?`<div style="text-align:center;font-family:var(--disp);font-size:11px;letter-spacing:2px;color:${lmtcol};background:rgba(0,0,0,.3);border:1px solid ${lmtcol};border-radius:6px;padding:4px 12px;margin-bottom:10px">${lmt.toUpperCase()}</div>`:'';
+  let stageBanner=lmt!=='League'?`<div style="text-align:center;font-family:var(--disp);font-size:11px;letter-spacing:2px;color:${lmtcol};background:rgba(0,0,0,.3);border:1px solid ${lmtcol};border-radius:6px;padding:4px 12px;margin-bottom:10px">${esc(lmt.toUpperCase())}</div>`:'';
   let overLog=`<div class="overlog"><span class="olbl">THIS OVER:</span>`;
-  (inn.thisOver||[]).forEach(b=>overLog+=`<div class="ball ${bc(b)}">${b}</div>`);
+  (inn.thisOver||[]).forEach(b=>overLog+=`<div class="ball ${bc(b)}">${esc(b)}</div>`);
   overLog+='</div>';
   let fhBanner=APP.pendingFreeHit&&APP.role==='admin'?'<div class="fhb" style="display:block">🟢 FREE HIT — Batsman cannot be dismissed (except Run Out)!</div>':'';
   let tgt='';
@@ -3192,7 +3277,7 @@ function renderLive(){
     </div>`;
   }
   let iebb=inn.completed?`<div class="iebb"><h2>Innings ${inn.number} Complete</h2>
-    <p>${batT?batT.name:''}: ${inn.runs}/${inn.wickets} (${ov(inn)} Ov)</p>
+    <p>${batT?esc(batT.name):''}: ${inn.runs}/${inn.wickets} (${ov(inn)} Ov)</p>
     ${inn.number===1?'<p style="color:var(--gold);margin-top:4px">Starting Innings 2...</p>':''}
   </div>`:'';
   // Warnings for missing striker/bowler
@@ -3205,6 +3290,7 @@ function renderLive(){
     <div class="mgbar">
       <span class="mglbl">⚡ Actions:</span>
       <button class="bsm bblu" onclick="openManage()">⚙️ Manage Players / Bowler</button>
+      <button class="bsm" onclick="undoLast()" style="background:var(--bg2);color:var(--txt);border:1px solid var(--bdr)">↩ Undo last ball</button>
       <button class="bsm bpur" onclick="triggerRetiredHurt()">🚑 Retired Hurt</button>
       <button class="bsm bdng" onclick="openDiscard()" style="margin-left:auto">🚫 Discard Match</button>
     </div>
@@ -3228,7 +3314,7 @@ function renderLive(){
   }
   el.innerHTML=`${stageBanner}${iebb}${warns}
   <div class="shero">
-    <div class="steam">${batT?batT.name.toUpperCase():''} — INN ${inn.number} &nbsp;${tossStr}</div>
+    <div class="steam">${batT?esc(batT.name.toUpperCase()):''} — INN ${inn.number} &nbsp;${tossStr}</div>
     <div class="sruns" id="sdisplay">${inn.runs}/${inn.wickets}</div>
     <div class="sovs">(${ov(inn)} Overs of ${APP.tournament.overs||20})</div>
     <div class="smeta">
@@ -3293,7 +3379,7 @@ function populateSCSelect(){
     +all.map(m=>{
       let tA=APP.teams.find(t=>t.id===m.teamAId),tB=APP.teams.find(t=>t.id===m.teamBId);
       let mt2=m.matchType||'League';
-      return`<option value="${m.id}">[${mt2}] ${tA?esc(tA.name):'?'} vs ${tB?esc(tB.name):'?'} (${esc(m.date)})</option>`;
+      return`<option value="${esc(m.id)}">[${esc(mt2)}] ${tA?esc(tA.name):'?'} vs ${tB?esc(tB.name):'?'} (${esc(m.date)})</option>`;
     }).join('');
   if(prev)sel.value=prev;
 }
@@ -3307,12 +3393,13 @@ function renderSC(){
   let mtcol=mtype==='Final'?'var(--gold)':mtype==='Semi Final'?'var(--purple)':mtype==='Quarter Final'?'var(--blue)':'var(--em)';
   let html=`<div style="margin-bottom:12px">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-      <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(240,192,64,.1);color:${mtcol};border:1px solid ${mtcol}">${mtype.toUpperCase()}</span>
+      <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(240,192,64,.1);color:${mtcol};border:1px solid ${mtcol}">${esc(mtype.toUpperCase())}</span>
       <div style="font-family:var(--disp);font-size:16px">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
     </div>
     <div style="font-size:11px;color:var(--dim)">📍 ${esc(m.venue)} | ${esc(m.date)} | 👔 ${m.umpires.map(esc).join(' · ')}</div>
-    ${m.toss?`<div style="font-size:11px;color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${m.toss.decision.toUpperCase()}</div>`:''}
-    ${m.resultText?`<div style="color:var(--em);font-size:14px;margin-top:4px;font-family:var(--disp)">🏆 ${m.resultText}</div>`:''}
+    ${m.toss?`<div style="font-size:11px;color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${esc(String(m.toss.decision).toUpperCase())}</div>`:''}
+    ${m.resultText?`<div style="color:var(--em);font-size:14px;margin-top:4px;font-family:var(--disp)">🏆 ${esc(m.resultText)}</div>`:''}
+    ${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:12px;color:var(--dim);margin-top:3px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}
   </div>`;
   m.innings.forEach(inn=>{
     let bat=APP.teams.find(t=>t.id===inn.battingTeamId),bwl=APP.teams.find(t=>t.id===inn.bowlingTeamId);
@@ -3324,7 +3411,7 @@ function renderSC(){
       let sr=b.balls>0?((b.runs/b.balls)*100).toFixed(1):'0.0';
       let dis=b.status==='batting'?'<span class="tag tg">not out</span>'
         :b.status==='retired'?'<span class="tag ta">retired hurt</span>'
-        :`<span style="font-size:10px;color:var(--dim)">${b.dismissal}</span>`;
+        :`<span style="font-size:10px;color:var(--dim)">${esc(b.dismissal)}</span>`;
       html+=`<tr><td style="font-weight:600">${esc(b.name)}</td><td>${dis}</td>
         <td style="font-family:var(--mono);color:var(--gold);font-weight:700">${b.runs}</td>
         <td style="font-family:var(--mono)">${b.balls}</td><td style="font-family:var(--mono)">${b.fours}</td>
@@ -3336,7 +3423,7 @@ function renderSC(){
       &nbsp;|&nbsp;<b style="color:var(--txt)">Total: ${inn.runs}/${inn.wickets}</b>
     </div>`;
     if(inn.fallOfWickets.length)html+=`<div style="margin-bottom:8px"><span style="font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase">Fall of Wickets</span>
-      <div class="fow-list" style="margin-top:3px">${inn.fallOfWickets.map(f=>`<div class="fow-chip">${f.score}/${f.wicket} (${f.batsman})</div>`).join('')}</div></div>`;
+      <div class="fow-list" style="margin-top:3px">${inn.fallOfWickets.map(f=>`<div class="fow-chip">${f.score}/${f.wicket} (${esc(f.batsman)})</div>`).join('')}</div></div>`;
     html+=`<table style="margin-top:6px"><thead><tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>Eco</th><th>Wd</th><th>Nb</th></tr></thead><tbody>`;
     bwl&&bwl.players.forEach(p=>{
       let b=inn.bowlers[p.id];if(!b||(b.overs===0&&(b.balls||0)===0))return;
@@ -3644,6 +3731,12 @@ function renderFieldingStats(){
 }
 
 // ── Awards ─────────────────────────────────────────────────────────────
+function setPOTS(pid){
+  if(APP.role!=='admin')return;
+  APP.tournament.pots=pid||'';
+  saveState();renderAwards();
+  toast(pid?'🌟 Player of the Series saved':'Player of the Series set to auto');
+}
 function renderAwards(){
   let el=document.getElementById('stats-awards');if(!el)return;
   let done=APP.matches.filter(m=>m.status==='completed');
@@ -3696,6 +3789,30 @@ function renderAwards(){
   let champion=final&&final.winner&&final.winner!=='tie'?APP.teams.find(t=>t.id===final.winner):null;
 
   let html='';
+
+  // Player of the Series — suggested from all-round points, admin can override
+  let pool={};
+  const addP=(p,pts,txt)=>{if(!pool[p.id])pool[p.id]={id:p.id,name:p.name,team:p.team,pts:0,bits:[]};pool[p.id].pts+=pts;if(txt)pool[p.id].bits.push(txt);};
+  batting.forEach(p=>addP(p,p.runs,p.runs+' runs'));
+  bowling.forEach(p=>addP(p,p.wickets*20,p.wickets?p.wickets+' wkts':''));
+  fielding.forEach(p=>{let d=p.catches+p.stumpings+p.runOuts;addP(p,d*10,d?d+' dismissals':'');});
+  let ranked=Object.values(pool).sort((a,b)=>b.pts-a.pts);
+  let chosenId=APP.tournament.pots||'';
+  let pots=(chosenId&&pool[chosenId])||ranked[0];
+  if(pots){
+    html+=`<div class="award-card gold-award" style="margin-bottom:14px">
+      <div style="font-size:44px;flex-shrink:0">🌟</div>
+      <div class="award-info">
+        <div class="award-title" style="color:var(--gold)">PLAYER OF THE SERIES${chosenId&&pool[chosenId]?'':' (SO FAR)'}</div>
+        <div class="award-name" style="font-size:20px">${esc(pots.name)} <span style="font-size:11px;color:var(--dim)">(${esc(pots.team)})</span></div>
+        <div class="award-val">${esc(pots.bits.join(' · '))}</div>
+        ${APP.role==='admin'?`<select class="motm-sel" style="margin-top:8px" onchange="setPOTS(this.value)">
+          <option value="">Auto — best all-round performer</option>
+          ${ranked.map(p=>`<option value="${esc(p.id)}" ${p.id===chosenId?'selected':''}>${esc(p.name)} (${esc(p.team)}) — ${esc(p.bits.join(', '))}</option>`).join('')}
+        </select>`:''}
+      </div>
+    </div>`;
+  }
 
   // Champion first
   if(champion){
@@ -3754,16 +3871,17 @@ function renderCompleted(){
   let done=APP.matches.filter(m=>m.status==='completed');
   if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
   el.innerHTML=done.map(m=>{
-    let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`${t?t.code:'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})`;}).join(' | ');
+    let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`${t?esc(t.code):'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})`;}).join(' | ');
     let hmt=m.matchType||'League';
     let hmtcol=hmt==='Final'?'var(--gold)':hmt==='Semi Final'?'var(--purple)':hmt==='Quarter Final'||hmt==='Round of 16'?'var(--blue)':hmt.startsWith('Group')?'var(--amber)':'var(--em)';
     return`<div class="hcard" onclick="showMHist('${m.id}')">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
-        <span style="font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.3);color:${hmtcol};border:1px solid ${hmtcol}">${hmt.toUpperCase()}</span>
+        <span style="font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.3);color:${hmtcol};border:1px solid ${hmtcol}">${esc(hmt.toUpperCase())}</span>
         <div class="hteams">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
       </div>
       <div class="hsc">${sc}</div>
-      <div class="hres" style="color:${m.winner==='no_result'?'var(--amber)':'var(--em)'}">${m.resultText||'—'}</div>
+      <div class="hres" style="color:${m.winner==='no_result'?'var(--amber)':'var(--em)'}">${esc(m.resultText||'—')}</div>
+      ${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:11px;color:var(--dim);margin-top:2px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}
       <div style="font-size:10px;color:var(--dim);margin-top:2px">📍 ${esc(m.venue)} | 📅 ${esc(m.date)}</div>
     </div>`;
   }).join('');
@@ -3780,37 +3898,43 @@ function showMHist(mid){
 function renderPoints(){
   let el=document.getElementById('pt');
   let s={};
-  APP.teams.forEach(t=>{s[t.id]={p:0,w:0,l:0,nr:0,pts:0,rf:0,bf:0,ra:0,ba:0};});
+  const blank=()=>({p:0,w:0,l:0,t:0,nr:0,pts:0,rf:0,bf:0,ra:0,ba:0});
+  APP.teams.forEach(t=>{s[t.id]=blank();});
   // Only League and Group matches count toward the points table
   let leagueTypes=new Set(['League','Group A','Group B','Group C','Group D']);
+  let quota=(APP.tournament.overs||20)*6;
   APP.matches.filter(m=>m.status==='completed'&&leagueTypes.has(m.matchType||'League')).forEach(m=>{
-    if(!s[m.teamAId]||!s[m.teamBId])return;
-    s[m.teamAId].p++;s[m.teamBId].p++;
-    if(m.winner==='tie'){s[m.teamAId].pts++;s[m.teamBId].pts++;s[m.teamAId].nr++;s[m.teamBId].nr++;}
-    else if(m.winner&&m.winner!=='no_result'){s[m.winner].w++;s[m.winner].pts+=2;let l=m.teamAId===m.winner?m.teamBId:m.teamAId;if(s[l])s[l].l++;}
+    let A=s[m.teamAId],B=s[m.teamBId];
+    if(!A||!B)return;
+    A.p++;B.p++;
+    if(m.winner==='tie'){A.pts++;B.pts++;A.t++;B.t++;}
+    else if(m.winner==='no_result'||!m.winner){A.pts++;B.pts++;A.nr++;B.nr++;return;} // 1 point each, excluded from NRR
+    else if(s[m.winner]){s[m.winner].w++;s[m.winner].pts+=2;let l=m.teamAId===m.winner?m.teamBId:m.teamAId;if(s[l])s[l].l++;}
     m.innings.forEach(inn=>{
-      let b=Math.min(inn.legalBalls,(APP.tournament.overs||20)*6);
+      // A side that is bowled out is treated as having faced its full quota of overs
+      let b=inn.wickets>=10?quota:Math.min(inn.legalBalls,quota);
       if(s[inn.battingTeamId]){s[inn.battingTeamId].rf+=inn.runs;s[inn.battingTeamId].bf+=b;}
       if(s[inn.bowlingTeamId]){s[inn.bowlingTeamId].ra+=inn.runs;s[inn.bowlingTeamId].ba+=b;}
     });
   });
   let sorted=APP.teams.map(t=>{
-    let x=s[t.id]||{p:0,w:0,l:0,nr:0,pts:0,rf:0,bf:0,ra:0,ba:0};
+    let x=s[t.id]||blank();
     let rrf=x.bf>0?x.rf/(x.bf/6):0,rra=x.ba>0?x.ra/(x.ba/6):0;
     return{team:t,...x,nrr:(rrf-rra).toFixed(3)};
   }).sort((a,b)=>b.pts-a.pts||parseFloat(b.nrr)-parseFloat(a.nrr));
   if(!sorted.length){el.innerHTML='<p style="color:var(--dim)">No teams yet.</p>';return;}
-  el.innerHTML=`<table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th></tr></thead><tbody>`
+  el.innerHTML=`<div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>T</th><th>NR</th><th>Pts</th><th>NRR</th></tr></thead><tbody>`
     +sorted.map((x,i)=>`<tr>
       <td style="color:var(--gold);font-family:var(--mono)">${i+1}</td>
-      <td><span class="tag tg">${x.team.code}</span> ${x.team.name}</td>
+      <td><span class="tag tg">${esc(x.team.code)}</span> ${esc(x.team.name)}</td>
       <td style="font-family:var(--mono)">${x.p}</td>
       <td style="font-family:var(--mono);color:var(--em)">${x.w}</td>
       <td style="font-family:var(--mono);color:var(--red)">${x.l}</td>
+      <td style="font-family:var(--mono)">${x.t}</td>
       <td style="font-family:var(--mono)">${x.nr}</td>
       <td style="font-family:var(--mono);font-weight:700;color:var(--gold)">${x.pts}</td>
-      <td style="font-family:var(--mono);color:${parseFloat(x.nrr)>=0?'var(--em)':'var(--red)'}">${x.nrr}</td>
-    </tr>`).join('')+'</tbody></table>';
+      <td style="font-family:var(--mono);color:${parseFloat(x.nrr)>=0?'var(--em)':'var(--red)'}">${x.nrr>0?'+':''}${x.nrr}</td>
+    </tr>`).join('')+'</tbody></table></div>';
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -3830,7 +3954,7 @@ function renderHome(){
     let tA=APP.teams.find(t=>t.id===live.teamAId),tB=APP.teams.find(t=>t.id===live.teamBId);
     let inn=live.innings[live.currentInnings];
     lel.innerHTML=`<div style="color:var(--red);font-family:var(--disp)">🔴 LIVE</div>
-      <div style="font-family:var(--disp);font-size:14px;margin-top:3px">${tA?tA.name:'?'} vs ${tB?tB.name:'?'}</div>
+      <div style="font-family:var(--disp);font-size:14px;margin-top:3px">${tA?esc(tA.name):'?'} vs ${tB?esc(tB.name):'?'}</div>
       ${inn?`<div style="font-family:var(--mono);font-size:18px;color:var(--gold);margin-top:3px">${inn.runs}/${inn.wickets} (${ov(inn)})</div>`:''}
       <button class="bsm" style="margin-top:8px" onclick="showTab('live')">View Live →</button>`;
   } else lel.innerHTML='<p style="color:var(--dim)">No live match right now.</p>';
@@ -3840,8 +3964,8 @@ function renderHome(){
   uel.innerHTML=up.slice(0,3).map(m=>{
     let tA=APP.teams.find(t=>t.id===m.teamAId),tB=APP.teams.find(t=>t.id===m.teamBId);
     return`<div style="padding:7px 0;border-bottom:1px solid var(--bdr)">
-      <div style="font-family:var(--disp)">${tA?tA.name:'?'} <span style="color:var(--dim)">vs</span> ${tB?tB.name:'?'}</div>
-      <div style="font-size:11px;color:var(--dim)">📅 ${m.date} | 📍 ${m.venue}</div>
+      <div style="font-family:var(--disp)">${tA?esc(tA.name):'?'} <span style="color:var(--dim)">vs</span> ${tB?esc(tB.name):'?'}</div>
+      <div style="font-size:11px;color:var(--dim)">📅 ${esc(m.date)} | 📍 ${esc(m.venue)}</div>
     </div>`;
   }).join('');
 }
@@ -3849,6 +3973,18 @@ function renderHome(){
 // ══════════════════════════════════════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════════════════════════════════════
+function rawTeamName(id){return (APP.teams.find(x=>x.id===id)||{name:id||'—'}).name;}
+function playerNameInMatch(m,pid){
+  if(!m||!pid)return '';
+  for(let inn of (m.innings||[])){
+    if(inn.batsmen&&inn.batsmen[pid])return inn.batsmen[pid].name;
+    if(inn.bowlers&&inn.bowlers[pid])return inn.bowlers[pid].name;
+  }
+  return '';
+}
+function activeTabName(){
+  let v=document.querySelector('.view.active');return v?v.id.replace('view-',''):'home';
+}
 function gtn(id){if(!id||id==='tie')return id==='tie'?'Tie':'—';return esc((APP.teams.find(x=>x.id===id)||{name:id}).name);}
 function openM(id){document.getElementById(id).classList.add('on');}
 function closeM(id){document.getElementById(id).classList.remove('on');}
@@ -4560,6 +4696,7 @@ function setLang(code){
 let _lastCompletedMatch=null;
 
 function showCelebration(m){
+  if(m.status!=='completed'||!APP.matches.includes(m))return; // match was undone
   _lastCompletedMatch=m;
   let winTeam=m.winner&&m.winner!=='tie'&&m.winner!=='no_result'
     ? APP.teams.find(t=>t.id===m.winner) : null;
@@ -4593,7 +4730,7 @@ function showCelebration(m){
     document.getElementById('celeb-motm-name').textContent=motm.name;
     document.getElementById('celeb-motm-stat').textContent=motm.stat;
     motmPrev.style.display='block';
-    m.motm=motm.pid;
+    if(!m.motm){m.motm=motm.pid;saveState();}
   } else {
     motmPrev.style.display='none';
   }
@@ -4610,7 +4747,7 @@ function showCelebration(m){
 
   // If final match — show tournament completion
   if(m.matchType==='Final'){
-    setTimeout(()=>showTournamentComplete(m),14000);
+    setTimeout(()=>{if(m.status==='completed'&&APP.matches.includes(m))showTournamentComplete(m);},14000);
   }
 }
 
@@ -4678,7 +4815,7 @@ function openMOTM(){
     cards.innerHTML=`<div class="motm-card">
       <div class="motm-medal">🏅</div>
       <div class="motm-info">
-        <div class="motm-title">Suggested Man of the Match</div>
+        <div class="motm-title">Suggested Player of the Match</div>
         <div class="motm-name">${esc(auto.name)}</div>
         <div class="motm-stat">${esc(auto.stat)}</div>
       </div>
@@ -4707,7 +4844,8 @@ function saveMOTM(){
   if(pid) m.motm=pid;
   closeM('motm-mo');
   saveState();
-  toast('🏅 Man of the Match saved!');
+  renderMatches();renderHistory();
+  toast('🏅 Player of the Match saved!');
 }
 
 // ── Tournament Complete ───────────────────────────────────────────────
@@ -4731,17 +4869,16 @@ function showTournamentComplete(finalMatch){
 
 // ── Update determineWinner to trigger celebration ─────────────────────
 // (Patch: override the celebration call point)
-const _origDetermineWinner=determineWinner;
 function determineWinner(m){
   let i1=m.innings[0],i2=m.innings[1];if(!i2)return;
   let wktsLeft=10-i2.wickets;
   if(i2.runs>i1.runs){
     m.winner=i2.battingTeamId;
-    m.resultText=`${gtn(i2.battingTeamId)} won by ${wktsLeft} wicket${wktsLeft===1?'':'s'}`;
+    m.resultText=`${rawTeamName(i2.battingTeamId)} won by ${wktsLeft} wicket${wktsLeft===1?'':'s'}`;
   } else if(i1.runs>i2.runs){
     let margin=i1.runs-i2.runs;
     m.winner=i1.battingTeamId;
-    m.resultText=`${gtn(i1.battingTeamId)} won by ${margin} run${margin===1?'':'s'}`;
+    m.resultText=`${rawTeamName(i1.battingTeamId)} won by ${margin} run${margin===1?'':'s'}`;
   } else {
     m.winner='tie';m.resultText='Match Tied!';
   }
@@ -4766,6 +4903,10 @@ let FB_PUSH_TIMER = null;
 let FB_PULL_TIMER = null;
 let _fbConnected = false;
 
+// Only Firebase Realtime Database hosts are accepted
+function validFbUrl(u){
+  return /^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebaseio\.com|firebasedatabase\.app)$/i.test(String(u||''));
+}
 function fbUrl(path){ return FB_URL ? FB_URL.replace(/\/$/, '') + path + '.json' : null; }
 
 // ── Connect to Firebase ───────────────────────────────────────────────
@@ -4775,7 +4916,7 @@ function connectFirebase(){
   if(err) err.textContent = '';
   let url = (inp ? inp.value : '').trim().replace(/\/$/, '');
   if(!url){ if(err) err.textContent = 'Please enter your Firebase Database URL'; return; }
-  if(!url.startsWith('https://') || !url.includes('firebaseio.com')){
+  if(!validFbUrl(url)){
     if(err) err.textContent = 'URL must be: https://your-project-default-rtdb.firebaseio.com'; return;
   }
   // Test the connection with a small write
@@ -4793,8 +4934,7 @@ function connectFirebase(){
       toast('☁️ Firebase connected! Syncing now...');
       // Push current data up immediately
       pushToFirebase();
-      // Start pull polling
-      startFirebasePull();
+      updateShareLink(); // share link now carries the sync address for viewers
     })
     .catch(e => {
       if(err) err.textContent = 'Connection failed. Check URL and make sure Realtime Database is enabled in test mode. Error: '+e;
@@ -4810,6 +4950,7 @@ function disconnectFirebase(){
   updateCloudStatus('disconnected');
   document.getElementById('firebase-setup-panel').style.display = '';
   document.getElementById('firebase-connected-panel').style.display = 'none';
+  updateShareLink();
   toast('Disconnected from Firebase');
 }
 
@@ -4836,7 +4977,6 @@ function pushToFirebase(){
   if(!url) return;
   let payload = {
     name:    APP.dname,
-    hash:    getUsers()[APP.uname]?.hash || '',
     data: {
       tournament: APP.tournament,
       teams:      APP.teams,
@@ -4897,10 +5037,7 @@ function startFirebasePull(){
       let hasLive = APP.matches.some(m=>m.status==='live');
       document.getElementById('livebadge').classList.toggle('hidden', !hasLive);
       renderHome(); renderMatches(); renderLive(); populateSCSelect();
-      if(hasLive && APP.liveMatch){
-        let lv = document.getElementById('view-live');
-        if(lv && !lv.classList.contains('active')) showTab('live');
-      }
+      viewerAfterUpdate(hasLive);
     });
   }, 1500); // poll every 1.5s from Firebase
 }
@@ -4914,8 +5051,8 @@ function syncNow(){
 
 // ── Init Firebase on load ─────────────────────────────────────────────
 function initFirebase(){
-  let savedUrl = lsGet(LS_FB_URL);
-  if(!savedUrl) return;
+  let savedUrl = FB_URL || lsGet(LS_FB_URL);
+  if(!savedUrl || !validFbUrl(savedUrl)) return;
   FB_URL = savedUrl;
   _fbConnected = true;
   updateCloudStatus('connected');
@@ -4926,10 +5063,11 @@ function initFirebase(){
   if(connPanel)  connPanel.style.display  = '';
   // If viewer, start Firebase pull
   if(APP.role === 'viewer' && APP.viewUser) startFirebasePull();
+  if(APP.role === 'admin') updateShareLink();
 }
 
 // ── Patch saveState to also push to Firebase ─────────────────────────
-const _origSaveState = saveState;
+const _origSaveState = _baseSaveState;
 function saveState(){
   _origSaveState();
   // Push to Firebase (debounced — max once per 500ms)
@@ -4940,7 +5078,7 @@ function saveState(){
 }
 
 // ── Patch loginAs to pull from Firebase first (cross-device login) ─────
-const _origLoginAs = loginAs;
+const _origLoginAs = _baseLoginAs;
 function loginAs(uname, name){
   // Try to load from Firebase first if connected
   if(FB_URL){
@@ -4952,7 +5090,7 @@ function loginAs(uname, name){
           if(fbData && fbData.data && (fbData.data._savedAt||0) > (userGet(uname)?.data?._savedAt||0)){
             // Firebase has newer data — merge it to localStorage first
             let users = getUsers();
-            if(!users[uname]) users[uname] = {hash:fbData.hash||'',name:fbData.name||name,secQ:'',secA:'',data:null};
+            if(!users[uname]) return _origLoginAs(uname, name);
             users[uname].data = fbData.data;
             putUsers(users);
             toast('☁️ Loaded latest data from cloud');
@@ -5045,8 +5183,12 @@ bindActions();
 (function checkViewParam(){
   try{
     let params=new URLSearchParams(location.search);
-    let viewUser=params.get('view');
+    let viewUser=(params.get('view')||'').trim().toLowerCase().replace(/[^a-z0-9_]/g,'_').slice(0,30);
     if(viewUser){
+      // Shared links carry the cloud-sync address so other devices can follow live
+      let db=(params.get('db')||'').trim().replace(/\/$/,'');
+      if(db&&validFbUrl(db)){FB_URL=db;lsSet(LS_FB_URL,db);}
+      else{let saved=lsGet(LS_FB_URL);if(saved&&validFbUrl(saved))FB_URL=saved;}
       APP.role='viewer';APP.uname=null;APP.viewUser=viewUser;
       // Load initial data immediately
       let users=getUsers();

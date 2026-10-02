@@ -4,7 +4,7 @@
   "description": "Live cricket scoring, tournament management and match history",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#050e1a",
   "theme_color": "#050e1a",
   "icons": [

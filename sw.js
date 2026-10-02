@@ -1,6 +1,6 @@
-// Stumply Service Worker v2 — offline support + push notifications
-const CACHE = 'stumply-v2';
-const ASSETS = ['/', '/index.html'];
+// Stumply Service Worker v3 — offline support + push notifications
+const CACHE = 'stumply-v3';
+const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
 
 // ── Install ──────────────────────────────────────────────────────────
 self.addEventListener('install', e => {
@@ -16,11 +16,19 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// ── Fetch (offline cache) ────────────────────────────────────────────
+// ── Fetch: network first so new versions reach users; cache is the offline fallback
 self.addEventListener('fetch', e => {
+  const req = e.request;
+  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return; // never touch cloud-sync calls
   e.respondWith(
-    caches.match(e.request).then(cached =>
-      cached || fetch(e.request).catch(() => caches.match('/index.html'))
+    fetch(req).then(res => {
+      if (res && res.ok) {
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put(req, copy));
+      }
+      return res;
+    }).catch(() =>
+      caches.match(req).then(cached => cached || (req.mode === 'navigate' ? caches.match('/index.html') : Response.error()))
     )
   );
 });
