@@ -711,6 +711,7 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
 .avbtn img{width:100%;height:100%;object-fit:cover;display:block}
 .avx{background:none;border:none;color:var(--red);font-size:10px;cursor:pointer;padding:2px 4px;display:block;margin:0 auto}
 .pe{font-size:12px;padding:5px 7px;min-width:0}
+.prow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--bdr)}
 @media(max-width:820px){
   /* no backdrop-filter here: it would trap the fixed bottom bar inside the top bar */
   #topbar{height:50px;padding-left:12px;padding-right:12px;-webkit-backdrop-filter:none;backdrop-filter:none}
@@ -2621,15 +2622,15 @@ function filterPlayers(){
   if(!team){el.innerHTML='';return;}
   let admin=APP.role==='admin';
   let roleOpts=sel=>ROLES.map(r=>`<option${r===sel?' selected':''}>${r}</option>`).join('');
-  let rows=team.players.map(p=>`<tr>
-      <td>${admin?photoCell(p.id):av(p.id,30)}</td>
-      <td>${admin?`<input class="ifield pe" value="${esc(p.name)}" maxlength="40" onchange="updPlayer('${tid}','${p.id}','name',this.value)">`:esc(p.name)}</td>
-      <td>${admin?`<input class="ifield pe" style="width:62px" type="number" min="0" max="999" value="${esc(p.jersey)}" onchange="updPlayer('${tid}','${p.id}','jersey',this.value)">`:`<span class="tag tb">${esc(p.jersey)}</span>`}</td>
-      <td>${admin?`<select class="sfield pe" onchange="updPlayer('${tid}','${p.id}','role',this.value)">${roleOpts(p.role)}</select>`:`<span class="tag ta">${esc(p.role)}</span>`}</td>
-      <td style="white-space:nowrap">${admin?`<label class="optlbl" style="display:inline-flex;gap:4px;font-size:11px"><input type="radio" name="capt-${tid}" ${team.captainId===p.id?'checked':''} onchange="setCaptain('${tid}','${p.id}')">Captain</label>`:(team.captainId===p.id?'<span class="tag tg">Captain</span>':'')}
-        ${p.isSub?'<span class="tag ta">Sub</span>':''}</td>
-      <td>${admin?`<button class="bsm bdng" onclick="delPlayer('${tid}','${p.id}')">✕</button>`:''}</td>
-    </tr>`).join('');
+  let rows=team.players.map(p=>`<div class="prow">
+      <div>${admin?photoCell(p.id):av(p.id,34)}</div>
+      ${admin?`<input class="ifield pe" style="flex:1 1 130px" value="${esc(p.name)}" maxlength="40" aria-label="Player name" onchange="updPlayer('${tid}','${p.id}','name',this.value)">`:`<b style="flex:1 1 130px">${esc(p.name)}</b>`}
+      ${admin?`<input class="ifield pe" style="flex:0 0 64px" type="number" min="0" max="999" value="${esc(p.jersey)}" aria-label="Jersey number" onchange="updPlayer('${tid}','${p.id}','jersey',this.value)">`:`<span class="tag tb">${esc(p.jersey)}</span>`}
+      ${admin?`<select class="sfield pe" style="flex:1 1 120px" aria-label="Role" onchange="updPlayer('${tid}','${p.id}','role',this.value)">${roleOpts(p.role)}</select>`:`<span class="tag ta">${esc(p.role)}</span>`}
+      ${admin?`<label class="optlbl" style="display:inline-flex;gap:5px;font-size:12px;align-items:center"><input type="radio" name="capt-${tid}" ${team.captainId===p.id?'checked':''} onchange="setCaptain('${tid}','${p.id}')">Captain</label>`:(team.captainId===p.id?'<span class="tag tg">Captain</span>':'')}
+      ${p.isSub?'<span class="tag ta">Sub</span>':''}
+      ${admin?`<button class="bsm bdng" style="margin-left:auto" title="Remove player" onclick="delPlayer('${tid}','${p.id}')">✕</button>`:''}
+    </div>`).join('');
   let add=admin?`<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px dashed var(--bdr)">
       <input class="ifield pe" id="pa-name" placeholder="New player name" maxlength="40" style="flex:2;min-width:130px">
       <input class="ifield pe" id="pa-jersey" type="number" min="0" max="999" placeholder="No." style="width:64px">
@@ -2638,7 +2639,7 @@ function filterPlayers(){
       <button class="bsm bgld" onclick="addPlayer('${tid}')">➕ Add player</button>
     </div>
     <p style="font-size:11px;color:var(--dim);margin-top:8px">Tap the circle to add an optional photo. Changes save automatically.</p>`:'';
-  el.innerHTML=(team.players.length?`<div class="tblwrap"><table><thead><tr><th>Photo</th><th>Name</th><th>#</th><th>Role</th><th></th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`:'<p style="color:var(--dim)">No players.</p>')+add;
+  el.innerHTML=(team.players.length?rows:'<p style="color:var(--dim)">No players.</p>')+add;
 }
 function updPlayer(tid,pid,field,val){
   if(APP.role!=='admin')return;
