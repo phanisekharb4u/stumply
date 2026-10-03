@@ -15,6 +15,10 @@ Cricket tournament app: teams, fixtures, ball-by-ball live scoring, scorecards, 
 5. **Project settings (gear icon) → General → Your apps → Web (`</>`)**, register an app, and copy `apiKey` and `databaseURL` from the config shown.
 6. Paste those two values into `firebase-config.js` and deploy.
 
+## Optional photos
+
+Admins can add a photo for each player, a logo for each team and a photo for each umpire. Photos are shrunk to small thumbnails in the browser and stored inside the tournament, so no file storage service is needed. The rules in `database.rules.json` must include the `photos` section for them to save.
+
 ## Deploy
 
 On Cloudflare Pages: connect this repo, leave the build command empty. `_headers` sets the Content-Security-Policy there; `vercel.json` does the same on Vercel.

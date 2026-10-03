@@ -704,13 +704,33 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
   #stats-awards > div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
   #sch-mo .mb > div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
 }
-/* Phones and small tablets: the tabs move to their own scrollable row under the logo */
+/* Phones and small tablets: navigation becomes a bottom bar with every tab visible */
+.tab-btn .ti{margin-right:5px}
+.av{border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:6px;border:1px solid var(--bdr);background:#fff;flex-shrink:0}
+.avbtn{width:38px;height:38px;border-radius:50%;border:1.5px dashed var(--bdr2,#9bb);background:var(--bg2);cursor:pointer;padding:0;font-size:15px;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
+.avbtn img{width:100%;height:100%;object-fit:cover;display:block}
+.avx{background:none;border:none;color:var(--red);font-size:10px;cursor:pointer;padding:2px 4px;display:block;margin:0 auto}
+.pe{font-size:12px;padding:5px 7px;min-width:0}
 @media(max-width:820px){
-  #topbar{flex-wrap:wrap;height:auto;padding-top:7px;padding-bottom:0;row-gap:0}
-  .nav-tabs{order:3;flex:0 0 100%;padding:5px 0 7px;gap:4px}
-  .tab-btn{flex:1 0 auto;font-size:11px;padding:6px 6px;white-space:nowrap;text-align:center}
-  th,td{padding-left:7px;padding-right:7px}
+  /* no backdrop-filter here: it would trap the fixed bottom bar inside the top bar */
+  #topbar{height:50px;padding-left:12px;padding-right:12px;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .nav-tabs{
+    position:fixed;left:0;right:0;bottom:0;z-index:100;display:flex;gap:0;overflow:visible;flex:none;
+    background:linear-gradient(135deg,#1a4a2e 0%,#0f3320 60%,#1a3a5a 100%);
+    border-top:2px solid var(--gold2);box-shadow:0 -2px 16px rgba(0,0,0,.25);
+    padding:4px 4px calc(4px + env(safe-area-inset-bottom));
+  }
+  .tab-btn{
+    flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    padding:6px 2px;font-size:11px;letter-spacing:.3px;border-radius:8px;position:relative;min-height:50px;white-space:nowrap;
+  }
+  .tab-btn .ti{font-size:20px;line-height:1;margin-right:0}
+  .tab-btn .tl{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  .tab-btn .live-badge{position:absolute;top:4px;left:calc(50% + 8px);width:9px;height:9px;padding:0;border-radius:50%;font-size:0;margin:0}
+  #main{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+  #toast{bottom:calc(80px + env(safe-area-inset-bottom))}
   #uinfo{margin-left:auto}
+  th,td{padding-left:7px;padding-right:7px}
 }
 @media(min-width:481px) and (max-width:768px){
   .tcol{grid-template-columns:1fr 1fr}
@@ -865,7 +885,7 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
   </div>
 </div>
 
-<!-- ══ MAN OF THE MATCH MODAL ══ -->
+<!-- ══ PLAYER OF THE MATCH MODAL ══ -->
 <div class="mo" id="motm-mo">
   <div class="mb">
     <div class="mt gold">🏅 Match Awards</div>
@@ -1143,12 +1163,12 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
 <div id="topbar" class="hidden">
   <div class="logo">Stum<span>ply</span></div>
   <div class="nav-tabs">
-    <button class="tab-btn active" data-action="showTab('home')">🏠 Home</button>
-    <button class="tab-btn" data-action="showTab('matches')">📋 Matches</button>
-    <button class="tab-btn" data-action="showTab('live')">🔴 Live<span class="live-badge hidden" id="livebadge">LIVE</span></button>
-    <button class="tab-btn" data-action="showTab('scorecard')">📊 Scores</button>
-    <button class="tab-btn" data-action="showTab('history')">🏆 History</button>
-    <button class="tab-btn admin-only hidden" data-action="showTab('admin')">⚙️ Admin</button>
+    <button class="tab-btn active" data-action="showTab('home')"><span class="ti">🏠</span><span class="tl">Home</span></button>
+    <button class="tab-btn" data-action="showTab('matches')"><span class="ti">📋</span><span class="tl">Matches</span></button>
+    <button class="tab-btn" data-action="showTab('live')"><span class="ti">🔴</span><span class="tl">Live</span><span class="live-badge hidden" id="livebadge">LIVE</span></button>
+    <button class="tab-btn" data-action="showTab('scorecard')"><span class="ti">📊</span><span class="tl">Scores</span></button>
+    <button class="tab-btn" data-action="showTab('history')"><span class="ti">🏆</span><span class="tl">History</span></button>
+    <button class="tab-btn admin-only hidden" data-action="showTab('admin')"><span class="ti">⚙️</span><span class="tl">Admin</span></button>
   </div>
   <div id="uinfo">
     <span id="uchip" class="chip">VIEWER</span>
@@ -1227,7 +1247,7 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
 
   <!-- Batting Stats -->
   <div id="statsview-batting" class="statsview">
-    <div class="ch">🏏 Batting Statistics — All Tournaments Matches</div>
+    <div class="ch">🏏 Batting Statistics — All Tournament Matches</div>
     <div id="stats-batting"></div>
   </div>
 
@@ -1352,7 +1372,7 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
         <option>Obstructing the Field</option><option>Timed Out</option><option>Handled the Ball</option>
       </select>
     </div>
-    <div class="mr" id="wkt-frow"><label>Fielder Name</label><input id="wkt-fld" class="ifield" placeholder="Fielder name"></div>
+    <div class="mr" id="wkt-frow"><label>Fielder</label><select id="wkt-fld" class="sfield"></select><div id="wkt-err" style="color:var(--red);font-size:11px;margin-top:4px"></div></div>
     <div class="mr" id="wkt-rorow" style="display:none"><label>Run Out — who dismissed?</label>
       <select id="wkt-ro"><option value="striker">Striker</option><option value="ns">Non-Striker</option></select>
     </div>
@@ -1420,13 +1440,13 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
     </div>
     <div class="mr"><label>Date</label><input class="ifield" id="sch-d" type="date"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
-      <div class="mr" style="margin-bottom:0"><label>Umpire 1</label><input class="ifield" id="sch-u1" placeholder="On-field 1"></div>
-      <div class="mr" style="margin-bottom:0"><label>Umpire 2</label><input class="ifield" id="sch-u2" placeholder="On-field 2"></div>
-      <div class="mr" style="margin-bottom:0"><label>Third Umpire</label><input class="ifield" id="sch-u3" placeholder="Third"></div>
+      <div class="mr" style="margin-bottom:0"><label>Umpire 1</label><input class="ifield" id="sch-u1" placeholder="On-field 1"><div id="sch-up1" class="admin-only" style="margin-top:4px"></div></div>
+      <div class="mr" style="margin-bottom:0"><label>Umpire 2</label><input class="ifield" id="sch-u2" placeholder="On-field 2"><div id="sch-up2" class="admin-only" style="margin-top:4px"></div></div>
+      <div class="mr" style="margin-bottom:0"><label>Third Umpire</label><input class="ifield" id="sch-u3" placeholder="Third"><div id="sch-up3" class="admin-only" style="margin-top:4px"></div></div>
     </div>
     <div id="sch-warn" style="color:var(--red);font-size:11px;margin-bottom:8px"></div>
     <div class="mact">
-      <button class="bsm bgld" data-action="scheduleMatch()">📅 Schedule</button>
+      <button class="bsm bgld" id="sch-save" data-action="scheduleMatch()">📅 Schedule</button>
       <button class="bsm bdng" onclick="cancelSchModal()">✕ Cancel</button>
     </div>
   </div>
@@ -1666,12 +1686,17 @@ let APP={
   role:null, uname:null, dname:null,
   tid:null,      // tournament the admin has open
   viewTid:null,  // tournament a viewer is watching
+  photos:{},     // optional thumbnails: player/team/umpire id → data URL
   tournament:{name:'My Tournament',edition:'Season 1',year:new Date().getFullYear(),overs:20},
   teams:[], matches:[], liveMatch:null,
-  pendingExtra:null, pendingFreeHit:false,
+  pendingExtra:null,
   _liveTs:0
 };
 let syncTimer=null;
+Object.defineProperty(APP,'pendingFreeHit',{
+  get(){let m=APP.liveMatch,inn=m&&m.innings&&m.innings[m.currentInnings];return !!(inn&&inn.freeHit);},
+  set(v){let m=APP.liveMatch,inn=m&&m.innings&&m.innings[m.currentInnings];if(inn)inn.freeHit=!!v;}
+});
 
 // ══════════════════════════════════════════════════════════════════════════
 //  USER STORE (localStorage)
@@ -1803,7 +1828,7 @@ function packState(){
   let matches={};
   APP.matches.forEach(m=>{matches[m.id]=JSON.stringify(m);});
   return {meta:JSON.stringify(APP.tournament),teams:JSON.stringify(APP.teams),
-    order:JSON.stringify(APP.matches.map(m=>m.id)),matches,
+    order:JSON.stringify(APP.matches.map(m=>m.id)),matches,photos:Object.assign({},APP.photos),
     liveId:APP.liveMatch?APP.liveMatch.id:'',_savedAt:Date.now()};
 }
 function applyPacked(st){
@@ -1826,10 +1851,13 @@ function applyPacked(st){
   });
   APP.matches=list;
   APP.liveMatch=st.liveId?(list.find(m=>m.id===st.liveId)||null):null;
+  APP.photos={};
+  if(st.photos&&typeof st.photos==='object')Object.keys(st.photos).forEach(k=>{if(typeof st.photos[k]==='string')APP.photos[k]=st.photos[k];});
 }
 function packedFromCloud(raw){
   return {meta:raw.meta,teams:raw.teams,order:raw.order,liveId:raw.liveId||'',
-    matches:(raw.matches&&typeof raw.matches==='object')?raw.matches:{},_savedAt:raw._savedAt||0};
+    matches:(raw.matches&&typeof raw.matches==='object')?raw.matches:{},
+    photos:(raw.photos&&typeof raw.photos==='object')?raw.photos:{},_savedAt:raw._savedAt||0};
 }
 // Unique ids even when several things are created in the same millisecond
 let _uidN=0;
@@ -1859,7 +1887,7 @@ function updateCloudStatus(state){
 // ── Saving (admin) ────────────────────────────────────────────────────
 let _pushed=null;        // {tid,st} last state the cloud confirmed
 let _idxPushed={};       // tid → index entry last written
-let _pushTimer=null,_pushing=null,_dirty=false,_retryTimer=null;
+let _pushTimer=null,_pushing=null,_dirty=false,_retryTimer=null,_photoWarned=false,_photoRetryAt=0;
 function saveState(){
   if(APP.role!=='admin'||!AUTH||!APP.tid)return;
   _dirty=true;
@@ -1875,8 +1903,11 @@ function pushNow(){
   updateCloudStatus('syncing');
   _pushing=(async()=>{
     try{
+      let oldPhotos=(_pushed&&_pushed.tid===tid&&_pushed.st.photos)||{};
       if(!_pushed||_pushed.tid!==tid){
-        await dbReq('PUT','tournaments/'+tid,Object.assign({owner:uid,ownerName:APP.dname||''},st),true);
+        let body=Object.assign({owner:uid,ownerName:APP.dname||''},st);delete body.photos;
+        await dbReq('PUT','tournaments/'+tid,body,true);
+        oldPhotos={};
       } else {
         let patch={},old=_pushed.st;
         ['meta','teams','order','liveId'].forEach(k=>{if(st[k]!==old[k])patch[k]=st[k];});
@@ -1884,7 +1915,21 @@ function pushNow(){
         Object.keys(old.matches).forEach(id=>{if(!(id in st.matches))patch['matches/'+id]=null;});
         if(Object.keys(patch).length){patch._savedAt=st._savedAt;await dbReq('PATCH','tournaments/'+tid,patch,true);}
       }
-      _pushed={tid,st};
+      // Photos go in their own request: if it is refused, scores are still saved
+      let pp={},newPhotos=st.photos||{};
+      Object.keys(newPhotos).forEach(id=>{if(newPhotos[id]!==oldPhotos[id])pp[id]=newPhotos[id];});
+      Object.keys(oldPhotos).forEach(id=>{if(!(id in newPhotos))pp[id]=null;});
+      let photosSaved=newPhotos;
+      if(Object.keys(pp).length&&Date.now()<_photoRetryAt)photosSaved=oldPhotos;
+      else if(Object.keys(pp).length){
+        try{await dbReq('PATCH','tournaments/'+tid+'/photos',pp,true);_photoWarned=false;}
+        catch(e){
+          if(e.message==='NETWORK'||e.message==='SESSION_EXPIRED')throw e;
+          photosSaved=oldPhotos;_photoRetryAt=Date.now()+60000;
+          if(!_photoWarned){_photoWarned=true;toast('Photos could not be saved to the cloud. Publish the updated database rules, then tap Save now.','warn');}
+        }
+      }
+      _pushed={tid,st:Object.assign({},st,{photos:photosSaved})};
       let t=safeParse(st.meta,{})||{};
       let idx={name:String(t.name||''),edition:String(t.edition||''),year:String(t.year||''),live:!!st.liveId};
       let key=JSON.stringify(idx);
@@ -1916,14 +1961,14 @@ function flushSave(){
 }
 function syncNow(){
   if(APP.role!=='admin')return;
-  _dirty=true;flushSave().then(ok=>toast(ok?'☁️ Saved to the cloud':'Could not reach the cloud — will retry',ok?undefined:'warn'));
+  _dirty=true;_photoRetryAt=0;_photoWarned=false;flushSave().then(ok=>toast(ok?'☁️ Saved to the cloud':'Could not reach the cloud — will retry',ok?undefined:'warn'));
 }
 window.addEventListener('online',()=>{if(_dirty)pushNow();});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&_dirty)flushSave();});
 
 // ── Opening, creating, switching and deleting tournaments (admin) ─────
 function resetScoringSession(){
-  APP.pendingFreeHit=false;APP.pendingExtra=null;
+  APP.pendingExtra=null;
   try{_undoStack=[];}catch(e){}
 }
 async function openTournament(tid){
@@ -1946,7 +1991,7 @@ async function openTournament(tid){
 async function createTournament(meta,teams,matches,liveId){
   await flushSave();
   let tid=newTid();
-  APP.tid=tid;APP.tournament=meta;APP.teams=teams||[];APP.matches=matches||[];
+  APP.tid=tid;APP.tournament=meta;APP.teams=teams||[];APP.matches=matches||[];APP.photos={};
   APP.liveMatch=liveId?(APP.matches.find(m=>m.id===liveId)||null):null;
   _pushed=null;lsSet(LS_CUR,tid);resetScoringSession();
   saveState();
@@ -2333,6 +2378,7 @@ function initApp(){
   ch.className='chip'+(APP.role==='admin'?' admin':'');
   document.getElementById('unm').textContent=APP.role==='viewer'?(APP.dname?`Watching: ${APP.dname}`:''):(APP.dname?`(${APP.dname})`:'');
   document.querySelectorAll('.admin-only').forEach(e=>e.classList.toggle('hidden',APP.role!=='admin'));
+  let ob=document.querySelector('.btn-out');if(ob)setTxt(ob,APP.role==='viewer'?'Sign in':'Logout');
   if(APP.role==='viewer'){
     document.getElementById('syncbar').classList.add('on');
     // If a live match exists on load, go straight to Live tab
@@ -2468,9 +2514,18 @@ function openShareLink(){
   window.open(el.value,'_blank');
 }
 function saveTournament(){
-  APP.tournament.name=document.getElementById('t-name').value.trim()||'My Tournament';
-  APP.tournament.edition=document.getElementById('t-ed').value.trim()||'Season 1';
-  APP.tournament.year=document.getElementById('t-yr').value||new Date().getFullYear();
+  let name=document.getElementById('t-name').value.trim();
+  if(!name){toast('Enter a tournament name','warn');document.getElementById('t-name').focus();return;}
+  let yr=String(document.getElementById('t-yr').value).trim();
+  if(!/^\d{4}$/.test(yr)||+yr<2000||+yr>2100){toast('Enter a year between 2000 and 2100','warn');document.getElementById('t-yr').focus();return;}
+  let sel=document.getElementById('t-overs');
+  if(sel&&sel.value==='custom'){
+    let raw=String(document.getElementById('t-overs-custom').value).trim();
+    if(!/^\d+$/.test(raw)||+raw<1||+raw>100){toast('Overs must be a whole number from 1 to 100','warn');document.getElementById('t-overs-custom').focus();return;}
+  }
+  APP.tournament.name=name.slice(0,60);
+  APP.tournament.edition=document.getElementById('t-ed').value.trim().slice(0,40)||'Season 1';
+  APP.tournament.year=+yr;
   APP.tournament.overs=getOversFromUI();
   saveState();toast('Saved ✓');renderHome();updateShareLink();
 }
@@ -2508,45 +2563,51 @@ function clearBulk(){
   for(let i=1;i<=11;i++){document.getElementById('bp-n'+i).value='';document.getElementById('bp-j'+i).value=DJERSEYS[i-1];}
   for(let i=12;i<=14;i++){let el=document.getElementById('bp-n'+i);if(el)el.value='';let ej=document.getElementById('bp-j'+i);if(ej)ej.value=i*10;}
 }
+function validJersey(v){let x=String(v).trim();return /^\d{1,3}$/.test(x)?+x:null;}
 function addTeam(){
-  let name=document.getElementById('nt-name').value.trim();
+  let name=document.getElementById('nt-name').value.trim().slice(0,40);
   let code=document.getElementById('nt-code').value.trim().toUpperCase();
-  let city=document.getElementById('nt-city').value.trim();
-  if(!name||!code){toast('Enter team name and code');return;}
-  // Validate all 11 mandatory players are filled
-  let mandatory=[];
-  for(let i=1;i<=11;i++){
-    let n=(document.getElementById('bp-n'+i).value||'').trim();
-    let j=parseInt(document.getElementById('bp-j'+i).value)||i;
-    let r=document.getElementById('bp-r'+i).value;
-    if(!n){toast(`Player ${i} name is required — all 11 players must be filled`,'warn');
-      document.getElementById('bp-n'+i).focus();return;}
-    mandatory.push({id:uid('pl_'),name:n,jersey:j,role:r,mandatory:true});
-  }
-  // Read optional substitutes (12-14)
-  let players=[...mandatory];
-  for(let i=12;i<=14;i++){
-    let el=document.getElementById('bp-n'+i);if(!el)continue;
-    let n=(el.value||'').trim();
-    if(!n)continue; // optional — skip if blank
-    let j=parseInt(document.getElementById('bp-j'+i)?.value)||i;
+  let city=document.getElementById('nt-city').value.trim().slice(0,40);
+  if(!name||!code){toast('Enter team name and code','warn');return;}
+  if(!/^[A-Z0-9]{2,4}$/.test(code)){toast('Team code must be 2 to 4 letters or numbers','warn');document.getElementById('nt-code').focus();return;}
+  if(APP.teams.some(t=>t.name.trim().toLowerCase()===name.toLowerCase())){toast('A team with that name already exists','warn');return;}
+  if(APP.teams.some(t=>String(t.code).toUpperCase()===code)){toast('A team with that code already exists','warn');return;}
+  let players=[],names={},jerseys={};
+  for(let i=1;i<=14;i++){
+    let nEl=document.getElementById('bp-n'+i);if(!nEl)continue;
+    let n=(nEl.value||'').trim().slice(0,40);
+    if(!n){
+      if(i<=11){toast(`Player ${i} name is required — all 11 players must be filled`,'warn');nEl.focus();return;}
+      continue; // optional substitute left blank
+    }
+    let jEl=document.getElementById('bp-j'+i);
+    let j=validJersey(jEl.value);
+    if(j===null){toast(`Player ${i}: jersey number must be 0 to 999`,'warn');jEl.focus();return;}
+    if(names[n.toLowerCase()]){toast(`Player ${i}: "${n}" is already in this team`,'warn');nEl.focus();return;}
+    if(jerseys[j]){toast(`Player ${i}: jersey ${j} is already used in this team`,'warn');jEl.focus();return;}
+    names[n.toLowerCase()]=1;jerseys[j]=1;
     let r=document.getElementById('bp-r'+i)?.value||'Batsman';
-    players.push({id:uid('pl_'),name:n,jersey:j,role:r,mandatory:false,isSub:true});
+    players.push({id:uid('pl_'),name:n,jersey:j,role:r,mandatory:i<=11,isSub:i>11});
   }
   APP.teams.push({id:uid('tm_'),name,code,city,players});
   clearBulk();renderTeamList();populatePlayerTeamSel();saveState();
   let subCount=players.filter(p=>p.isSub).length;
   toast(`✅ ${name} added — 11 players${subCount?` + ${subCount} sub${subCount>1?'s':''}`:''}`);
 }
-function deleteTeam(id){APP.teams=APP.teams.filter(t=>t.id!==id);renderTeamList();populatePlayerTeamSel();saveState();}
+function deleteTeam(id){
+  let t0=APP.teams.find(t=>t.id===id);if(!t0)return;
+  if(APP.matches.some(m=>m.teamAId===id||m.teamBId===id)){toast('This team has matches — delete those matches first','warn');return;}
+  if(!window.confirm('Delete team '+t0.name+'?'))return;
+  APP.teams=APP.teams.filter(t=>t.id!==id);renderTeamList();populatePlayerTeamSel();saveState();}
 function renderTeamList(){
   let el=document.getElementById('tlist');if(!el)return;
   if(!APP.teams.length){el.innerHTML='<p style="color:var(--dim)">No teams yet.</p>';return;}
-  el.innerHTML=`<table><thead><tr><th>Code</th><th>Name</th><th>City</th><th>Players</th><th></th></tr></thead><tbody>`
+  el.innerHTML=`<div class="tblwrap"><table><thead><tr><th>Logo</th><th>Code</th><th>Name</th><th>City</th><th>Players</th><th></th></tr></thead><tbody>`
     +APP.teams.map(t=>`<tr>
+      <td>${APP.role==='admin'?photoCell(t.id):av(t.id,30)}</td>
       <td><span class="tag tg">${esc(t.code)}</span></td><td>${esc(t.name)}</td><td>${esc(t.city)||'—'}</td><td>${t.players.length}</td>
       <td>${APP.role==='admin'?`<button class="bsm bdng" onclick="deleteTeam('${t.id}')">✕</button>`:''}</td>
-    </tr>`).join('')+'</tbody></table>';
+    </tr>`).join('')+'</tbody></table></div>';
 }
 function populatePlayerTeamSel(){
   let el=document.getElementById('pt-sel');if(!el)return;
@@ -2557,17 +2618,132 @@ function filterPlayers(){
   let el=document.getElementById('plist');
   if(!tid){el.innerHTML='';return;}
   let team=APP.teams.find(t=>t.id===tid);
-  if(!team?.players.length){el.innerHTML='<p style="color:var(--dim)">No players.</p>';return;}
-  el.innerHTML=`<table><thead><tr><th>#</th><th>Name</th><th>Role</th><th></th></tr></thead><tbody>`
-    +team.players.map(p=>`<tr>
-      <td><span class="tag tb">${esc(p.jersey)}</span></td><td>${esc(p.name)}</td><td><span class="tag ta">${esc(p.role)}</span></td>
-      <td>${APP.role==='admin'?`<button class="bsm bdng" onclick="delPlayer('${tid}','${p.id}')">✕</button>`:''}</td>
-    </tr>`).join('')+'</tbody></table>';
+  if(!team){el.innerHTML='';return;}
+  let admin=APP.role==='admin';
+  let roleOpts=sel=>ROLES.map(r=>`<option${r===sel?' selected':''}>${r}</option>`).join('');
+  let rows=team.players.map(p=>`<tr>
+      <td>${admin?photoCell(p.id):av(p.id,30)}</td>
+      <td>${admin?`<input class="ifield pe" value="${esc(p.name)}" maxlength="40" onchange="updPlayer('${tid}','${p.id}','name',this.value)">`:esc(p.name)}</td>
+      <td>${admin?`<input class="ifield pe" style="width:62px" type="number" min="0" max="999" value="${esc(p.jersey)}" onchange="updPlayer('${tid}','${p.id}','jersey',this.value)">`:`<span class="tag tb">${esc(p.jersey)}</span>`}</td>
+      <td>${admin?`<select class="sfield pe" onchange="updPlayer('${tid}','${p.id}','role',this.value)">${roleOpts(p.role)}</select>`:`<span class="tag ta">${esc(p.role)}</span>`}</td>
+      <td style="white-space:nowrap">${admin?`<label class="optlbl" style="display:inline-flex;gap:4px;font-size:11px"><input type="radio" name="capt-${tid}" ${team.captainId===p.id?'checked':''} onchange="setCaptain('${tid}','${p.id}')">Captain</label>`:(team.captainId===p.id?'<span class="tag tg">Captain</span>':'')}
+        ${p.isSub?'<span class="tag ta">Sub</span>':''}</td>
+      <td>${admin?`<button class="bsm bdng" onclick="delPlayer('${tid}','${p.id}')">✕</button>`:''}</td>
+    </tr>`).join('');
+  let add=admin?`<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px dashed var(--bdr)">
+      <input class="ifield pe" id="pa-name" placeholder="New player name" maxlength="40" style="flex:2;min-width:130px">
+      <input class="ifield pe" id="pa-jersey" type="number" min="0" max="999" placeholder="No." style="width:64px">
+      <select class="sfield pe" id="pa-role" style="flex:1;min-width:110px">${roleOpts('Batsman')}</select>
+      <label class="optlbl" style="display:inline-flex;gap:5px;font-size:12px"><input type="checkbox" id="pa-sub">Substitute</label>
+      <button class="bsm bgld" onclick="addPlayer('${tid}')">➕ Add player</button>
+    </div>
+    <p style="font-size:11px;color:var(--dim);margin-top:8px">Tap the circle to add an optional photo. Changes save automatically.</p>`:'';
+  el.innerHTML=(team.players.length?`<div class="tblwrap"><table><thead><tr><th>Photo</th><th>Name</th><th>#</th><th>Role</th><th></th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`:'<p style="color:var(--dim)">No players.</p>')+add;
 }
+function updPlayer(tid,pid,field,val){
+  if(APP.role!=='admin')return;
+  let t=APP.teams.find(x=>x.id===tid),p=t&&t.players.find(x=>x.id===pid);if(!p)return;
+  if(field==='name'){
+    let n=String(val).trim().slice(0,40);
+    if(!n){toast('Player name cannot be empty','warn');filterPlayers();return;}
+    if(t.players.some(x=>x.id!==pid&&x.name.trim().toLowerCase()===n.toLowerCase())){toast(`"${n}" is already in this team`,'warn');filterPlayers();return;}
+    p.name=n;
+    // keep line-ups of matches that have not started in step
+    APP.matches.forEach(m=>{if(m.status==='scheduled'&&m.playingXI&&m.playingXI[tid])m.playingXI[tid].forEach(x=>{if(x.id===pid)x.name=n;});});
+  } else if(field==='jersey'){
+    let j=validJersey(val);
+    if(j===null){toast('Jersey number must be 0 to 999','warn');filterPlayers();return;}
+    if(t.players.some(x=>x.id!==pid&&+x.jersey===j)){toast(`Jersey ${j} is already used in this team`,'warn');filterPlayers();return;}
+    p.jersey=j;
+  } else if(field==='role'){
+    if(ROLES.includes(val))p.role=val;
+  }
+  saveState();toast('Player updated ✓');
+}
+function addPlayer(tid){
+  if(APP.role!=='admin')return;
+  let t=APP.teams.find(x=>x.id===tid);if(!t)return;
+  let n=document.getElementById('pa-name').value.trim().slice(0,40);
+  let j=validJersey(document.getElementById('pa-jersey').value);
+  if(!n){toast('Enter the player name','warn');document.getElementById('pa-name').focus();return;}
+  if(j===null){toast('Jersey number must be 0 to 999','warn');document.getElementById('pa-jersey').focus();return;}
+  if(t.players.some(x=>x.name.trim().toLowerCase()===n.toLowerCase())){toast(`"${n}" is already in this team`,'warn');return;}
+  if(t.players.some(x=>+x.jersey===j)){toast(`Jersey ${j} is already used in this team`,'warn');return;}
+  let sub=document.getElementById('pa-sub').checked;
+  t.players.push({id:uid('pl_'),name:n,jersey:j,role:document.getElementById('pa-role').value,mandatory:!sub,isSub:sub});
+  filterPlayers();renderTeamList();saveState();toast(`✅ ${n} added`);
+}
+function setCaptain(tid,pid){
+  if(APP.role!=='admin')return;
+  let t=APP.teams.find(x=>x.id===tid);if(!t)return;
+  t.captainId=pid;saveState();toast('Captain set ✓');
+}
+function isCaptain(pid){return APP.teams.some(t=>t.captainId===pid);}
 function delPlayer(tid,pid){
-  let t=APP.teams.find(x=>x.id===tid);if(t)t.players=t.players.filter(p=>p.id!==pid);
-  filterPlayers();saveState();
+  if(APP.role!=='admin')return;
+  let t=APP.teams.find(x=>x.id===tid),p=t&&t.players.find(x=>x.id===pid);if(!p)return;
+  if(!window.confirm('Remove '+p.name+' from '+t.name+'? Past scorecards keep their records.'))return;
+  t.players=t.players.filter(x=>x.id!==pid);
+  if(t.captainId===pid)delete t.captainId;
+  if(APP.photos[pid]){delete APP.photos[pid];}
+  filterPlayers();renderTeamList();saveState();
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+//  OPTIONAL PHOTOS — players, team logos, umpires
+//  Stored as small thumbnails inside the tournament, so no file storage is needed.
+// ══════════════════════════════════════════════════════════════════════════
+const PHOTO_RE=/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/;
+function photoOf(id){let d=id&&APP.photos&&APP.photos[id];return(typeof d==='string'&&d.length<60000&&PHOTO_RE.test(d))?d:null;}
+function av(id,size){let d=photoOf(id);size=size||22;return d?`<img class="av" src="${d}" width="${size}" height="${size}" alt="" loading="lazy">`:'';}
+function umpId(name){let k=String(name||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,40);return k?'ump_'+k:'';}
+function photoCell(id){
+  let d=photoOf(id);
+  return `<span style="display:inline-block;text-align:center"><button type="button" class="avbtn" title="${d?'Change photo':'Add photo'}" onclick="pickPhoto('${esc(id)}')">${d?`<img src="${d}" alt="">`:'📷'}</button>${d?`<button type="button" class="avx" onclick="removePhoto('${esc(id)}')">remove</button>`:''}</span>`;
+}
+function afterPhotoChange(){
+  saveState();
+  try{renderTeamList();filterPlayers();refreshUmpPhotos();renderMatches();refreshView();}catch(e){}
+}
+function pickPhoto(id){
+  if(APP.role!=='admin'||!id)return;
+  let inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=()=>{
+    let f=inp.files&&inp.files[0];if(!f)return;
+    if(!/^image\//.test(f.type)){toast('Choose an image file','warn');return;}
+    let url=URL.createObjectURL(f),img=new Image();
+    img.onload=()=>{
+      try{
+        const S=128;let c=document.createElement('canvas');c.width=S;c.height=S;
+        let side=Math.min(img.naturalWidth,img.naturalHeight);
+        let sx=(img.naturalWidth-side)/2,sy=(img.naturalHeight-side)/2;
+        let ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,S,S);
+        ctx.drawImage(img,sx,sy,side,side,0,0,S,S);
+        let d=c.toDataURL('image/jpeg',0.72);
+        if(!PHOTO_RE.test(d)||d.length>=60000){toast('That image could not be used','warn');return;}
+        APP.photos[id]=d;afterPhotoChange();toast('📷 Photo saved');
+      }catch(e){toast('That image could not be used','warn');}
+      finally{URL.revokeObjectURL(url);}
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);toast('That image could not be read','warn');};
+    img.src=url;
+  };
+  inp.click();
+}
+function removePhoto(id){
+  if(APP.role!=='admin'||!APP.photos[id])return;
+  delete APP.photos[id];afterPhotoChange();toast('Photo removed');
+}
+// Photo buttons under the umpire name fields in the schedule dialog
+function refreshUmpPhotos(){
+  [1,2,3].forEach(i=>{
+    let box=document.getElementById('sch-up'+i),inp=document.getElementById('sch-u'+i);if(!box||!inp)return;
+    let id=umpId(inp.value);
+    box.innerHTML=id?photoCell(id):'<span style="font-size:10px;color:var(--dim)">Type a name to add a photo</span>';
+    if(!inp._ph){inp._ph=1;inp.addEventListener('input',refreshUmpPhotos);}
+  });
+}
+function umpLine(m){return (m.umpires||[]).map(u=>av(umpId(u),18)+esc(u)).join(' · ');}
 
 // ══════════════════════════════════════════════════════════════════════════
 //  MATCH SCHEDULING
@@ -2695,7 +2871,7 @@ function getXIFromRows(side, teamId){
       existing=team.players.find(p=>p.name.toLowerCase()===nm.toLowerCase());
     }
     if(existing){
-      players.push({id:existing.id,name:nm,jersey:existing.jersey,role:existing.role,isSub:existing.isSub||false});
+      players.push({id:existing.id,name:nm,jersey:existing.jersey,role:existing.role,isSub:!isMandatory});
     } else {
       players.push({id:uid('xi_'),name:nm,jersey:i+1,role:'Batsman',isSub:!isMandatory});
     }
@@ -2703,13 +2879,21 @@ function getXIFromRows(side, teamId){
   return players;
 }
 
+let _schConfirmKey=null;
 function openSchedModal(){
   if(APP.teams.length<2){toast('Add at least 2 teams first');return;}
   let opts=APP.teams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');
   document.getElementById('sch-a').innerHTML=opts;
   document.getElementById('sch-b').innerHTML=opts;
-  document.getElementById('sch-d').value=new Date().toISOString().split('T')[0];
+  document.getElementById('sch-d').value=todayISO();
   document.getElementById('sch-warn').textContent='';
+  // Always start from a clean form
+  ['sch-v','sch-u1','sch-u2','sch-u3'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('sch-stage').value='League';
+  let mo0=document.getElementById('sch-mo');mo0.removeAttribute('data-edit-id');
+  let t0=mo0.querySelector('.mt');if(t0)setTxt(t0,'📅 Schedule Match');
+  setTxt(document.getElementById('sch-save'),'📅 Schedule');
+  _schConfirmKey=null;refreshUmpPhotos();
   // Always default Team A = first team, Team B = second team (different teams)
   document.getElementById('sch-a').value=APP.teams[0].id;
   document.getElementById('sch-b').value=APP.teams[1].id;
@@ -2746,6 +2930,18 @@ function scheduleMatch(){
   let matchType=document.getElementById('sch-stage').value||'League';
   let venue=document.getElementById('sch-v').value.trim()||'TBD';
   let date=document.getElementById('sch-d').value;
+  let warnEl=document.getElementById('sch-warn');warnEl.textContent='';
+  let editing=document.getElementById('sch-mo').getAttribute('data-edit-id');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){warnEl.textContent='⚠ Choose the match date.';document.getElementById('sch-d').focus();return;}
+  let soft=[];
+  if(!editing&&date<todayISO())soft.push('That date is in the past.');
+  if(APP.matches.some(x=>x.id!==editing&&x.status==='scheduled'&&x.date===date&&((x.teamAId===a&&x.teamBId===b)||(x.teamAId===b&&x.teamBId===a))))
+    soft.push('These two teams already have a match scheduled on that date.');
+  if(soft.length){
+    let key=[a,b,date,editing||'',soft.length].join('|');
+    if(_schConfirmKey!==key){_schConfirmKey=key;warnEl.textContent='⚠ '+soft.join(' ')+' Tap the button again to save anyway.';return;}
+  }
+  _schConfirmKey=null;
   let umpires=[document.getElementById('sch-u1').value.trim()||'Umpire 1',
                document.getElementById('sch-u2').value.trim()||'Umpire 2',
                document.getElementById('sch-u3').value.trim()||'Third Umpire'];
@@ -2756,7 +2952,7 @@ function scheduleMatch(){
     let m=APP.matches.find(x=>x.id===editId);
     if(m){m.teamAId=a;m.teamBId=b;m.matchType=matchType;m.venue=venue;m.date=date;m.umpires=umpires;m.playingXI={[a]:xiA,[b]:xiB};}
     mo.removeAttribute('data-edit-id');
-    let title=mo.querySelector('.mt');if(title)title.textContent='📅 Schedule Match';
+    let title=mo.querySelector('.mt');if(title)setTxt(title,'📅 Schedule Match');
     closeM('sch-mo');renderMatches();populateSCSelect();saveState();toast('Match updated ✓');
   } else {
     // New match
@@ -2772,7 +2968,7 @@ function scheduleMatch(){
 function cancelSchModal(){
   let mo=document.getElementById('sch-mo');
   mo.removeAttribute('data-edit-id');
-  let title=mo.querySelector('.mt');if(title)title.textContent='📅 Schedule Match';
+  let title=mo.querySelector('.mt');if(title)setTxt(title,'📅 Schedule Match');
   closeM('sch-mo');
 }
 function renderMatches(){
@@ -2787,7 +2983,7 @@ function renderMatches(){
     let stageBadge=`<span style="font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:8px;background:${mtBg};color:${mtColor};border:1px solid ${mtColor};margin-right:4px">${esc(mt.toUpperCase())}</span>`;
     let stag=m.status==='live'?'<span class="tag tr">🔴 LIVE</span>':m.status==='completed'?'<span class="tag tg">✅ DONE</span>':'<span class="tag tb">UPCOMING</span>';
     let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`<div style="font-family:var(--mono);font-size:11px;color:var(--dim)">${t?esc(t.code):'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})</div>`;}).join('');
-    let wr=m.resultText?`<div style="color:var(--em);font-size:12px;margin-top:3px">🏆 ${esc(m.resultText)}</div>${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:11px;color:var(--dim);margin-top:2px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}`:'';
+    let wr=m.resultText?`<div style="color:var(--em);font-size:12px;margin-top:3px">🏆 ${esc(m.resultText)}</div>${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:11px;color:var(--dim);margin-top:2px">🏅 Player of the Match: ${av(m.motm,18)}<b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}`:'';
     let ab='';
     if(APP.role==='admin'){
       if(m.status==='scheduled'){
@@ -2806,12 +3002,12 @@ function renderMatches(){
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
           ${stageBadge}
-          <div style="font-family:var(--disp);font-size:14px">${esc(tA.name)} <span style="color:var(--dim)">vs</span> ${esc(tB.name)}</div>
+          <div style="font-family:var(--disp);font-size:14px">${av(tA.id,22)}${esc(tA.name)} <span style="color:var(--dim)">vs</span> ${av(tB.id,22)}${esc(tB.name)}</div>
         </div>
         <div style="margin-left:auto">${stag}</div>
       </div>
       <div style="font-size:11px;color:var(--dim)">📍 ${esc(m.venue)} &nbsp;|&nbsp; 📅 ${esc(m.date)}</div>
-      <div style="font-size:11px;color:var(--dim)">👔 ${m.umpires.map(esc).join(' · ')}</div>
+      <div style="font-size:11px;color:var(--dim)">👔 ${umpLine(m)}</div>
       ${sc}${wr}
       <div style="margin-top:9px;display:flex;gap:6px;flex-wrap:wrap">${ab}</div>
     </div>`;
@@ -2860,6 +3056,7 @@ function openEditMatch(mid){
   document.getElementById('sch-u2').value=m.umpires[1]||'';
   document.getElementById('sch-u3').value=m.umpires[2]||'';
   document.getElementById('sch-warn').textContent='';
+  document.getElementById('sch-v').value=m.venue==='TBD'?'':(m.venue||'');
   // Pre-fill XI from the match's stored playingXI if available, else from squad
   buildXIRows('a',m.teamAId,m.playingXI?m.playingXI[m.teamAId]:null);
   buildXIRows('b',m.teamBId,m.playingXI?m.playingXI[m.teamBId]:null);
@@ -2870,7 +3067,9 @@ function openEditMatch(mid){
   sb.onchange=()=>onSchTeamChange('b');
   document.getElementById('sch-mo').setAttribute('data-edit-id',mid);
   let title=document.querySelector('#sch-mo .mt');
-  if(title)title.textContent='✏️ Edit Match';
+  if(title)setTxt(title,'✏️ Edit Match');
+  setTxt(document.getElementById('sch-save'),'💾 Save changes');
+  _schConfirmKey=null;refreshUmpPhotos();
   openM('sch-mo');
 }
 
@@ -2883,6 +3082,7 @@ function startMatch(mid){
   let live=APP.matches.find(x=>x.status==='live');
   if(live&&live.id!==mid){toast('A match is already live!');return;}
   APP.liveMatch=m;m.status='live';_undoStack=[];
+  document.getElementById('toss-d').value='bat';
   let opts=[m.teamAId,m.teamBId].map(id=>{let t=APP.teams.find(x=>x.id===id);return`<option value="${id}">${esc(t?t.name:id)}</option>`;}).join('');
   document.getElementById('toss-w').innerHTML=opts;
   openM('toss-mo');
@@ -2901,12 +3101,17 @@ function confirmToss(){
   let bwl=bat===m.teamAId?m.teamBId:m.teamAId;
   closeM('toss-mo');startInnings(1,bat,bwl);
 }
-function getMatchXI(m, teamId){
-  // Returns the Playing XI for this match: match.playingXI[teamId] or full squad
-  if(m.playingXI&&m.playingXI[teamId]&&m.playingXI[teamId].length>0)
-    return m.playingXI[teamId];
+// Everyone named for the match, including substitutes (used for fielders)
+function getMatchSquad(m, teamId){
+  if(m.playingXI&&m.playingXI[teamId]&&m.playingXI[teamId].length>0)return m.playingXI[teamId];
   let t=APP.teams.find(x=>x.id===teamId);
   return t?t.players:[];
+}
+// The playing XI only: substitutes cannot bat or bowl
+function getMatchXI(m, teamId){
+  let all=getMatchSquad(m,teamId);
+  let xi=all.filter(p=>!p.isSub);
+  return xi.length?xi:all;
 }
 function startInnings(num,batId,bwlId){
   let m=APP.liveMatch;
@@ -2932,7 +3137,7 @@ function startInnings(num,batId,bwlId){
   document.getElementById('ins-op2').innerHTML=opO;
   if(batPlayers.length>1)document.getElementById('ins-op2').selectedIndex=1;
   document.getElementById('ins-bwl').innerHTML=bwO;
-  document.getElementById('ins-title').textContent=`🏏 Innings ${num} — ${batT?batT.name:batId} batting`;
+  setTxt(document.getElementById('ins-title'),`🏏 Innings ${num} — ${batT?batT.name:batId} batting`);
   openM('ins-mo');saveState();
 }
 function confirmInningsSetup(){
@@ -3005,6 +3210,7 @@ function applyBowler(){
   let bw=inn.bowlers[bid];
   let bmxA=bowlerMaxOvers(APP.tournament.overs||20);
   if(bw&&bw.overs>=bmxA){document.getElementById('mg-bwarn').textContent='⚠ Max '+bmxA+' overs reached!';return;}
+  if(bid!==inn.currentBowler&&bid===inn.lastOverBowler&&!(inn.thisOver||[]).length&&inn.legalBalls>0){document.getElementById('mg-bwarn').textContent='⚠ This bowler bowled the previous over — choose someone else.';return;}
   inn.currentBowler=bid;closeM('mg-mo');afterScore();toast('✅ Bowler changed');
 }
 
@@ -3066,20 +3272,25 @@ function addRun(r){
 function addExtra(type){
   if(!canScore())return;
   APP.pendingExtra=type;
-  document.getElementById('ex-title').textContent=type==='wide'?'Wide':type==='noball'?'No Ball':type==='bye'?'Bye':'Leg Bye';
+  setTxt(document.getElementById('ex-title'),type==='wide'?'Wide':type==='noball'?'No Ball':type==='bye'?'Bye':'Leg Bye');
   document.getElementById('ex-runs').value=1;
   let br=document.getElementById('ex-bat-row');if(br)br.style.display=type==='noball'?'':'none';
   let bc2=document.getElementById('ex-bat');if(bc2)bc2.checked=false;
   let hint=document.getElementById('ex-hint');
+  if(hint)hint.style.color='var(--dim)';
   if(hint)hint.textContent=(type==='wide'||type==='noball')
-    ?'Total for this delivery, including the 1 penalty run. Example: '+(type==='wide'?'wide + 2 run':'no ball + 2 run')+' = 3.'
+    ?'Total for this delivery, including the 1 penalty run. Example: '+(type==='wide'?'wide + 2 run':'no ball + 2 run')+' = 3.'+(type==='noball'?' Runs not off the bat count as byes.':'')
     :'Runs taken as '+(type==='bye'?'byes':'leg byes')+'.';
   openM('ex-mo');
 }
 function confirmExtra(){
-  let type=APP.pendingExtra,runs=parseInt(document.getElementById('ex-runs').value);
-  if(isNaN(runs)||runs<1)runs=1;
-  if(runs>8)runs=8;
+  let type=APP.pendingExtra,raw=String(document.getElementById('ex-runs').value).trim();
+  if(!/^\d+$/.test(raw)||+raw<1||+raw>8){
+    let h=document.getElementById('ex-hint');
+    if(h){h.style.color='var(--red)';h.textContent='Enter a whole number from 1 to 8.';}
+    document.getElementById('ex-runs').focus();return;
+  }
+  let runs=+raw;
   let offBat=type==='noball'&&!!document.getElementById('ex-bat')?.checked;
   closeM('ex-mo');
   if(!type||!canScore())return;
@@ -3093,7 +3304,13 @@ function confirmExtra(){
     let taken=runs-1;
     let batRuns=offBat?taken:0;
     let exRuns=runs-batRuns;
-    inn.extras.total+=exRuns;inn.extras[type]=(inn.extras[type]||0)+exRuns;
+    inn.extras.total+=exRuns;
+    if(type==='wide'){inn.extras.wide=(inn.extras.wide||0)+exRuns;}
+    else{
+      // No ball: 1 penalty run is a no-ball extra; runs not off the bat are byes
+      inn.extras.noball=(inn.extras.noball||0)+1;
+      if(exRuns>1)inn.extras.bye=(inn.extras.bye||0)+(exRuns-1);
+    }
     if(type==='wide'){
       if(bw){bw.runs+=runs;bw.wides++;}
     } else {
@@ -3131,8 +3348,10 @@ function triggerWicket(){
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   let st=inn.striker?inn.batsmen[inn.striker]:null;
   document.getElementById('wkt-bats').textContent=st?st.name:'—';
-  document.getElementById('wkt-type').value='Bowled';
-  document.getElementById('wkt-fld').value='';
+  document.getElementById('wkt-type').value=APP.pendingFreeHit?'Run Out':'Bowled';
+  let fsel=document.getElementById('wkt-fld');
+  fsel.innerHTML='<option value="">— Select fielder —</option>'+getMatchSquad(m,inn.bowlingTeamId).map(p=>`<option value="${esc(p.name)}">${esc(p.name)}${p.isSub?' (sub)':''}</option>`).join('');
+  fsel.value='';
   onDismChange();
   let batT=APP.teams.find(t=>t.id===inn.battingTeamId);
   let xiPlayers=getMatchXI(APP.liveMatch,inn.battingTeamId);
@@ -3151,15 +3370,25 @@ function onDismChange(){
   let t=document.getElementById('wkt-type').value;
   document.getElementById('wkt-frow').style.display=['Caught','Stumped','Run Out'].includes(t)?'':'none';
   document.getElementById('wkt-rorow').style.display=t==='Run Out'?'':'none';
+  let we=document.getElementById('wkt-err');if(we)we.textContent='';
+  // Stumped: default to the wicket-keeper when the squad has one
+  let fs=document.getElementById('wkt-fld'),lm=APP.liveMatch,li=lm&&lm.innings[lm.currentInnings];
+  if(fs&&li&&t==='Stumped'&&!fs.value){
+    let wk=getMatchSquad(lm,li.bowlingTeamId).find(p=>p.role==='Wicket-keeper');
+    if(wk)fs.value=wk.name;
+  }
 }
 function confirmWicket(){
   if(!canScore()){closeM('wkt-mo');return;}
-  pushUndo();
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   let type=document.getElementById('wkt-type').value;
   let fielder=document.getElementById('wkt-fld').value.trim();
   let nextId=document.getElementById('wkt-next').value;
   let roWho=document.getElementById('wkt-ro').value;
+  let werr=document.getElementById('wkt-err');if(werr)werr.textContent='';
+  if(APP.pendingFreeHit&&type!=='Run Out'){toast('Free hit — the batter can only be run out','warn');document.getElementById('wkt-type').value='Run Out';onDismChange();return;}
+  if((type==='Caught'||type==='Stumped')&&!fielder){if(werr)werr.textContent='Choose the fielder.';return;}
+  pushUndo();
   let dismissedId=(type==='Run Out'&&roWho==='ns')?inn.nonStriker:inn.striker;
   let bw=inn.bowlers[inn.currentBowler];
   let dname=inn.batsmen[dismissedId]?inn.batsmen[dismissedId].name:'?';
@@ -3173,7 +3402,7 @@ function confirmWicket(){
   APP.pendingFreeHit=false;
   if(['Bowled','Caught','LBW','Stumped','Hit Wicket'].includes(type)&&bw)bw.wickets++;
   inn.wickets++;
-  inn.fallOfWickets.push({score:inn.runs,wicket:inn.wickets,batsman:dname,over:ov(inn)});
+  inn.fallOfWickets.push({score:inn.runs,wicket:inn.wickets,batsman:dname,over:Math.floor(inn.legalBalls/6)+'.'+(inn.legalBalls%6+1)});
   inn.partnerships.push({...inn.currentPartnership});
   inn.currentPartnership={runs:0,balls:0};
   inn.thisOver.push('W');
@@ -3223,6 +3452,7 @@ function completeOver(inn){
     let hE=inn.thisOver.some(b=>['wd','nb'].includes(b));
     if(oR===0&&!hE)bw.maidens++;
   }
+  inn.lastOverBowler=inn.currentBowler;
   inn.ballInOver=0;
   inn.pastOvers=inn.pastOvers||[];
   inn.pastOvers.push([...inn.thisOver]);
@@ -3350,6 +3580,8 @@ function canScore(){
 // Economy rate from runs, completed overs and extra balls
 function econ(runs,overs,balls){let b=(overs||0)*6+(balls||0);return b>0?(runs||0)*6/b:null;}
 function econTxt(runs,overs,balls){let e=econ(runs,overs,balls);return e===null?'—':e.toFixed(2);}
+function hasBowled(b){return !!(b&&((b.overs||0)||(b.balls||0)||(b.runs||0)||(b.wides||0)||(b.noballs||0)));}
+function todayISO(){return new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);}
 function ov(inn){return`${Math.floor(inn.legalBalls/6)}.${inn.legalBalls%6}`;}
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -3387,7 +3619,7 @@ function renderLive(){
   let overLog=`<div class="overlog"><span class="olbl">THIS OVER:</span>`;
   (inn.thisOver||[]).forEach(b=>overLog+=`<div class="ball ${bc(b)}">${esc(b)}</div>`);
   overLog+='</div>';
-  let fhBanner=APP.pendingFreeHit&&APP.role==='admin'?'<div class="fhb" style="display:block">🟢 FREE HIT — Batsman cannot be dismissed (except Run Out)!</div>':'';
+  let fhBanner=APP.pendingFreeHit&&!inn.completed?'<div class="fhb" style="display:block">🟢 FREE HIT — Batsman cannot be dismissed (except Run Out)!</div>':'';
   let tgt='';
   if(inn.number===2&&inn.target){
     let need=Math.max(0,inn.target-inn.runs),bl=maxBalls()-inn.legalBalls;
@@ -3446,16 +3678,16 @@ function renderLive(){
   ${tgt}
   <div class="bgrid">
     <div class="bcard sk"><div class="skm">★ ON STRIKE</div>
-      <div class="bnm">${st?esc(st.name):'⚠ Not set'}</div>
+      <div class="bnm">${st?av(inn.striker,26)+esc(st.name):'⚠ Not set'}</div>
       <div class="bst"><span>${st?st.runs:0}</span>(${st?st.balls:0}b) 4s:<span>${st?st.fours:0}</span> 6s:<span>${st?st.sixes:0}</span> SR:<span>${st&&st.balls>0?((st.runs/st.balls)*100).toFixed(1):'—'}</span></div>
     </div>
     <div class="bcard">
-      <div class="bnm">${ns?esc(ns.name):'⚠ Not set'} <span style="font-size:9px;color:var(--dim)">(non-striker)</span></div>
+      <div class="bnm">${ns?av(inn.nonStriker,26)+esc(ns.name):'⚠ Not set'} <span style="font-size:9px;color:var(--dim)">(non-striker)</span></div>
       <div class="bst"><span>${ns?ns.runs:0}</span>(${ns?ns.balls:0}b) 4s:<span>${ns?ns.fours:0}</span> 6s:<span>${ns?ns.sixes:0}</span></div>
     </div>
   </div>
   <div class="bwlcard">
-    <div class="bwlnm">${bw?esc(bw.name):'⚠ Not set'} <span style="font-size:10px;color:var(--dim)">(Bowling)</span></div>
+    <div class="bwlnm">${bw?av(inn.currentBowler,26)+esc(bw.name):'⚠ Not set'} <span style="font-size:10px;color:var(--dim)">(Bowling)</span></div>
     <div style="font-family:var(--mono);font-size:11px;color:var(--dim)">
       O:<span style="color:var(--blue)">${bw?bw.overs+'.'+(bw.balls||0):'0'}</span>
       M:<span style="color:var(--blue)">${bw?bw.maidens:0}</span>
@@ -3515,23 +3747,23 @@ function renderSC(){
       <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(240,192,64,.1);color:${mtcol};border:1px solid ${mtcol}">${esc(mtype.toUpperCase())}</span>
       <div style="font-family:var(--disp);font-size:16px">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
     </div>
-    <div style="font-size:11px;color:var(--dim)">📍 ${esc(m.venue)} | ${esc(m.date)} | 👔 ${m.umpires.map(esc).join(' · ')}</div>
+    <div style="font-size:11px;color:var(--dim)">📍 ${esc(m.venue)} | ${esc(m.date)} | 👔 ${umpLine(m)}</div>
     ${m.toss?`<div style="font-size:11px;color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${esc(String(m.toss.decision).toUpperCase())}</div>`:''}
     ${m.resultText?`<div style="color:var(--em);font-size:14px;margin-top:4px;font-family:var(--disp)">🏆 ${esc(m.resultText)}</div>`:''}
-    ${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:12px;color:var(--dim);margin-top:3px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}
+    ${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:12px;color:var(--dim);margin-top:3px">🏅 Player of the Match: ${av(m.motm,18)}<b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}
   </div>`;
   m.innings.forEach(inn=>{
     let bat=APP.teams.find(t=>t.id===inn.battingTeamId),bwl=APP.teams.find(t=>t.id===inn.bowlingTeamId);
     html+=`<div style="margin-bottom:20px">
       <div class="inns-hdr">${bat?esc(bat.name):'?'} — Innings ${inn.number}: <b>${inn.runs}/${inn.wickets}</b> (${ov(inn)} / ${APP.tournament.overs||20} Ov)</div>
       <div class="tblwrap"><table><thead><tr><th>Batsman</th><th>Dismissal</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead><tbody>`;
-    bat&&bat.players.forEach(p=>{
-      let b=inn.batsmen[p.id];if(!b||b.status==='yet')return;
+    Object.entries(inn.batsmen||{}).forEach(([pid,b])=>{
+      if(!b||b.status==='yet')return;
       let sr=b.balls>0?((b.runs/b.balls)*100).toFixed(1):'0.0';
       let dis=b.status==='batting'?'<span class="tag tg">not out</span>'
         :b.status==='retired'?'<span class="tag ta">retired hurt</span>'
         :`<span style="font-size:10px;color:var(--dim)">${esc(b.dismissal)}</span>`;
-      html+=`<tr><td style="font-weight:600">${esc(b.name)}</td><td>${dis}</td>
+      html+=`<tr><td style="font-weight:600;white-space:nowrap">${av(pid,20)}${esc(b.name)}${isCaptain(pid)?' <span style="color:var(--dim);font-weight:400">(c)</span>':''}</td><td>${dis}</td>
         <td style="font-family:var(--mono);color:var(--gold);font-weight:700">${b.runs}</td>
         <td style="font-family:var(--mono)">${b.balls}</td><td style="font-family:var(--mono)">${b.fours}</td>
         <td style="font-family:var(--mono)">${b.sixes}</td><td style="font-family:var(--mono)">${sr}</td></tr>`;
@@ -3544,10 +3776,10 @@ function renderSC(){
     if(inn.fallOfWickets.length)html+=`<div style="margin-bottom:8px"><span style="font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase">Fall of Wickets</span>
       <div class="fow-list" style="margin-top:3px">${inn.fallOfWickets.map(f=>`<div class="fow-chip">${f.score}/${f.wicket} (${esc(f.batsman)})</div>`).join('')}</div></div>`;
     html+=`<div class="tblwrap"><table style="margin-top:6px"><thead><tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>Eco</th><th>Wd</th><th>Nb</th></tr></thead><tbody>`;
-    bwl&&bwl.players.forEach(p=>{
-      let b=inn.bowlers[p.id];if(!b||(b.overs===0&&(b.balls||0)===0))return;
-      html+=`<tr><td style="font-weight:600">${esc(b.name)}</td>
-        <td style="font-family:var(--mono)">${b.overs}.${b.balls||0}</td>
+    Object.entries(inn.bowlers||{}).forEach(([pid,b])=>{
+      if(!hasBowled(b))return;
+      html+=`<tr><td style="font-weight:600;white-space:nowrap">${av(pid,20)}${esc(b.name)}</td>
+        <td style="font-family:var(--mono)">${b.overs||0}.${b.balls||0}</td>
         <td style="font-family:var(--mono)">${b.maidens}</td>
         <td style="font-family:var(--mono)">${b.runs}</td>
         <td style="font-family:var(--mono);color:var(--red);font-weight:700">${b.wickets}</td>
@@ -3638,7 +3870,7 @@ function collectPlayerStats(){
 
       // ── Bowling ──────────────────────────────────────────────────
       Object.entries(inn.bowlers||{}).forEach(([pid,bw])=>{
-        if((bw.overs||0)===0&&(bw.balls||0)===0)return; // did not bowl
+        if(!hasBowled(bw))return; // did not bowl
         if(!bowling[pid]) bowling[pid]={
           name:bw.name,team:bwlTeam?bwlTeam.code:'?',
           matches:new Set(),overs:0,balls:0,runs:0,
@@ -3737,7 +3969,7 @@ function renderBattingStats(){
     let hs=p.highest+(p.highestNotOut?'*':'');
     let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
     return`<tr>
-      <td style="font-family:var(--body)">${medal} <b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
+      <td style="font-family:var(--body);white-space:nowrap">${medal} ${av(p.id,24)}<b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
       <td class="num">${p.matches}</td>
       <td class="num">${p.innings}</td>
       <td class="num hi">${p.runs}</td>
@@ -3774,7 +4006,7 @@ function renderBowlingStats(){
   let done=APP.matches.filter(m=>m.status==='completed');
   if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
   let {bowling}=collectPlayerStats();
-  let bowlers=bowling.filter(p=>p.wickets>0||p.overs>0||p.balls>0);
+  let bowlers=bowling.filter(p=>p.wickets>0||p.overs>0||p.balls>0||p.runs>0);
   if(!bowlers.length){el.innerHTML='<p style="color:var(--dim)">No bowling data yet.</p>';return;}
 
   // Sort by wickets desc, then economy asc
@@ -3787,7 +4019,7 @@ function renderBowlingStats(){
     let best=p.bestWickets>0?`${p.bestWickets}/${p.bestRuns}`:'—';
     let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
     return`<tr>
-      <td style="font-family:var(--body)">${medal} <b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
+      <td style="font-family:var(--body);white-space:nowrap">${medal} ${av(p.id,24)}<b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
       <td class="num">${p.matches}</td>
       <td class="num">${p.overs+Math.floor(p.balls/6)}.${p.balls%6}</td>
       <td class="num">${p.runs}</td>
@@ -3828,7 +4060,7 @@ function renderFieldingStats(){
     let total=p.catches+p.stumpings+p.runOuts;
     let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
     return`<tr>
-      <td style="font-family:var(--body)">${medal} <b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
+      <td style="font-family:var(--body);white-space:nowrap">${medal} ${av(p.id,24)}<b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
       <td class="num">${p.matches}</td>
       <td class="num hi">${total}</td>
       <td class="num" style="color:var(--em)">${p.catches}</td>
@@ -3923,7 +4155,7 @@ function renderAwards(){
       <div style="font-size:44px;flex-shrink:0">🌟</div>
       <div class="award-info">
         <div class="award-title" style="color:var(--gold)">PLAYER OF THE SERIES${chosenId&&pool[chosenId]?'':' (SO FAR)'}</div>
-        <div class="award-name" style="font-size:20px">${esc(pots.name)} <span style="font-size:11px;color:var(--dim)">(${esc(pots.team)})</span></div>
+        <div class="award-name" style="font-size:20px">${av(pots.id,34)}${esc(pots.name)} <span style="font-size:11px;color:var(--dim)">(${esc(pots.team)})</span></div>
         <div class="award-val">${esc(pots.bits.join(' · '))}</div>
         ${APP.role==='admin'?`<select class="motm-sel" style="margin-top:8px" onchange="setPOTS(this.value)">
           <option value="">Auto — best all-round performer</option>
@@ -4000,7 +4232,7 @@ function renderCompleted(){
       </div>
       <div class="hsc">${sc}</div>
       <div class="hres" style="color:${m.winner==='no_result'?'var(--amber)':'var(--em)'}">${esc(m.resultText||'—')}</div>
-      ${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:11px;color:var(--dim);margin-top:2px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}
+      ${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:11px;color:var(--dim);margin-top:2px">🏅 Player of the Match: ${av(m.motm,18)}<b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}
       <div style="font-size:10px;color:var(--dim);margin-top:2px">📍 ${esc(m.venue)} | 📅 ${esc(m.date)}</div>
     </div>`;
   }).join('');
@@ -4045,7 +4277,7 @@ function renderPoints(){
   el.innerHTML=`<div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>T</th><th>NR</th><th>Pts</th><th>NRR</th></tr></thead><tbody>`
     +sorted.map((x,i)=>`<tr>
       <td style="color:var(--gold);font-family:var(--mono)">${i+1}</td>
-      <td><span class="tag tg">${esc(x.team.code)}</span> ${esc(x.team.name)}</td>
+      <td style="white-space:nowrap">${av(x.team.id,22)}<span class="tag tg">${esc(x.team.code)}</span> ${esc(x.team.name)}</td>
       <td style="font-family:var(--mono)">${x.p}</td>
       <td style="font-family:var(--mono);color:var(--em)">${x.w}</td>
       <td style="font-family:var(--mono);color:var(--red)">${x.l}</td>
@@ -4641,146 +4873,90 @@ let CURRENT_LANG=lsGet('stumply_lang')||'en';
 
 function t(key){return(LANGS[CURRENT_LANG]||LANGS.en)[key]||key;}
 
-function applyLanguage(){
-  const L=LANGS[CURRENT_LANG]||LANGS.en;
-  document.documentElement.lang=CURRENT_LANG;
-
-  // ── Helper: set text preserving child elements (badges etc) ──────
-  function setText(el,txt){
-    if(!el)return;
-    // Remove only text nodes, keep element children
-    Array.from(el.childNodes).filter(n=>n.nodeType===3).forEach(n=>n.remove());
-    el.insertBefore(document.createTextNode(txt),el.firstChild);
+// Set text from code on an element the translator also manages
+function setTxt(el,text){if(!el)return;el.textContent=text;delete el.dataset.i18n;delete el.dataset.i18nOn;}
+// English labels in the page that correspond to an existing dictionary entry
+const I18N_ALIAS={
+  'Name':'Tournament Name','Tournament Info':'Tournament Details','Overs per Innings':'Overs Format',
+  'Code':'Team Code','Elected To':'Decision','Opener 1 (Striker)':'Select Opener 1','Opener 2 (Non-Striker)':'Select Opener 2',
+  'Next Batsman In':'Next Batsman','Bowler for Next Over':'Select Bowler','Fielder':'Fielder Name',
+  'Manage Players / Bowler':'Manage','Ball-by-Ball Entry':'Ball-by-Ball','Player of the Match':'Man of the Match',
+  'Schedule':'Schedule Match','Teams':'Add Teams','Edit Players':'Manage Players','Email':'Username',
+  'Admin Panel':'Admin','History & Stats':'History','Scorecard':'Scores','Save changes':'Save'
+};
+function i18nLookup(orig,L){
+  if(L[orig])return L[orig];
+  let m=orig.match(/^([^\p{L}\p{N}]*)([\s\S]*?)([^\p{L}\p{N})]*)$/u);if(!m)return null;
+  let core=m[2].trim();if(!core)return null;
+  let v=L[core]||L[I18N_ALIAS[core]];if(!v)return null;
+  return (/^[^\p{L}\p{N}]/u.test(v)?'':m[1])+v+(/[→:]\s*$/.test(v)?'':m[3]);
+}
+// Translate one plain-text element, remembering its English text so that
+// switching back to English (or to another language) always starts from it.
+function i18nEl(el,L,isEn){
+  if(el.children.length)return;
+  let orig=el.dataset.i18n;
+  if(orig==null){
+    orig=(el.textContent||'').trim().replace(/\s+/g,' ');
+    if(!orig||orig.length>60)return;
+    el.dataset.i18n=orig;
   }
+  let v=isEn?null:i18nLookup(orig,L);
+  if(v){el.textContent=v;el.dataset.i18nOn='1';}
+  else if(el.dataset.i18nOn){el.textContent=orig;delete el.dataset.i18nOn;}
+}
+function applyLanguage(){
+  const L=LANGS[CURRENT_LANG]||LANGS.en,isEn=!LANGS[CURRENT_LANG]||CURRENT_LANG==='en';
+  document.documentElement.lang=CURRENT_LANG;
+  const strip=v=>String(v||'').replace(/^[^\p{L}\p{N}]+/u,'');
 
-  // ── 1. Nav tab buttons ────────────────────────────────────────────
-  const tabMap={'home':'Home','matches':'Matches','live':'Live','scorecard':'Scores','history':'History','admin':'Admin'};
+  // 1. Navigation tabs (icon stays, label is translated)
+  const tabMap={home:'Home',matches:'Matches',live:'Live',scorecard:'Scores',history:'History',admin:'Admin'};
   document.querySelectorAll('.tab-btn').forEach(btn=>{
-    let act=btn.getAttribute('data-action')||'';
-    let tab=act.match(/showTab\('(\w+)'\)/)?.[1];
-    if(tab&&tabMap[tab])setText(btn,L[tabMap[tab]]||tabMap[tab]);
+    let tab=(btn.getAttribute('data-action')||'').match(/showTab\('(\w+)'\)/)?.[1];
+    let lbl=btn.querySelector('.tl');
+    if(tab&&tabMap[tab]&&lbl)lbl.textContent=strip(L[tabMap[tab]])||tabMap[tab];
   });
 
-  // ── 2. Stat sub-tabs ─────────────────────────────────────────────
+  // 2. History sub-tabs
   const statTabMap={'stab-matches':'Completed Matches','stab-points':'Points Table',
     'stab-batting':'Batting','stab-bowling':'Bowling','stab-fielding':'Fielding','stab-awards':'Awards'};
   Object.entries(statTabMap).forEach(([id,key])=>{
     let el=document.getElementById(id);if(el)el.textContent=L[key]||key;
   });
 
-  // ── 3. Auth screen ────────────────────────────────────────────────
-  // Tab buttons
-  document.querySelectorAll('.atab').forEach(btn=>{
-    let act=btn.getAttribute('data-action')||'';
-    if(act.includes("'login'"))btn.textContent=L['Sign In']||'Sign In';
-    else if(act.includes("'reg'"))btn.textContent=L['Register']||'Register';
+  // 3. Every plain-text heading, label, button, link and table heading
+  document.querySelectorAll('.ch,.stitle,.mt,label,button,a[data-action],th,.atab').forEach(el=>{
+    if(el.closest('.nav-tabs,#lang-grid')||el.classList.contains('stab-btn')||el.classList.contains('sbtn')
+      ||el.classList.contains('bex')||el.classList.contains('bwkt')||el.classList.contains('btn-out')||el.id==='lang-btn')return;
+    i18nEl(el,L,isEn);
   });
-  // Labels by element ID mapping
-  const labelMap={
-    'l-u':'l-u','l-p':'l-p',
-  };
-  // Find all .fg labels and translate by their content
-  document.querySelectorAll('.fg label, .mr label').forEach(lbl=>{
-    let txt=(lbl.textContent||'').trim();
-    if(L[txt])lbl.textContent=L[txt];
-  });
-  // Placeholders
-  const phMap={
-    'l-p':'enter password',
-    'r-n':'Your Name','r-u':'enter username','r-p':'enter password','r-p2':'enter password',
-    'v-uname':'enter username',
-  };
+
+  // 4. Placeholders
+  const phMap={'l-p':'enter password','r-n':'Your Name','r-u':'enter username','r-p':'enter password','r-p2':'enter password','v-uname':'enter username'};
   Object.entries(phMap).forEach(([id,key])=>{
-    let el=document.getElementById(id);
-    if(el&&L[key])el.placeholder=L[key];
-  });
-  // Buttons in auth
-  const authBtnMap={
-    'btnpri-login':'Sign In →','btnpri-register':'Create Account',
-  };
-  // Translate primary buttons by their current text
-  document.querySelectorAll('.btnpri,.btnalt,.atab').forEach(btn=>{
-    let txt=(btn.textContent||'').trim().replace(/\s+/g,' ');
-    // Check against known English keys
-    let found=Object.entries(L).find(([k,v])=>k===txt);
-    if(found)btn.textContent=found[1];
-  });
-  // Forgot/viewer/back links
-  document.querySelectorAll('a[data-action]').forEach(a=>{
-    let txt=(a.textContent||'').trim();
-    if(L[txt])a.textContent=L[txt];
-    // Special cases
-    let act=a.getAttribute('data-action')||'';
-    if(act.includes('showForgot')&&L['Forgot password?'])a.textContent=L['Forgot password?'];
-    if(act.includes('showViewer')&&L['Watch as Viewer'])a.textContent=L['Watch as Viewer'];
-    if(act.includes('showLogin')&&txt.includes('Back'))a.textContent=L['Back to Sign In']||txt;
-    if(act.includes("'import'")&&txt.includes('Import'))a.textContent=L['Import from another device']||txt;
+    let el=document.getElementById(id);if(!el)return;
+    if(el.dataset.ph==null)el.dataset.ph=el.placeholder||'';
+    el.placeholder=(!isEn&&L[key])?L[key]:el.dataset.ph;
   });
 
-  // ── 4. Topbar: Logout button ──────────────────────────────────────
-  let lo=document.querySelector('.btn-out');if(lo)lo.textContent=L['Logout']||'Logout';
+  // 5. Top bar
+  let lo=document.querySelector('.btn-out');
+  if(lo&&APP.role!=='viewer')lo.textContent=L['Logout']||'Logout';
+  let langBtn=document.getElementById('lang-btn');
+  if(langBtn){let lv=strip(L['Language'])||'Language';langBtn.textContent='🌐 '+lv;langBtn.title=lv;}
 
-  // ── 5. Live scoring buttons ───────────────────────────────────────
-  // Extra buttons (Wide/No Ball/Bye/Leg Bye)
+  // 6. Live scoring buttons
   document.querySelectorAll('.bex').forEach(el=>{
     let act=el.getAttribute('data-action')||el.getAttribute('onclick')||'';
-    let txt=(el.textContent||'').trim();
-    if(act.includes('wide')||txt==='WIDE'||txt===L['WIDE'])el.textContent=L['WIDE']||'WIDE';
-    else if(act.includes('noball')||txt==='NO BALL'||txt===L['NO BALL'])el.textContent=L['NO BALL']||'NO BALL';
-    else if(act.includes('legbye')||txt==='LEG BYE'||txt===L['LEG BYE'])el.textContent=L['LEG BYE']||'LEG BYE';
-    else if(act.includes('bye')||txt==='BYE'||txt===L['BYE'])el.textContent=L['BYE']||'BYE';
+    if(act.includes('wide'))el.textContent=L['WIDE']||'WIDE';
+    else if(act.includes('noball'))el.textContent=L['NO BALL']||'NO BALL';
+    else if(act.includes('legbye'))el.textContent=L['LEG BYE']||'LEG BYE';
+    else if(act.includes('bye'))el.textContent=L['BYE']||'BYE';
   });
-  // Wicket button
-  document.querySelectorAll('.bwkt').forEach(el=>{
-    el.textContent=L['WICKET']||'⚡ WICKET';
-  });
+  document.querySelectorAll('.bwkt').forEach(el=>{el.textContent=L['WICKET']||'⚡ WICKET';});
 
-  // ── 6. All .ch section headings ───────────────────────────────────
-  document.querySelectorAll('.ch').forEach(el=>{
-    let txt=(el.textContent||'').trim();
-    if(L[txt])el.textContent=L[txt];
-  });
-
-  // ── 7. All .stitle page titles ────────────────────────────────────
-  document.querySelectorAll('.stitle').forEach(el=>{
-    let txt=(el.textContent||'').trim();
-    if(L[txt])el.textContent=L[txt];
-  });
-
-  // ── 8. All .mt modal titles ───────────────────────────────────────
-  document.querySelectorAll('.mt').forEach(el=>{
-    let txt=(el.textContent||'').trim();
-    if(L[txt])el.textContent=L[txt];
-  });
-
-  // ── 9. All buttons — translate by current text ────────────────────
-  document.querySelectorAll('button:not(.tab-btn):not(.atab):not(.stab-btn):not(.lang-opt *):not(.sbtn)').forEach(btn=>{
-    let txt=(btn.textContent||'').trim().replace(/\s+/g,' ');
-    if(L[txt])btn.textContent=L[txt];
-  });
-
-  // ── 10. All form labels ───────────────────────────────────────────
-  document.querySelectorAll('label').forEach(lbl=>{
-    let txt=(lbl.textContent||'').trim();
-    if(L[txt])lbl.textContent=L[txt];
-  });
-
-  // ── 11. How to Use / Language buttons on auth screen ─────────────
-  document.querySelectorAll('[data-action*="demo-mo"], [data-action*="openLangModal"]').forEach(btn=>{
-    let txt=(btn.textContent||'').trim();
-    if(txt.includes('How to')||txt.includes('Use'))btn.textContent=L['How to Use']||txt;
-    if(txt.includes('Language')||txt.includes('🌐'))btn.textContent=L['Language']||txt;
-  });
-
-  // ── 12. Language button in topbar ─────────────────────────────────
-  let langBtn=document.getElementById('lang-btn');
-  if(langBtn)langBtn.title=L['Language']||'Language';
-
-  // ── 13. Re-render live view if active (updates dynamic labels) ────
-  try{
-    let liveView=document.getElementById('view-live');
-    if(liveView&&liveView.classList.contains('active'))renderLive();
-  }catch(e){}
+  try{layoutTop();}catch(e){}
 }
 
 function openLangModal(){
@@ -4796,8 +4972,8 @@ function openLangModal(){
 function setLang(code){
   CURRENT_LANG=code;
   lsSet('stumply_lang',code);
+  try{refreshView();}catch(e){}
   applyLanguage();
-  document.getElementById('lang-btn').textContent='🌐';
   // Update active state
   document.querySelectorAll('.lang-opt').forEach(el=>{
     el.classList.toggle('active',el.getAttribute('onclick')===`setLang('${code}')`);
@@ -4948,7 +5124,7 @@ function openMOTM(){
       (seen[pid]=seen[pid]||{name:b.name,team:batTeam?batTeam.code:'?',bits:[]}).bits.push(`${b.runs||0} runs`);
     });
     Object.entries(inn.bowlers||{}).forEach(([pid,bw])=>{
-      if(!(bw.overs||bw.balls))return;
+      if(!hasBowled(bw))return;
       (seen[pid]=seen[pid]||{name:bw.name,team:bwlTeam?bwlTeam.code:'?',bits:[]}).bits.push(`${bw.wickets||0}/${bw.runs||0}`);
     });
   });
