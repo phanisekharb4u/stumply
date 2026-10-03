@@ -407,29 +407,29 @@ tr:hover td{background:#f0faff}
 /* Batsman/Bowler cards */
 .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .bcard{
-  background:rgba(255,255,255,.08);
+  background:#12324a;
   border:1px solid rgba(255,255,255,.12);
   border-radius:10px;padding:12px;position:relative;
   backdrop-filter:blur(4px);
 }
 .bcard.sk{
-  border-color:rgba(240,180,0,.5);
-  background:rgba(240,180,0,.08);
+  border-color:rgba(240,180,0,.7);
+  background:#1c3a2a;
   box-shadow:0 0 0 1px rgba(240,180,0,.2);
 }
 .skm{position:absolute;top:6px;right:8px;font-family:var(--mono);font-size:9px;color:var(--gold2);font-weight:700}
 .bnm{font-family:var(--disp);font-size:14px;color:#fff;margin-bottom:4px;letter-spacing:.5px}
-.bst{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.5)}
+.bst{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.75)}
 .bst span{color:var(--gold2);font-size:13px;font-weight:700}
 .bwlcard{
-  background:rgba(21,101,192,.15);
+  background:#102a4a;
   border:1px solid rgba(41,121,212,.3);
   border-radius:10px;padding:12px;margin-bottom:12px;
 }
 .bwlnm{font-family:var(--disp);font-size:14px;color:#7eb8ff;margin-bottom:4px;letter-spacing:.5px}
 
 /* Over log balls */
-.overlog{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.overlog{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;align-items:center;background:#12324a;border-radius:10px;padding:8px 10px;min-height:44px}
 .ball{
   width:30px;height:30px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
@@ -444,16 +444,16 @@ tr:hover td{background:#f0faff}
 .ball.wkt{background:rgba(192,57,43,.3);border-color:#c0392b;color:#ff8a80;font-weight:900;box-shadow:0 0 8px rgba(192,57,43,.4)}
 .ball.wide,.ball.nb{background:rgba(212,114,10,.2);border-color:rgba(212,114,10,.6);color:#ffb74d;font-size:9px}
 .ball.fh{background:rgba(26,122,46,.3);border-color:var(--em2);color:#69f0ae;font-size:8px}
-.olbl{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.35);margin-right:4px}
+.olbl{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7);margin-right:4px}
 
 /* Run rate bar */
 .rbar{
   display:flex;gap:14px;flex-wrap:wrap;
-  background:rgba(255,255,255,.06);
+  background:#12324a;
   border:1px solid rgba(255,255,255,.10);
   border-radius:8px;padding:8px 14px;margin-bottom:12px;
 }
-.ri{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.45)}
+.ri{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.75)}
 .ri span{color:var(--em2);font-size:12px;font-weight:700}
 
 /* Scoring buttons */
@@ -1044,36 +1044,39 @@ tr:hover td{background:#f0faff}
     <div id="ls-warn" style="display:none;background:rgba(240,160,48,.15);border:1px solid var(--amber);border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--amber);text-align:left">
       ⚠ <b>Private/Incognito mode detected.</b> Your account data will be saved for this session only and won't persist after closing the tab. For full persistence, open in a normal browser window.
     </div>
+    <div id="cfg-warn" style="display:none;background:rgba(240,160,48,.15);border:1px solid var(--amber);border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--amber);text-align:left">
+      ⚠ <b>Setup needed.</b> This site is not connected to Firebase yet. Add your project details to <b>firebase-config.js</b> (steps in README.md).
+    </div>
     <div class="atabs" id="auth-tabs">
       <button class="atab on" data-action="switchTab('login')">Sign In</button>
       <button class="atab" data-action="switchTab('reg')">Register</button>
     </div>
     <!-- Login -->
     <div id="apanel-login" class="apanel on">
-      <div class="fg"><label>Username</label><input id="l-u" type="text" placeholder="your_username" autocomplete="username"></div>
+      <div class="fg"><label>Email</label><input id="l-u" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email"></div>
       <div class="fg"><label>Password</label><input id="l-p" type="password" placeholder="••••••••" autocomplete="current-password"></div>
       <div id="l-err" class="emsg"></div>
       <button class="btnpri" style="margin-top:8px" data-action="doLogin()">Sign In →</button>
-      <div style="text-align:center;margin-top:8px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <div style="text-align:center;margin-top:8px">
         <a id="forgot-link" style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showForgot()">Forgot password?</a>
-        <a style="font-size:12px;color:var(--blue);cursor:pointer;text-decoration:underline" data-action="switchTab('import')">📥 Import from another device</a>
       </div>
       <div class="divd">or</div>
-      <button class="btnalt" data-action="showViewer()">👁 Watch as Viewer (live sync, read-only)</button>
+      <button class="btnalt" data-action="showViewer()">👁 Watch as Viewer (live scores, read-only)</button>
     </div>
     <!-- Viewer Panel -->
     <div id="apanel-viewer" class="apanel">
       <div style="font-family:var(--disp);font-size:13px;color:var(--em);margin-bottom:10px;letter-spacing:.5px">👁 WATCH LIVE SCORES</div>
       <div style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.5">
-        Enter the <b style="color:var(--txt)">username</b> of the tournament admin whose live scores you want to watch.
+        Enter the <b style="color:var(--txt)">username</b> of the tournament admin whose scores you want to watch. No account needed.
       </div>
       <div class="fg">
         <label>Admin Username</label>
-        <input id="v-uname" type="text" placeholder="e.g. phani_test" autocomplete="off"
+        <input id="v-uname" type="text" placeholder="e.g. phani_test" autocomplete="off" autocapitalize="none"
           style="width:100%;background:var(--bg2);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:13px;padding:9px 11px;border-radius:6px;outline:none">
       </div>
       <div id="v-err" class="emsg"></div>
       <button class="btnpri" style="margin-top:8px" data-action="doGuest()">👁 Watch Live →</button>
+      <div id="v-list"></div>
       <div style="margin-top:10px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;padding:9px 12px;font-size:11px;color:var(--dim)">
         🔔 <b style="color:var(--txt)">Enable notifications?</b> Get alerted when a match starts, wickets fall, and the result is announced.
         <div style="margin-top:7px;display:flex;gap:7px">
@@ -1086,73 +1089,25 @@ tr:hover td{background:#f0faff}
         <a style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showLogin()">← Back to Sign In</a>
       </div>
     </div>
-    <!-- Import Account Panel -->
-    <div id="apanel-import" class="apanel">
-      <div style="font-family:var(--disp);font-size:13px;color:var(--blue);margin-bottom:10px;letter-spacing:.5px">📥 IMPORT ACCOUNT</div>
-      <div style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.5">
-        Registered on another device? Export your account there (<b>Admin → Export Account</b>) then paste the code below.
-      </div>
-      <div class="fg">
-        <label>Export Code</label>
-        <textarea id="auth-import-code" placeholder="Paste your export code here..." style="width:100%;height:90px;background:var(--bg4);border:1.5px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:11px;padding:9px 11px;border-radius:8px;outline:none;resize:none"></textarea>
-      </div>
-      <div id="auth-import-err" class="emsg"></div>
-      <button class="btnpri" style="margin-top:6px" data-action="importAccountFromAuth()">📥 Import & Sign In →</button>
-      <div style="text-align:center;margin-top:10px">
-        <a style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showLogin()">← Back to Sign In</a>
-      </div>
-    </div>
     <!-- Forgot Password -->
     <div id="apanel-forgot" class="apanel">
       <div style="font-family:var(--disp);font-size:13px;color:var(--gold);margin-bottom:10px;letter-spacing:.5px">🔑 RESET PASSWORD</div>
-      <!-- Step 1: Enter username -->
-      <div id="fp-step1">
-        <div class="fg"><label>Your Username</label><input id="fp-u" type="text" placeholder="your_username" autocomplete="username"></div>
-        <div id="fp-err1" class="emsg"></div>
-        <button class="btnpri" style="margin-top:6px" data-action="fpStep1()">Continue →</button>
-      </div>
-      <!-- Step 2: Answer security question -->
-      <div id="fp-step2" style="display:none">
-        <div style="font-size:12px;color:var(--dim);margin-bottom:10px">Answer your security question to reset your password.</div>
-        <div class="fg"><label id="fp-question-label">Security Question</label>
-          <input id="fp-answer" type="text" placeholder="Your answer" autocomplete="off"></div>
-        <div class="fg"><label>New Password</label><input id="fp-newpass" type="password" placeholder="Min 4 characters"></div>
-        <div class="fg"><label>Confirm New Password</label><input id="fp-newpass2" type="password" placeholder="Repeat password"></div>
-        <div id="fp-err2" class="emsg"></div>
-        <button class="btnpri" style="margin-top:6px" data-action="fpStep2()">Reset Password →</button>
-      </div>
-      <!-- Step 3: Success -->
-      <div id="fp-step3" style="display:none">
-        <div style="text-align:center;padding:16px 0">
-          <div style="font-size:32px;margin-bottom:8px">✅</div>
-          <div style="color:var(--em);font-size:14px;font-family:var(--disp)">Password reset successfully!</div>
-          <div style="color:var(--dim);font-size:12px;margin-top:6px">You can now sign in with your new password.</div>
-        </div>
-      </div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:10px">Enter your email and we will send you a link to choose a new password.</div>
+      <div class="fg"><label>Email</label><input id="fp-u" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email"></div>
+      <div id="fp-err1" class="emsg"></div>
+      <div id="fp-ok" class="omsg"></div>
+      <button class="btnpri" style="margin-top:6px" data-action="fpStep1()">Send reset link →</button>
       <div style="text-align:center;margin-top:10px">
         <a style="font-size:12px;color:var(--dim);cursor:pointer;text-decoration:underline" data-action="showLogin()">← Back to Sign In</a>
       </div>
     </div>
     <!-- Register -->
     <div id="apanel-reg" class="apanel">
-      <div class="fg"><label>Full Name</label><input id="r-n" type="text" placeholder="Virat Kumar"></div>
-      <div class="fg"><label>Username</label><input id="r-u" type="text" placeholder="virat_kumar" autocomplete="username"></div>
-      <div class="fg"><label>Password</label><input id="r-p" type="password" placeholder="Min 4 characters"></div>
-      <div class="fg"><label>Confirm Password</label><input id="r-p2" type="password" placeholder="Repeat password"></div>
-      <div class="fg">
-        <label>Security Question <span style="color:var(--dim);font-size:10px;text-transform:none;letter-spacing:0">(for password reset)</span></label>
-        <select id="r-sq" style="width:100%;background:var(--bg2);border:1px solid var(--bdr);color:var(--txt);font-family:var(--body);font-size:12px;padding:8px 10px;border-radius:6px;outline:none;margin-bottom:6px">
-          <option value="">— Choose a question —</option>
-          <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
-          <option value="What was the name of your first pet?">What was the name of your first pet?</option>
-          <option value="What city were you born in?">What city were you born in?</option>
-          <option value="What is your favourite cricket team?">What is your favourite cricket team?</option>
-          <option value="What is your favourite cricketer?">What is your favourite cricketer?</option>
-          <option value="What was the name of your first school?">What was the name of your first school?</option>
-          <option value="What is your childhood nickname?">What is your childhood nickname?</option>
-        </select>
-        <input id="r-sa" type="text" style="width:100%;background:var(--bg2);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;outline:none" placeholder="Your answer (remember this!)">
-      </div>
+      <div class="fg"><label>Full Name</label><input id="r-n" type="text" placeholder="Virat Kumar" autocomplete="name"></div>
+      <div class="fg"><label>Username <span style="color:var(--dim);font-size:10px;text-transform:none;letter-spacing:0">(viewers use this to find you)</span></label><input id="r-u" type="text" placeholder="virat_kumar" autocomplete="off" autocapitalize="none"></div>
+      <div class="fg"><label>Email</label><input id="r-e" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email"></div>
+      <div class="fg"><label>Password</label><input id="r-p" type="password" placeholder="Min 6 characters" autocomplete="new-password"></div>
+      <div class="fg"><label>Confirm Password</label><input id="r-p2" type="password" placeholder="Repeat password" autocomplete="new-password"></div>
       <div id="r-err" class="emsg"></div>
       <div id="r-ok" class="omsg"></div>
       <button class="btnpri" style="margin-top:8px" data-action="doRegister()">Create Account →</button>
@@ -1180,7 +1135,8 @@ tr:hover td{background:#f0faff}
   <button id="lang-btn" data-action="openLangModal()" title="Change language / భాష మార్చు">🌐</button>
 </div>
 
-<div id="syncbar">🔄 Live sync active — scores update every second &nbsp;|&nbsp; view-only &nbsp;|&nbsp; <a data-action="showTab('live')" style="color:var(--gold);cursor:pointer;text-decoration:underline">▶ Go to Live Scores</a></div>
+<div id="boot-msg" style="display:none;position:fixed;inset:0;z-index:5;align-items:center;justify-content:center;padding-top:40vh;text-align:center;font-family:var(--disp);color:var(--dim);font-size:14px"></div>
+<div id="syncbar"><span id="sync-msg">🟢 Live — scores update automatically</span> &nbsp;|&nbsp; view-only &nbsp;|&nbsp; <a data-action="showTab('live')" style="color:var(--gold);cursor:pointer;text-decoration:underline">▶ Go to Live Scores</a></div>
 
 <!-- ══ MAIN ══ -->
 <div id="main" class="hidden">
@@ -1272,57 +1228,29 @@ tr:hover td{background:#f0faff}
 <!-- ADMIN -->
 <div id="view-admin" class="view admin-only">
   <div class="stitle">⚙️ Admin Panel</div>
-  <!-- Cloud Sync -->
+  <!-- Cloud status -->
   <div class="card" style="background:linear-gradient(135deg,#e8f4fd,#ddeeff);border-color:var(--bdr2)" id="cloud-sync-card">
-    <div class="ch" style="color:var(--blue)">☁️ Cloud Sync — All Devices</div>
-    <div id="cloud-status-bar" style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-      <span id="cloud-dot" style="width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0"></span>
-      <span id="cloud-status-txt" style="font-size:12px;color:var(--dim)">Not connected — scores saved on this device only</span>
-    </div>
-    <p style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.6">
-      Connect a <b style="color:var(--txt)">free Firebase database</b> to sync your tournament across iPhone, Android, tablets and laptops automatically — no export needed.
-    </p>
-    <div id="firebase-setup-panel">
-      <div style="font-size:11px;color:var(--dim);margin-bottom:8px;line-height:1.6">
-        ① Go to <b style="color:var(--blue)">console.firebase.google.com</b> → Create project → Realtime Database → Create database (test mode) → Copy your Database URL<br>
-        ② Paste it below and click Connect:
-      </div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap">
-        <input id="firebase-url-input" type="url" placeholder="https://your-project-default-rtdb.firebaseio.com"
-          style="flex:1;min-width:200px;background:#fff;border:1.5px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:11px;padding:8px 10px;border-radius:8px;outline:none">
-        <button class="bsm bblu" data-action="connectFirebase()" style="white-space:nowrap">☁️ Connect</button>
-      </div>
-      <div id="firebase-err" style="color:var(--red);font-size:11px;margin-top:5px"></div>
-    </div>
-    <div id="firebase-connected-panel" style="display:none">
-      <div style="display:flex;gap:7px;flex-wrap:wrap">
-        <button class="bsm" style="background:var(--emlt);color:var(--em);border:1px solid var(--edim)" data-action="syncNow()">🔄 Sync Now</button>
-        <button class="bsm bdng" data-action="disconnectFirebase()">✕ Disconnect</button>
-      </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span id="cloud-dot" style="width:10px;height:10px;border-radius:50%;background:#22a03c;flex-shrink:0"></span>
+      <span id="cloud-status-txt" style="font-size:12px;color:var(--dim);flex:1;min-width:160px">☁️ All changes saved to the cloud</span>
+      <button class="bsm" style="background:var(--emlt);color:var(--em);border:1px solid var(--edim)" data-action="syncNow()">🔄 Save now</button>
     </div>
   </div>
-
-  <!-- Cross-device account sync (local export/import) -->
-  <div class="card" style="background:linear-gradient(135deg,#fffbf0,#fff8e1);border-color:var(--gdim)">
-    <div class="ch" style="color:var(--gold)">📱 Use on Multiple Devices (Local)</div>
-    <p style="font-size:12px;color:var(--dim);margin-bottom:12px;line-height:1.6">
-      No Firebase? Export your account here and import it on the other device manually.
-    </p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="bsm bgld" data-action="exportAccount()">📤 Export Account</button>
-      <button class="bsm bblu" data-action="showImportAccount()">📥 Import Account</button>
+  <!-- My tournaments -->
+  <div class="card">
+    <div class="ch">🗂 My Tournaments</div>
+    <div id="tourn-list"></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
+      <input class="ifield" id="tn-new" placeholder="New tournament name" maxlength="60" style="flex:1;min-width:160px">
+      <button class="bsm bgld" data-action="newTournament()" style="white-space:nowrap">➕ New tournament</button>
     </div>
-    <div id="export-output" style="display:none;margin-top:12px">
-      <div style="font-size:11px;color:var(--dim);margin-bottom:6px">Copy this code and paste it on your other device:</div>
-      <textarea id="export-code" readonly style="width:100%;height:80px;background:var(--bg4);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:10px;padding:8px;border-radius:6px;outline:none;resize:none;word-break:break-all"></textarea>
-      <button class="bsm bgld" style="margin-top:6px;width:100%" data-action="copyExportCode()">📋 Copy Code</button>
-    </div>
-    <div id="import-panel" style="display:none;margin-top:12px">
-      <div style="font-size:11px;color:var(--dim);margin-bottom:6px">Paste your export code from the other device:</div>
-      <textarea id="import-code" placeholder="Paste code here..." style="width:100%;height:80px;background:var(--bg4);border:1px solid var(--bdr);color:var(--txt);font-family:var(--mono);font-size:10px;padding:8px;border-radius:6px;outline:none;resize:none"></textarea>
-      <div id="import-err" style="color:var(--red);font-size:11px;margin-top:4px"></div>
-      <button class="bsm" style="margin-top:6px;width:100%;background:linear-gradient(135deg,#1a7a2e,#22a03c)" data-action="importAccount()">📥 Import & Sign In</button>
-    </div>
+    <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5">Each tournament has its own teams, matches, stats and share link. Finished tournaments stay here as history.</p>
+  </div>
+  <!-- One-time import from the old version -->
+  <div class="card" id="legacy-card" style="display:none;background:linear-gradient(135deg,#fffbf0,#fff8e1);border-color:var(--gdim)">
+    <div class="ch" style="color:var(--gold)">📥 Data found on this device</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:6px;line-height:1.5">Saved by the earlier version of Stumply. Import it into your account to keep it.</p>
+    <div id="legacy-import"></div>
   </div>
   <div class="card">
     <div class="ch">🏆 Tournament Info</div>
@@ -1418,7 +1346,9 @@ tr:hover td{background:#f0faff}
 <div class="mo" id="ex-mo">
   <div class="mb">
     <div class="mt gold" id="ex-title">Extra</div>
-    <div class="mr"><label>Runs off this delivery</label><input class="ifield" id="ex-runs" type="number" value="1" min="0" max="7"></div>
+    <div class="mr"><label>Runs off this delivery</label><input class="ifield" id="ex-runs" type="number" value="1" min="1" max="8" inputmode="numeric">
+      <div id="ex-hint" style="font-size:11px;color:var(--dim);margin-top:5px"></div></div>
+    <div class="mr" id="ex-bat-row" style="display:none"><label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px"><input type="checkbox" id="ex-bat" style="width:18px;height:18px"> Runs came off the bat (credit the batter)</label></div>
     <div class="mact">
       <button class="bsm bgld" data-action="confirmExtra()">✔ OK</button>
       <button class="bsm bdng" data-action="closeM('ex-mo')">✕ Cancel</button>
@@ -1603,13 +1533,11 @@ tr:hover td{background:#f0faff}
 
 <div id="toast"></div>
 
+<script src="firebase-config.js"></script>
 <script>
 // ══════════════════════════════════════════════════════════════════════════
 //  CONSTANTS
 // ══════════════════════════════════════════════════════════════════════════
-const LS_USERS   = 'cs_users_v1';     // {uname:{hash,name,data}}
-const LS_SESSION = 'cs_sess_v1';      // {uname?,role}
-const LS_LIVE    = 'cs_live_v1';      // shared broadcast for viewers
 
 // ══════════════════════════════════════════════════════════════════════════
 //  PUSH NOTIFICATIONS
@@ -1646,7 +1574,7 @@ async function sendNotif(title,body,tag){
     if(reg){
       // Use SW — works in background too
       reg.active?.postMessage({type:'SHOW_NOTIFICATION',title,body,tag,
-        url:window.location.href.split('?')[0]+'?view='+(APP.uname||'')});
+        url:window.location.href.split('?')[0]+(APP.tid||APP.viewTid?'?t='+(APP.tid||APP.viewTid):'')});
     } else {
       // Fallback: direct Notification API (foreground only)
       new Notification(title,{body,icon:'/icon-192.png',tag,vibrate:[100,50,100]});
@@ -1711,7 +1639,8 @@ function esc(s){
 // ══════════════════════════════════════════════════════════════════════════
 let APP={
   role:null, uname:null, dname:null,
-  viewUser:null, // set when opened via ?view=USERNAME link
+  tid:null,      // tournament the admin has open
+  viewTid:null,  // tournament a viewer is watching
   tournament:{name:'My Tournament',edition:'Season 1',year:new Date().getFullYear(),overs:20},
   teams:[], matches:[], liveMatch:null,
   pendingExtra:null, pendingFreeHit:false,
@@ -1752,151 +1681,597 @@ function lsRemove(key){
   if(lsAvailable()){try{localStorage.removeItem(key);}catch{}}
   delete _memStore[key];
 }
-// Legacy hash (backward compat for old accounts)
-function hp(p){let h=0;for(let ch of p)h=(Math.imul(31,h)+ch.charCodeAt(0))|0;return h.toString(36);}
-// ── PBKDF2 password hashing (Web Crypto API — industry standard) ──────
-// Format stored: "hexSalt$hexDerivedKey"
-async function hashPassword(password, saltHex){
-  let enc=new TextEncoder();
-  let saltBuf=saltHex?hexToBuf(saltHex):crypto.getRandomValues(new Uint8Array(16));
-  let key=await crypto.subtle.importKey('raw',enc.encode(password),{name:'PBKDF2'},false,['deriveBits']);
-  let bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:saltBuf,iterations:100000,hash:'SHA-256'},key,256);
-  return bufToHex(saltBuf)+'$'+bufToHex(new Uint8Array(bits));
-}
-async function verifyPassword(password, stored){
-  if(!stored)return false;
-  // Legacy hp() hash (no '$') — direct compare, always works on all browsers
-  if(!stored.includes('$'))return hp(password)===stored;
-  // PBKDF2 hash — try Web Crypto API
-  try{
-    let salt=stored.split('$')[0];
-    let computed=await hashPassword(password,salt);
-    return computed===stored;
-  }catch(e){
-    // Web Crypto unavailable (old iOS WebView, some Android) — cannot verify PBKDF2
-    // Return a special sentinel so doLogin can show a helpful message
-    return '__CRYPTO_UNAVAILABLE__';
-  }
-}
-function bufToHex(buf){return Array.from(buf).map(b=>b.toString(16).padStart(2,'0')).join('');}
-function hexToBuf(hex){let b=new Uint8Array(hex.length/2);for(let i=0;i<b.length;i++)b[i]=parseInt(hex.slice(i*2,i*2+2),16);return b;}
-function getUsers(){try{return JSON.parse(lsGet(LS_USERS)||'{}')}catch{return{}}}
-function putUsers(u){try{lsSet(LS_USERS,JSON.stringify(u));}catch{}}
-function userGet(un){return getUsers()[un]||null;}
-function userSave(un,data){let u=getUsers();if(u[un]){u[un].data=data;putUsers(u);}}
 
 // ══════════════════════════════════════════════════════════════════════════
-//  LIVE BROADCAST (viewer sync)
+//  CLOUD — Firebase Authentication + Realtime Database (REST, no SDK)
+//  • Admins sign in with email + password; only the owner can write a
+//    tournament (enforced by database.rules.json on the server).
+//  • Viewers read without signing in and get live updates by streaming.
+//  • Every tournament is stored under /tournaments/{id}; an admin can own many.
 // ══════════════════════════════════════════════════════════════════════════
-function publishLive(){
-  if(APP.role!=='admin')return;
-  try{lsSet(LS_LIVE,JSON.stringify({
-    dname:APP.dname,tournament:APP.tournament,teams:APP.teams,
-    matches:APP.matches,liveId:APP.liveMatch?APP.liveMatch.id:null,ts:Date.now()
-  }));}catch{}
-}
-function readLive(){
-  try{
-    let d=JSON.parse(lsGet(LS_LIVE)||'null');
-    if(!d)return false;
-    APP.tournament=d.tournament;APP.teams=d.teams;APP.matches=d.matches;
-    if(!APP.tournament.overs)APP.tournament.overs=20;
-    APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
-    APP._liveTs=d.ts||0;APP.dname=d.dname||'Tournament';
-    return true;
-  }catch{return false;}
-}
-function loadViewerState(){
-  // For ?view= links: read directly from the user's saved data (most up-to-date)
-  if(APP.viewUser){
-    try{
-      let users=getUsers();
-      let u=users[APP.viewUser];
-      if(!u||!u.data)return false;
-      let d=u.data;
-      let newTs=d._savedAt||0;
-      // Always reload if: new timestamp OR live match in progress (score changes every ball)
-      let hasLiveInData=!!(d.liveId);
-      if(newTs<=APP._liveTs&&APP.teams.length>0&&!hasLiveInData)return false; // no change
-      APP.tournament=d.tournament||{name:'Tournament',edition:'Season 1',year:2026,overs:20};
-      if(!APP.tournament.overs)APP.tournament.overs=20;
-      APP.teams=d.teams||[];
-      APP.matches=d.matches||[];
-      APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
-      APP._liveTs=newTs||Date.now();
-      APP.dname=u.name||APP.viewUser;
-      return true;
-    }catch(e){return false;}
-  }
-  // Fallback: LS_LIVE broadcast
-  try{
-    let d=JSON.parse(lsGet(LS_LIVE)||'null');
-    if(!d||(d.ts||0)<=APP._liveTs)return false;
-    APP.tournament=d.tournament;APP.teams=d.teams;APP.matches=d.matches;
-    if(!APP.tournament.overs)APP.tournament.overs=20;
-    APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
-    APP._liveTs=d.ts||0;APP.dname=d.dname||'Tournament';
-    return true;
-  }catch{return false;}
-}
-function startSync(){
-  if(syncTimer)clearInterval(syncTimer);
+const CFG=window.STUMPLY_FIREBASE||{};
+const CLOUD_OK=!!(CFG.apiKey&&CFG.databaseURL&&!/PASTE_|YOUR_/i.test(String(CFG.apiKey)+String(CFG.databaseURL)));
+const DB_URL=String(CFG.databaseURL||'').replace(/\/+$/,'');
+const AUTH_URL=String(CFG.authEndpoint||'https://identitytoolkit.googleapis.com/v1').replace(/\/+$/,'');
+const TOKEN_URL=String(CFG.tokenEndpoint||'https://securetoken.googleapis.com/v1/token');
+const LS_AUTH='stumply_auth_v2';     // signed-in admin session
+const LS_CUR='stumply_cur_tid';      // tournament the admin last worked on
+const LS_TCACHE='stumply_t_';        // + tournament id → local copy (offline safety)
+const LS_VIEW='stumply_view_tid';    // tournament a viewer last watched
+const LS_LEGACY_DONE='stumply_legacy_done';
+let AUTH=null;                       // {uid,email,idToken,refreshToken,exp,name,uname}
+let _tlist=[];                       // admin's tournaments [{tid,name,edition,year,updatedAt,live}]
 
-  function doSync(){
-    if(!loadViewerState())return;
-    // Update live badge
-    let hasLive=APP.matches.some(m=>m.status==='live');
-    document.getElementById('livebadge').classList.toggle('hidden',!hasLive);
-    // Always refresh home and match list regardless of active tab
-    renderHome();
-    renderMatches();
-    populateSCSelect();
-    // Render live view — always, so score is ready when viewer switches tab
-    renderLive();
-    // If a match is live, auto-navigate viewer to Live tab
-    if(hasLive && APP.liveMatch){
-      let liveTab=document.getElementById('view-live');
-      let alreadyOnLive=liveTab&&liveTab.classList.contains('active');
-      if(!alreadyOnLive) showTab('live');
-    }
+function persistAuth(){try{if(AUTH)lsSet(LS_AUTH,JSON.stringify(AUTH));else lsRemove(LS_AUTH);}catch(e){}}
+function setAuthFromResponse(j){
+  AUTH={uid:j.localId,email:j.email||'',idToken:j.idToken,refreshToken:j.refreshToken,
+    exp:Date.now()+(parseInt(j.expiresIn)||3600)*1000-60000,name:'',uname:''};
+  persistAuth();
+}
+async function authCall(method,body){
+  let r;
+  try{r=await fetch(AUTH_URL+'/accounts:'+method+'?key='+encodeURIComponent(CFG.apiKey),
+    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});}
+  catch(e){throw new Error('NETWORK');}
+  let j=null;try{j=await r.json();}catch(e){}
+  if(!r.ok)throw new Error((j&&j.error&&j.error.message)||('HTTP_'+r.status));
+  return j;
+}
+let _refreshing=null;
+async function getToken(force){
+  if(!AUTH)throw new Error('SIGNED_OUT');
+  if(!force&&AUTH.idToken&&Date.now()<AUTH.exp)return AUTH.idToken;
+  if(!_refreshing){
+    let a=AUTH;
+    _refreshing=(async()=>{
+      let r;
+      try{r=await fetch(TOKEN_URL+'?key='+encodeURIComponent(CFG.apiKey),{method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(a.refreshToken)});}
+      catch(e){throw new Error('NETWORK');}
+      let j=null;try{j=await r.json();}catch(e){}
+      if(!r.ok)throw new Error('SESSION_EXPIRED');
+      a.idToken=j.id_token;a.refreshToken=j.refresh_token||a.refreshToken;
+      a.exp=Date.now()+(parseInt(j.expires_in)||3600)*1000-60000;
+      if(AUTH===a)persistAuth();
+      return a.idToken;
+    })().finally(()=>{_refreshing=null;});
   }
+  return _refreshing;
+}
+// One database request. needAuth=true attaches the admin's token (writes and private reads).
+async function dbReq(method,path,body,needAuth){
+  for(let attempt=0;;attempt++){
+    let url=DB_URL+'/'+path+'.json';
+    if(needAuth)url+='?auth='+encodeURIComponent(await getToken(attempt>0));
+    let r;
+    try{r=await fetch(url,{method,body:body===undefined?undefined:JSON.stringify(body),
+      headers:body===undefined?{}:{'Content-Type':'application/json'}});}
+    catch(e){throw new Error('NETWORK');}
+    if(r.status===401&&needAuth&&attempt===0)continue; // token expired → refresh once
+    if(!r.ok)throw new Error(r.status===401||r.status===403?'PERMISSION_DENIED':'HTTP_'+r.status);
+    try{return await r.json();}catch(e){return null;}
+  }
+}
+function authErrText(code){
+  code=String(code||'');
+  if(code.startsWith('EMAIL_EXISTS'))return 'An account with this email already exists — sign in instead.';
+  if(/INVALID_LOGIN_CREDENTIALS|INVALID_PASSWORD|EMAIL_NOT_FOUND/.test(code))return 'Wrong email or password.';
+  if(code.startsWith('WEAK_PASSWORD'))return 'Password must be at least 6 characters.';
+  if(code.startsWith('INVALID_EMAIL')||code.startsWith('MISSING_EMAIL'))return 'Enter a valid email address.';
+  if(code.startsWith('TOO_MANY_ATTEMPTS'))return 'Too many attempts. Please wait a few minutes and try again.';
+  if(code.startsWith('USER_DISABLED'))return 'This account has been disabled.';
+  if(code.startsWith('OPERATION_NOT_ALLOWED')||code.startsWith('CONFIGURATION_NOT_FOUND'))return 'Email sign-in is not switched on for this Firebase project yet.';
+  if(code.startsWith('API_KEY')||code.includes('API key'))return 'The Firebase API key in firebase-config.js is not valid.';
+  if(code==='PERMISSION_DENIED')return 'The database refused the request. Check that database.rules.json has been published.';
+  if(code==='SESSION_EXPIRED'||code==='SIGNED_OUT')return 'Your session has ended. Please sign in again.';
+  if(code==='NETWORK')return 'No connection. Check your internet and try again.';
+  return 'Something went wrong ('+code+'). Please try again.';
+}
 
-  // 1) Immediate sync on start
-  doSync();
-  // 2) Poll every 1 second
-  syncTimer=setInterval(doSync,1000);
-  // 3) Also listen for storage events (cross-tab instant update)
-  window.addEventListener('storage', function(e){
-    if(e.key===LS_USERS||e.key===LS_LIVE){
-      APP._liveTs=0; // force re-read
-      doSync();
-    }
+// ── Tournament state ⇄ stored form ────────────────────────────────────
+// Each part is stored as a JSON string so empty lists and blanks survive
+// the database unchanged, and each match can be updated on its own.
+function blankTournament(name){return {name:name||'My Tournament',edition:'Season 1',year:new Date().getFullYear(),overs:20};}
+function safeParse(s,fb){try{let v=JSON.parse(s);return v==null?fb:v;}catch(e){return fb;}}
+function packState(){
+  let matches={};
+  APP.matches.forEach(m=>{matches[m.id]=JSON.stringify(m);});
+  return {meta:JSON.stringify(APP.tournament),teams:JSON.stringify(APP.teams),
+    order:JSON.stringify(APP.matches.map(m=>m.id)),matches,
+    liveId:APP.liveMatch?APP.liveMatch.id:'',_savedAt:Date.now()};
+}
+function applyPacked(st){
+  st=st||{};
+  let t=safeParse(st.meta,null);
+  APP.tournament=(t&&typeof t==='object'&&!Array.isArray(t))?t:blankTournament();
+  if(!APP.tournament.overs)APP.tournament.overs=20;
+  let teams=safeParse(st.teams,[]);
+  APP.teams=(Array.isArray(teams)?teams:[]).filter(x=>x&&typeof x==='object');
+  APP.teams.forEach(x=>{if(!Array.isArray(x.players))x.players=[];});
+  let order=safeParse(st.order,[]);if(!Array.isArray(order))order=[];
+  let raw=(st.matches&&typeof st.matches==='object')?st.matches:{},seen={},list=[];
+  order.concat(Object.keys(raw)).forEach(id=>{
+    if(seen[id]||typeof raw[id]!=='string')return;seen[id]=1;
+    let m=safeParse(raw[id],null);
+    if(!m||typeof m!=='object')return;
+    if(!Array.isArray(m.innings))m.innings=[];
+    if(!Array.isArray(m.umpires))m.umpires=[];
+    m.id=id;list.push(m);
   });
-  // 4) If Firebase is configured, start cross-device pull
-  if(FB_URL && APP.viewUser) startFirebasePull();
+  APP.matches=list;
+  APP.liveMatch=st.liveId?(list.find(m=>m.id===st.liveId)||null):null;
+}
+function packedFromCloud(raw){
+  return {meta:raw.meta,teams:raw.teams,order:raw.order,liveId:raw.liveId||'',
+    matches:(raw.matches&&typeof raw.matches==='object')?raw.matches:{},_savedAt:raw._savedAt||0};
+}
+function newTid(){return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+function sortTournaments(o){
+  return Object.entries(o||{}).filter(([k,v])=>v&&typeof v==='object').map(([tid,v])=>({tid,
+    name:String(v.name||'Tournament'),edition:String(v.edition||''),year:String(v.year||''),
+    updatedAt:Number(v.updatedAt)||0,live:!!v.live}))
+    .sort((a,b)=>(b.live-a.live)||(b.updatedAt-a.updatedAt));
 }
 
-// ══════════════════════════════════════════════════════════════════════════
-//  SAVE / LOAD per-user
-// ══════════════════════════════════════════════════════════════════════════
+// ── Cloud status indicator (Admin tab) ────────────────────────────────
+function updateCloudStatus(state){
+  let dot=document.getElementById('cloud-dot'),txt=document.getElementById('cloud-status-txt');
+  if(!dot||!txt)return;
+  const states={
+    connected:['#22a03c','☁️ All changes saved to the cloud'],
+    syncing:['#f0a030','🔄 Saving…'],
+    error:['#e84040','⚠ Could not save to the cloud — will retry'],
+    offline:['#f0a030','📡 Offline — scores are kept on this device and will sync when you are back online'],
+  };
+  let s=states[state]||states.connected;
+  dot.style.background=s[0];txt.textContent=s[1];
+}
+
+// ── Saving (admin) ────────────────────────────────────────────────────
+let _pushed=null;        // {tid,st} last state the cloud confirmed
+let _idxPushed={};       // tid → index entry last written
+let _pushTimer=null,_pushing=null,_dirty=false,_retryTimer=null;
 function saveState(){
-  if(APP.role!=='admin'||!APP.uname)return;
-  userSave(APP.uname,{
-    tournament:APP.tournament,teams:APP.teams,matches:APP.matches,
-    liveId:APP.liveMatch?APP.liveMatch.id:null,
-    _savedAt:Date.now()
+  if(APP.role!=='admin'||!AUTH||!APP.tid)return;
+  _dirty=true;
+  try{lsSet(LS_TCACHE+APP.tid,JSON.stringify({uid:AUTH.uid,dirty:true,st:packState()}));}catch(e){}
+  if(_pushTimer)clearTimeout(_pushTimer);
+  _pushTimer=setTimeout(()=>{_pushTimer=null;pushNow();},400);
+}
+function pushNow(){
+  if(_pushing)return _pushing.then(()=>_dirty?pushNow():true);
+  if(APP.role!=='admin'||!AUTH||!APP.tid)return Promise.resolve(true);
+  let tid=APP.tid,st=packState(),uid=AUTH.uid;
+  _dirty=false;
+  updateCloudStatus('syncing');
+  _pushing=(async()=>{
+    try{
+      if(!_pushed||_pushed.tid!==tid){
+        await dbReq('PUT','tournaments/'+tid,Object.assign({owner:uid,ownerName:APP.dname||''},st),true);
+      } else {
+        let patch={},old=_pushed.st;
+        ['meta','teams','order','liveId'].forEach(k=>{if(st[k]!==old[k])patch[k]=st[k];});
+        Object.keys(st.matches).forEach(id=>{if(st.matches[id]!==old.matches[id])patch['matches/'+id]=st.matches[id];});
+        Object.keys(old.matches).forEach(id=>{if(!(id in st.matches))patch['matches/'+id]=null;});
+        if(Object.keys(patch).length){patch._savedAt=st._savedAt;await dbReq('PATCH','tournaments/'+tid,patch,true);}
+      }
+      _pushed={tid,st};
+      let t=safeParse(st.meta,{})||{};
+      let idx={name:String(t.name||''),edition:String(t.edition||''),year:String(t.year||''),live:!!st.liveId};
+      let key=JSON.stringify(idx);
+      if(_idxPushed[tid]!==key){
+        idx.updatedAt=st._savedAt;
+        await dbReq('PUT','userTournaments/'+uid+'/'+tid,idx,true);
+        _idxPushed[tid]=key;
+        let row=_tlist.find(x=>x.tid===tid);
+        if(row)Object.assign(row,idx);else _tlist.unshift(Object.assign({tid},idx));
+        renderTournamentList();
+      }
+      if(!_dirty){try{lsSet(LS_TCACHE+tid,JSON.stringify({uid,dirty:false,st}));}catch(e){}}
+      updateCloudStatus('connected');
+      return true;
+    }catch(e){
+      _dirty=true;
+      if(e.message==='SESSION_EXPIRED'){toast('Your session has ended — please sign in again to save.','warn');}
+      updateCloudStatus(e.message==='NETWORK'?'offline':'error');
+      if(_retryTimer)clearTimeout(_retryTimer);
+      _retryTimer=setTimeout(()=>{_retryTimer=null;if(_dirty)pushNow();},6000);
+      return false;
+    }finally{_pushing=null;}
+  })();
+  return _pushing;
+}
+function flushSave(){
+  if(_pushTimer){clearTimeout(_pushTimer);_pushTimer=null;}
+  return _dirty||_pushing?pushNow():Promise.resolve(true);
+}
+function syncNow(){
+  if(APP.role!=='admin')return;
+  _dirty=true;flushSave().then(ok=>toast(ok?'☁️ Saved to the cloud':'Could not reach the cloud — will retry',ok?undefined:'warn'));
+}
+window.addEventListener('online',()=>{if(_dirty)pushNow();});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&_dirty)flushSave();});
+
+// ── Opening, creating, switching and deleting tournaments (admin) ─────
+function resetScoringSession(){
+  APP.pendingFreeHit=false;APP.pendingExtra=null;
+  try{_undoStack=[];}catch(e){}
+}
+async function openTournament(tid){
+  let cached=safeParse(lsGet(LS_TCACHE+tid),null);
+  if(cached&&cached.uid!==AUTH.uid)cached=null;
+  let raw=null,offline=false;
+  try{raw=await dbReq('GET','tournaments/'+tid);}
+  catch(e){if(e.message!=='NETWORK'||!cached)throw e;offline=true;}
+  if(raw&&raw.owner!==AUTH.uid)throw new Error('PERMISSION_DENIED');
+  let cloud=raw?packedFromCloud(raw):null;
+  let useLocal=cached&&cached.st&&(offline||!cloud||(cached.dirty&&(cached.st._savedAt||0)>(cloud._savedAt||0)));
+  if(!useLocal&&!cloud)throw new Error('NOT_FOUND');
+  applyPacked(useLocal?cached.st:cloud);
+  APP.tid=tid;lsSet(LS_CUR,tid);
+  _pushed=cloud?{tid,st:cloud}:null;
+  resetScoringSession();
+  if(useLocal){_dirty=true;if(!offline)pushNow();else updateCloudStatus('offline');}
+  else{_dirty=false;updateCloudStatus('connected');}
+}
+async function createTournament(meta,teams,matches,liveId){
+  await flushSave();
+  let tid=newTid();
+  APP.tid=tid;APP.tournament=meta;APP.teams=teams||[];APP.matches=matches||[];
+  APP.liveMatch=liveId?(APP.matches.find(m=>m.id===liveId)||null):null;
+  _pushed=null;lsSet(LS_CUR,tid);resetScoringSession();
+  saveState();
+  return flushSave();
+}
+async function newTournament(){
+  if(APP.role!=='admin')return;
+  let inp=document.getElementById('tn-new');
+  let name=(inp?inp.value:'').trim().slice(0,60);
+  if(!name){toast('Enter a name for the new tournament','warn');if(inp)inp.focus();return;}
+  let ok=await createTournament(blankTournament(name));
+  if(inp)inp.value='';
+  initApp();showTab('admin');
+  toast(ok?'🏆 Tournament created':'Created on this device — will sync when online',ok?undefined:'warn');
+}
+async function switchTournament(tid){
+  if(APP.role!=='admin'||tid===APP.tid)return;
+  await flushSave();
+  try{await openTournament(tid);}
+  catch(e){toast(e.message==='NOT_FOUND'?'That tournament no longer exists':authErrText(e.message),'warn');return;}
+  initApp();showTab('admin');
+  toast('Switched to '+(APP.tournament.name||'tournament'));
+}
+async function deleteTournament(tid){
+  if(APP.role!=='admin')return;
+  if(tid===APP.tid){toast('Open another tournament first, then delete this one','warn');return;}
+  let row=_tlist.find(x=>x.tid===tid);
+  if(!window.confirm('Delete "'+(row?row.name:'this tournament')+'" and all its matches? This cannot be undone.'))return;
+  try{
+    await dbReq('DELETE','tournaments/'+tid,undefined,true);
+    await dbReq('DELETE','userTournaments/'+AUTH.uid+'/'+tid,undefined,true);
+  }catch(e){toast(authErrText(e.message),'warn');return;}
+  lsRemove(LS_TCACHE+tid);delete _idxPushed[tid];
+  _tlist=_tlist.filter(x=>x.tid!==tid);
+  renderTournamentList();toast('Tournament deleted');
+}
+function renderTournamentList(){
+  let el=document.getElementById('tourn-list');if(!el||APP.role!=='admin')return;
+  if(!_tlist.length){el.innerHTML='<p style="color:var(--dim);font-size:12px">No tournaments yet.</p>';return;}
+  el.innerHTML=_tlist.map(t=>{
+    let cur=t.tid===APP.tid;
+    return `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--bdr)">
+      <div style="flex:1;min-width:140px">
+        <div style="font-family:var(--disp);font-size:14px">${esc(t.name)} ${t.live?'<span class="tag tr">🔴 LIVE</span>':''} ${cur?'<span class="tag tg">OPEN</span>':''}</div>
+        <div style="font-size:11px;color:var(--dim)">${esc(t.edition)}${t.year?', '+esc(t.year):''}</div>
+      </div>
+      ${cur?'':`<button class="bsm bblu" onclick="switchTournament('${esc(t.tid)}')">Open</button>
+      <button class="bsm bdng" onclick="deleteTournament('${esc(t.tid)}')">🗑</button>`}
+    </div>`;
+  }).join('');
+}
+
+// ── One-time import of data saved on this device by the old version ───
+function legacyAccounts(){
+  let done=safeParse(lsGet(LS_LEGACY_DONE),[]);if(!Array.isArray(done))done=[];
+  let users=safeParse(lsGet('cs_users_v1'),{});
+  if(!users||typeof users!=='object')return [];
+  return Object.keys(users).filter(u=>!done.includes(u)&&users[u]&&users[u].data&&
+    ((users[u].data.teams||[]).length||(users[u].data.matches||[]).length))
+    .map(u=>({uname:u,name:users[u].name||u,data:users[u].data}));
+}
+function renderLegacyImport(){
+  let card=document.getElementById('legacy-card'),el=document.getElementById('legacy-import');
+  if(!card||!el)return;
+  let list=APP.role==='admin'?legacyAccounts():[];
+  card.style.display=list.length?'':'none';
+  el.innerHTML=list.map((a,i)=>`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 0">
+    <div style="flex:1;min-width:140px;font-size:12px"><b>${esc((a.data.tournament&&a.data.tournament.name)||a.name)}</b>
+      <span style="color:var(--dim)"> — ${(a.data.teams||[]).length} teams, ${(a.data.matches||[]).length} matches (old account “${esc(a.uname)}”)</span></div>
+    <button class="bsm bgld" onclick="importLegacy(${i})">📥 Import</button>
+  </div>`).join('');
+}
+async function importLegacy(i){
+  let a=legacyAccounts()[i];if(!a||APP.role!=='admin')return;
+  let d=a.data;
+  let meta=Object.assign(blankTournament(a.name+"'s Tournament"),(d.tournament&&typeof d.tournament==='object')?d.tournament:{});
+  let matches=(Array.isArray(d.matches)?d.matches:[]).filter(m=>m&&m.id).map(m=>{
+    m.id=String(m.id).replace(/[.#$\[\]\/]/g,'_');
+    if(!Array.isArray(m.innings))m.innings=[];if(!Array.isArray(m.umpires))m.umpires=[];return m;});
+  let liveId=d.liveId?String(d.liveId).replace(/[.#$\[\]\/]/g,'_'):'';
+  let ok=await createTournament(meta,Array.isArray(d.teams)?d.teams:[],matches,liveId);
+  let done=safeParse(lsGet(LS_LEGACY_DONE),[]);if(!Array.isArray(done))done=[];
+  done.push(a.uname);lsSet(LS_LEGACY_DONE,JSON.stringify(done));
+  initApp();showTab('admin');
+  toast(ok?'📥 Imported as a new tournament':'Imported on this device — will sync when online',ok?undefined:'warn');
+}
+
+// ── Viewers: open a tournament and follow it live ─────────────────────
+let _es=null,_vraw=null,_pollTimer=null,_autoNavLiveId=null;
+function viewerAfterUpdate(hasLive){
+  // Refresh what the viewer is looking at; jump to Live only ONCE when a new
+  // match goes live, so they stay free to browse scorecards and stats.
+  let a=activeTabName();
+  if(a==='scorecard')renderSC();
+  else if(a==='history')renderHistory();
+  if(hasLive&&APP.liveMatch&&_autoNavLiveId!==APP.liveMatch.id){
+    _autoNavLiveId=APP.liveMatch.id;
+    if(a!=='live')showTab('live');
+  }
+}
+function setSyncBar(msg){let el=document.getElementById('sync-msg');if(el)el.textContent=msg;}
+function viewerApply(){
+  if(APP.role!=='viewer')return;
+  if(!_vraw||_vraw.meta==null){setSyncBar('⚠ This tournament is no longer available');return;}
+  applyPacked(packedFromCloud(_vraw));
+  APP.dname=String(_vraw.ownerName||'');
+  let hasLive=APP.matches.some(m=>m.status==='live');
+  document.getElementById('livebadge').classList.toggle('hidden',!hasLive);
+  renderHome();renderMatches();populateSCSelect();renderLive();
+  viewerAfterUpdate(hasLive);
+}
+function setAtPath(obj,path,val){
+  let parts=String(path).split('/').filter(Boolean);
+  if(!parts.length)return;
+  let o=obj;
+  for(let i=0;i<parts.length-1;i++){
+    if(!o[parts[i]]||typeof o[parts[i]]!=='object')o[parts[i]]={};
+    o=o[parts[i]];
+  }
+  let k=parts[parts.length-1];
+  if(val===null||val===undefined)delete o[k];else o[k]=val;
+}
+function onStreamEvent(type,e){
+  let d;try{d=JSON.parse(e.data);}catch(err){return;}
+  if(!d||typeof d.path!=='string')return;
+  if(type==='put'&&d.path==='/'){_vraw=(d.data&&typeof d.data==='object')?d.data:null;}
+  else{
+    if(!_vraw)_vraw={};
+    if(type==='put')setAtPath(_vraw,d.path,d.data);
+    else if(d.data&&typeof d.data==='object')Object.keys(d.data).forEach(k=>setAtPath(_vraw,d.path+'/'+k,d.data[k]));
+  }
+  setSyncBar('🟢 Live — scores update automatically');
+  viewerApply();
+}
+function startViewerPoll(){
+  if(_pollTimer)return;
+  _pollTimer=setInterval(async()=>{
+    if(APP.role!=='viewer'||!APP.viewTid)return;
+    if(_es&&_es.readyState===1)return; // stream is healthy
+    try{
+      let raw=await dbReq('GET','tournaments/'+APP.viewTid);
+      if(raw&&_vraw&&raw._savedAt===_vraw._savedAt)return;
+      _vraw=raw;setSyncBar('🟢 Live — scores update automatically');viewerApply();
+    }catch(e){setSyncBar('📡 Reconnecting…');}
+  },4000);
+}
+function stopViewerStream(){
+  if(_es){try{_es.close();}catch(e){}_es=null;}
+  if(_pollTimer){clearInterval(_pollTimer);_pollTimer=null;}
+}
+function startViewerStream(){
+  stopViewerStream();
+  if(APP.role!=='viewer'||!APP.viewTid)return;
+  startViewerPoll(); // only does work while the stream is down
+  if(typeof EventSource==='undefined')return;
+  try{
+    _es=new EventSource(DB_URL+'/tournaments/'+APP.viewTid+'.json');
+    _es.addEventListener('put',e=>onStreamEvent('put',e));
+    _es.addEventListener('patch',e=>onStreamEvent('patch',e));
+    _es.onerror=()=>setSyncBar('📡 Reconnecting…');
+  }catch(e){_es=null;}
+}
+async function openViewer(tid){
+  tid=String(tid||'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,60);
+  if(!tid)throw new Error('NOT_FOUND');
+  let raw=await dbReq('GET','tournaments/'+tid);
+  if(!raw||raw.meta==null)throw new Error('NOT_FOUND');
+  stopViewerStream();
+  APP.role='viewer';APP.uname=null;APP.tid=null;APP.viewTid=tid;
+  _vraw=raw;applyPacked(packedFromCloud(raw));
+  APP.dname=String(raw.ownerName||'');
+  try{lsSet(LS_VIEW,tid);}catch(e){}
+  initApp();
+}
+// Resolve an admin's username to their tournaments (live first, then newest)
+async function tournamentsOfUser(uname){
+  let uid=await dbReq('GET','usernames/'+uname);
+  if(!uid||typeof uid!=='string')return null;
+  return sortTournaments(await dbReq('GET','userTournaments/'+uid));
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  SIGN-IN SCREEN
+// ══════════════════════════════════════════════════════════════════════════
+function showAuthPanel(id,withTabs){
+  ['apanel-login','apanel-reg','apanel-forgot','apanel-viewer'].forEach(p=>{
+    let el=document.getElementById(p);if(el)el.classList.toggle('on',p===id);
   });
-  publishLive();
+  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display=withTabs?'':'none';
 }
-function loadState(uname){
-  let d=userGet(uname)?.data;
-  if(!d)return false;
-  APP.tournament=d.tournament||{name:'My Tournament',edition:'Season 1',year:2026,overs:20};
-  if(!APP.tournament.overs)APP.tournament.overs=20; // backward compat
-  APP.teams=d.teams||[];APP.matches=d.matches||[];
-  APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
-  return true;
+function switchTab(t){
+  t=t==='reg'?'reg':'login';
+  document.querySelectorAll('.atab').forEach((b,i)=>b.classList.toggle('on',i===(t==='login'?0:1)));
+  showAuthPanel('apanel-'+t,true);
 }
+function showLogin(){switchTab('login');}
+function showViewer(){
+  showAuthPanel('apanel-viewer',false);
+  let ve=document.getElementById('v-err');if(ve)ve.textContent='';
+  let vl=document.getElementById('v-list');if(vl)vl.innerHTML='';
+  let vu=document.getElementById('v-uname');if(vu)vu.focus();
+}
+function showForgot(){
+  showAuthPanel('apanel-forgot',false);
+  let from=document.getElementById('l-u'),to=document.getElementById('fp-u');
+  if(from&&to&&!to.value)to.value=from.value;
+  document.getElementById('fp-err1').textContent='';
+  document.getElementById('fp-ok').textContent='';
+}
+function authBusy(on){
+  document.querySelectorAll('#authscr .btnpri').forEach(b=>{b.disabled=on;b.style.opacity=on?'.6':'';});
+}
+function showAuthScreen(msg){
+  document.getElementById('authscr').style.display='flex';
+  document.getElementById('topbar').classList.add('hidden');
+  document.getElementById('main').classList.add('hidden');
+  document.getElementById('syncbar').classList.remove('on');
+  switchTab('login');
+  let e=document.getElementById('l-err');if(e)e.textContent=msg||'';
+  let w=document.getElementById('cfg-warn');if(w)w.style.display=CLOUD_OK?'none':'block';
+}
+function needCloud(errEl){
+  if(CLOUD_OK)return true;
+  if(errEl)errEl.textContent='This site is not connected to Firebase yet. See the setup steps in README.md.';
+  return false;
+}
+const cleanUname=s=>String(s||'').trim().toLowerCase().replace(/[^a-z0-9_]/g,'_').slice(0,30);
+
+// After sign-in or session restore: load the profile and open a tournament
+async function enterAdmin(){
+  let offline=false,prof=null;
+  try{prof=await dbReq('GET','users/'+AUTH.uid,undefined,true);}
+  catch(e){if(e.message!=='NETWORK')throw e;offline=true;}
+  if(prof&&typeof prof==='object'){AUTH.name=String(prof.name||'');AUTH.uname=String(prof.uname||'');persistAuth();}
+  stopViewerStream();
+  APP.role='admin';APP.viewTid=null;APP.uname=AUTH.uname||'';APP.dname=AUTH.name||AUTH.email||'Admin';
+  if(!offline){
+    try{_tlist=sortTournaments(await dbReq('GET','userTournaments/'+AUTH.uid));}
+    catch(e){if(e.message!=='NETWORK')throw e;offline=true;}
+  }
+  let cur=lsGet(LS_CUR);
+  if(offline){
+    if(!cur||!lsGet(LS_TCACHE+cur))throw new Error('NETWORK');
+    await openTournament(cur);
+  } else {
+    let pick=_tlist.find(t=>t.tid===cur)||_tlist[0];
+    let opened=false;
+    if(pick){try{await openTournament(pick.tid);opened=true;}catch(e){if(e.message!=='NOT_FOUND')throw e;}}
+    if(!opened)await createTournament(blankTournament(APP.dname+"'s Tournament"));
+  }
+  initApp();
+}
+async function doRegister(){
+  let name=document.getElementById('r-n').value.trim().slice(0,60);
+  let uname=cleanUname(document.getElementById('r-u').value);
+  let email=document.getElementById('r-e').value.trim();
+  let pass=document.getElementById('r-p').value,pass2=document.getElementById('r-p2').value;
+  let err=document.getElementById('r-err'),ok=document.getElementById('r-ok');
+  err.textContent='';ok.textContent='';
+  if(!needCloud(err))return;
+  if(!name){err.textContent='Enter your name';return;}
+  if(uname.length<3){err.textContent='Username must be at least 3 characters (letters, numbers, _)';return;}
+  if(!/^\S+@\S+\.\S+$/.test(email)){err.textContent='Enter a valid email address';return;}
+  if(pass.length<6){err.textContent='Password must be at least 6 characters';return;}
+  if(pass!==pass2){err.textContent='Passwords do not match';return;}
+  authBusy(true);
+  try{
+    if(await dbReq('GET','usernames/'+uname)){err.textContent='That username is taken — choose another';return;}
+    setAuthFromResponse(await authCall('signUp',{email,password:pass,returnSecureToken:true}));
+    try{await dbReq('PUT','usernames/'+uname,AUTH.uid,true);}
+    catch(e){ // lost a race for the name: fall back to a unique variant
+      if(e.message==='NETWORK')throw e;
+      uname=(uname.slice(0,24)+'_'+Math.random().toString(36).slice(2,6));
+      await dbReq('PUT','usernames/'+uname,AUTH.uid,true);
+    }
+    await dbReq('PUT','users/'+AUTH.uid,{name,uname},true);
+    AUTH.name=name;AUTH.uname=uname;persistAuth();
+    ok.textContent='✅ Account created! Signing you in...';
+    await enterAdmin();
+  }catch(e){
+    err.textContent=authErrText(e.message);ok.textContent='';
+  }finally{authBusy(false);}
+}
+async function doLogin(){
+  let email=document.getElementById('l-u').value.trim();
+  let pass=document.getElementById('l-p').value;
+  let err=document.getElementById('l-err');err.textContent='';
+  if(!needCloud(err))return;
+  if(!email||!pass){err.textContent='Enter your email and password';return;}
+  authBusy(true);
+  try{
+    setAuthFromResponse(await authCall('signInWithPassword',{email,password:pass,returnSecureToken:true}));
+    await enterAdmin();
+    document.getElementById('l-p').value='';
+  }catch(e){
+    if(APP.role!=='admin'){AUTH=null;persistAuth();}
+    err.textContent=authErrText(e.message);
+  }finally{authBusy(false);}
+}
+// "Forgot password": Firebase emails a reset link
+async function fpStep1(){
+  let email=document.getElementById('fp-u').value.trim();
+  let err=document.getElementById('fp-err1'),ok=document.getElementById('fp-ok');
+  err.textContent='';ok.textContent='';
+  if(!needCloud(err))return;
+  if(!/^\S+@\S+\.\S+$/.test(email)){err.textContent='Enter the email you registered with';return;}
+  authBusy(true);
+  try{
+    await authCall('sendOobCode',{requestType:'PASSWORD_RESET',email});
+    ok.textContent='✅ If an account exists for that email, a reset link is on its way. Check your inbox and spam folder.';
+  }catch(e){
+    if(/EMAIL_NOT_FOUND/.test(e.message))ok.textContent='✅ If an account exists for that email, a reset link is on its way. Check your inbox and spam folder.';
+    else err.textContent=authErrText(e.message);
+  }finally{authBusy(false);}
+}
+async function doGuest(){
+  let unameEl=document.getElementById('v-uname'),errEl=document.getElementById('v-err'),listEl=document.getElementById('v-list');
+  let uname=cleanUname(unameEl?unameEl.value:'');
+  errEl.textContent='';if(listEl)listEl.innerHTML='';
+  if(!needCloud(errEl))return;
+  if(!uname){errEl.textContent='Enter the admin username to watch';if(unameEl)unameEl.focus();return;}
+  authBusy(true);
+  try{
+    let list=await tournamentsOfUser(uname);
+    if(list===null){errEl.textContent='Username not found — check the spelling and try again';return;}
+    if(!list.length){errEl.textContent='This admin has no tournaments yet';return;}
+    if(list.length===1){await openViewer(list[0].tid);return;}
+    listEl.innerHTML='<div style="font-size:11px;color:var(--dim);margin:10px 0 4px">Choose a tournament:</div>'+list.map(t=>
+      `<button class="btnalt" style="margin-top:6px;text-align:left" onclick="watchTournament('${esc(t.tid)}')">${t.live?'🔴 ':''}${esc(t.name)} <span style="color:var(--dim);font-size:11px">${esc(t.edition)}${t.year?', '+esc(t.year):''}</span></button>`).join('');
+  }catch(e){
+    errEl.textContent=e.message==='NOT_FOUND'?'That tournament is no longer available':authErrText(e.message);
+  }finally{authBusy(false);}
+}
+async function watchTournament(tid){
+  let errEl=document.getElementById('v-err');
+  try{await openViewer(tid);}
+  catch(e){if(errEl)errEl.textContent=e.message==='NOT_FOUND'?'That tournament is no longer available':authErrText(e.message);}
+}
+async function doLogout(){
+  if(APP.role==='admin'){try{await Promise.race([flushSave(),new Promise(r=>setTimeout(r,3000))]);}catch(e){}}
+  stopViewerStream();
+  if(_pushTimer){clearTimeout(_pushTimer);_pushTimer=null;}
+  if(_retryTimer){clearTimeout(_retryTimer);_retryTimer=null;}
+  if(_dirty&&APP.role==='admin')toast('Some changes are saved on this device only — sign in again when online to sync them.','warn');
+  AUTH=null;persistAuth();lsRemove(LS_VIEW);
+  _pushed=null;_idxPushed={};_tlist=[];_dirty=false;_vraw=null;_autoNavLiveId=null;
+  APP.role=null;APP.uname=null;APP.tid=null;APP.viewTid=null;APP.liveMatch=null;APP.teams=[];APP.matches=[];
+  ['l-u','l-p','r-n','r-u','r-e','r-p','r-p2','fp-u','v-uname'].forEach(id=>{let e=document.getElementById(id);if(e)e.value='';});
+  ['r-err','r-ok','fp-err1','fp-ok','v-err'].forEach(id=>{let e=document.getElementById(id);if(e)e.textContent='';});
+  let vl=document.getElementById('v-list');if(vl)vl.innerHTML='';
+  showAuthScreen('');
+}
+
 function afterScore(){saveState();renderLive();}
 function refreshView(){
   let tabs=['home','matches','live','scorecard','history'];
@@ -1908,259 +2283,6 @@ function refreshView(){
   else if(a==='history')renderHistory();
 }
 
-// ══════════════════════════════════════════════════════════════════════════
-//  AUTH UI
-// ══════════════════════════════════════════════════════════════════════════
-function switchTab(t){
-  // Handle import tab — show import panel, hide tabs
-  if(t==='import'){
-    ['apanel-login','apanel-reg','apanel-forgot','apanel-viewer'].forEach(id=>{
-      document.getElementById(id)?.classList.remove('on');
-    });
-    document.getElementById('apanel-import')?.classList.add('on');
-    let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='none';
-    return;
-  }
-  document.querySelectorAll('.atab').forEach((b,i)=>b.classList.toggle('on',i===(t==='login'?0:1)));
-  ['apanel-login','apanel-reg','apanel-forgot','apanel-viewer','apanel-import'].forEach(id=>{
-    let el=document.getElementById(id);
-    if(el)el.classList.toggle('on',id==='apanel-'+t);
-  });
-  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
-}
-function showViewer(){
-  ['apanel-login','apanel-reg','apanel-forgot'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
-  document.getElementById('apanel-viewer').classList.add('on');
-  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='none';
-  let vu=document.getElementById('v-uname');if(vu){vu.value='';vu.focus();}
-  let ve=document.getElementById('v-err');if(ve)ve.textContent='';
-}
-function showForgot(){
-  ['apanel-login','apanel-reg'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
-  document.getElementById('apanel-forgot').classList.add('on');
-  // Hide main tabs when in forgot mode
-  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='none';
-  // Reset all steps
-  ['fp-step1','fp-step2','fp-step3'].forEach((id,i)=>{
-    let el=document.getElementById(id);if(el)el.style.display=i===0?'':'none';
-  });
-  document.getElementById('fp-u').value='';
-  document.getElementById('fp-err1').textContent='';
-  document.getElementById('fp-answer').value='';
-  document.getElementById('fp-newpass').value='';
-  document.getElementById('fp-newpass2').value='';
-  let e2=document.getElementById('fp-err2');if(e2)e2.textContent='';
-}
-function showLogin(){
-  ['apanel-forgot','apanel-viewer','apanel-import'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
-  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
-  switchTab('login');
-}
-function fpStep1(){
-  let uname=document.getElementById('fp-u').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'_');
-  let err=document.getElementById('fp-err1');err.textContent='';
-  if(!uname){err.textContent='Enter your username';return;}
-  let u=getUsers()[uname];
-  if(!u){err.textContent='Username not found';return;}
-  if(!u.secQ){
-    err.textContent='No security question set for this account. You registered before this feature was added — please contact the site admin to reset your password manually.';
-    return;
-  }
-  // Store uname for step 2
-  document.getElementById('fp-step1').setAttribute('data-uname',uname);
-  document.getElementById('fp-question-label').textContent=u.secQ;
-  document.getElementById('fp-step1').style.display='none';
-  document.getElementById('fp-step2').style.display='';
-}
-function fpStep2(){
-  let uname=document.getElementById('fp-step1').getAttribute('data-uname');
-  let answer=document.getElementById('fp-answer').value.trim().toLowerCase();
-  let newpass=document.getElementById('fp-newpass').value;
-  let newpass2=document.getElementById('fp-newpass2').value;
-  let err=document.getElementById('fp-err2');err.textContent='';
-  if(!answer){err.textContent='Enter your answer';return;}
-  if(newpass.length<4){err.textContent='New password must be at least 4 characters';return;}
-  if(newpass!==newpass2){err.textContent='Passwords do not match';return;}
-  let users=getUsers();
-  let u=users[uname];
-  if(!u){err.textContent='User not found';return;}
-  // Verify answer (case-insensitive)
-  // Compare answer (hashed or legacy plaintext)
-  let storedA=u.secA||'';
-  let answerMatch=(storedA===hp(answer))||(storedA.toLowerCase()===answer);
-  if(!answerMatch){err.textContent='Incorrect answer — please try again';return;}
-  // Reset password using PBKDF2
-  hashPassword(newpass).then(hash=>{
-    let uu=getUsers();uu[uname].hash=hash;putUsers(uu);
-    document.getElementById('fp-step2').style.display='none';
-    document.getElementById('fp-step3').style.display='';
-  }).catch(()=>{
-    let uu=getUsers();uu[uname].hash=hp(newpass);putUsers(uu);
-    document.getElementById('fp-step2').style.display='none';
-    document.getElementById('fp-step3').style.display='';
-  });
-}
-function doRegister(){
-  let name=document.getElementById('r-n').value.trim().slice(0,60);
-  let uname=document.getElementById('r-u').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'_').slice(0,30);
-  let pass=document.getElementById('r-p').value;
-  let pass2=document.getElementById('r-p2').value;
-  let err=document.getElementById('r-err');let ok=document.getElementById('r-ok');
-  err.textContent='';ok.textContent='';
-  if(!name){err.textContent='Enter your name';return;}
-  if(!uname||uname.length<3){err.textContent='Username must be at least 3 characters';return;}
-  if(pass.length<4){err.textContent='Password min 4 characters';return;}
-  if(pass.length>128){err.textContent='Password too long (max 128 characters)';return;}
-  if(pass!==pass2){err.textContent='Passwords do not match';return;}
-  let users=getUsers();
-  if(users[uname]){err.textContent='Username already taken';return;}
-  let secQ=document.getElementById('r-sq')?.value||'';
-  let secA=(document.getElementById('r-sa')?.value||'').trim().toLowerCase();
-  if(!secQ){err.textContent='Please choose a security question';return;}
-  if(!secA){err.textContent='Please provide an answer to your security question';return;}
-  hashPassword(pass).then(hash=>{
-    users[uname]={hash,name,secQ,secA:hp(secA),data:null};putUsers(users);
-    ok.textContent='✅ Account created! Signing you in...';
-    setTimeout(()=>loginAs(uname,name),700);
-  }).catch(()=>{
-    users[uname]={hash:hp(pass),name,secQ,secA:hp(secA),data:null};putUsers(users);
-    ok.textContent='✅ Account created! Signing you in...';
-    setTimeout(()=>loginAs(uname,name),700);
-  });
-}
-function doLogin(){
-  let uname=document.getElementById('l-u').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'_');
-  let pass=document.getElementById('l-p').value;
-  let err=document.getElementById('l-err');err.textContent='';
-  if(!uname||!pass){err.textContent='Enter username and password';return;}
-  // Rate limiting: lock after 5 failed attempts for 15 minutes
-  let rlKey='rl_'+uname;
-  let rl=JSON.parse(lsGet(rlKey)||'{"count":0,"until":0}');
-  if(rl.until>Date.now()){
-    let mins=Math.ceil((rl.until-Date.now())/60000);
-    err.textContent='Too many failed attempts. Try again in '+mins+' minute'+(mins>1?'s':'')+'.';return;
-  }
-  let u=getUsers()[uname];
-  if(!u){
-    err.innerHTML='Username not found on this device.<br><small style="color:var(--dim)">Accounts are stored on each device separately. If you registered on another device, use <b>Export Account</b> on that device and <b>Import</b> here, or register a new account.</small>';
-    return;
-  }
-  // Show loading state on button
-  let loginBtn=document.querySelector('[data-action="doLogin()"]');
-  if(loginBtn){loginBtn.disabled=true;loginBtn.textContent='Signing in...';}
-  function restoreBtn(){if(loginBtn){loginBtn.disabled=false;loginBtn.textContent='Sign In →';}}
-
-  verifyPassword(pass,u.hash).then(ok=>{
-    restoreBtn();
-    if(ok==='__CRYPTO_UNAVAILABLE__'){
-      // Web Crypto API not available on this browser/device
-      // Fall back to hp() for legacy accounts, otherwise show helpful message
-      if(!u.hash.includes('$')){
-        // Legacy hash — hp() works fine
-        if(hp(pass)!==u.hash){err.textContent='Invalid username or password';return;}
-        lsSet(rlKey,JSON.stringify({count:0,until:0}));
-        loginAs(uname,u.name);
-      } else {
-        // PBKDF2 hash stored but crypto unavailable — try anyway with hp() check
-        // This won't match but give the user a migration path
-        err.textContent='⚠ Secure login unavailable on this browser. Please use Chrome or Safari (latest) and ensure the site is loaded over HTTPS.';
-      }
-      return;
-    }
-    if(!ok){
-      rl.count=(rl.count||0)+1;
-      if(rl.count>=5){rl.until=Date.now()+15*60*1000;rl.count=0;}
-      lsSet(rlKey,JSON.stringify(rl));
-      let left=Math.max(0,5-(rl.count));
-      err.textContent=rl.until>Date.now()
-        ?'Too many attempts — account locked for 15 minutes.'
-        :'Invalid username or password'+(left>0&&left<5?' ('+left+' attempt'+(left===1?'':'s')+' left)':'');
-      return;
-    }
-    lsSet(rlKey,JSON.stringify({count:0,until:0}));
-    loginAs(uname,u.name);
-  }).catch(e=>{
-    restoreBtn();
-    // Promise rejection — try direct hp() fallback
-    if(!u.hash.includes('$')&&hp(pass)===u.hash){
-      lsSet(rlKey,JSON.stringify({count:0,until:0}));
-      loginAs(uname,u.name);
-      return;
-    }
-    console.error('Login error:',e);
-    err.textContent='Login error. Please check your internet connection and try again.';
-  });
-}
-function loginAs(uname,name){
-  try{
-    APP.role='admin';APP.uname=uname;APP.dname=name;
-    if(!loadState(uname)||!APP.teams.length){
-      APP.tournament={name:`${name}'s Tournament`,edition:'Season 1',year:new Date().getFullYear(),overs:20};
-      APP.teams=[];APP.matches=[];APP.liveMatch=null;
-    }
-    if(!APP.tournament.overs)APP.tournament.overs=20;
-    try{lsSet(LS_SESSION,JSON.stringify({uname,role:'admin'}));}catch{}
-    saveState();initApp();
-  }catch(e){
-    console.error('loginAs error:',e);
-    let err=document.getElementById('l-err')||document.getElementById('r-err');
-    if(err)err.textContent='Login error: '+e.message+'. Please try again.';
-  }
-}
-function doGuest(){
-  let unameEl=document.getElementById('v-uname');
-  let errEl=document.getElementById('v-err');
-  let uname=(unameEl?.value||'').trim().toLowerCase().replace(/[^a-z0-9_]/g,'_');
-  if(errEl)errEl.textContent='';
-  if(!uname){
-    if(errEl)errEl.textContent='Enter the admin username to watch';
-    if(unameEl)unameEl.focus();
-    return;
-  }
-  // Validate: user must exist and have tournament data
-  let users=getUsers();
-  let u=users[uname];
-  if(!u){
-    if(errEl)errEl.textContent='Username not found — check the username and try again';
-    if(unameEl)unameEl.focus();
-    return;
-  }
-  // Set up viewer targeting this user
-  APP.role='viewer';APP.uname=null;APP.viewUser=uname;APP.dname=u.name||uname;
-  // Load their data immediately
-  if(u.data){
-    let d=u.data;
-    APP.tournament=d.tournament||{name:'Tournament',edition:'Season 1',year:2026,overs:20};
-    if(!APP.tournament.overs)APP.tournament.overs=20;
-    APP.teams=d.teams||[];
-    APP.matches=d.matches||[];
-    APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
-    APP._liveTs=d._savedAt||0;
-  } else {
-    // User exists but no data yet
-    APP.tournament={name:`${u.name||uname}'s Tournament`,edition:'Season 1',year:2026,overs:20};
-    APP.teams=[];APP.matches=[];APP.liveMatch=null;
-  }
-  try{lsSet(LS_SESSION,JSON.stringify({role:'viewer',viewUser:uname}));}catch{}
-  initApp();
-}
-function doLogout(){
-  if(syncTimer){clearInterval(syncTimer);syncTimer=null;}
-  try{lsRemove(LS_SESSION);}catch{}
-  APP.role=null;APP.uname=null;
-  document.getElementById('authscr').style.display='flex';
-  document.getElementById('topbar').classList.add('hidden');
-  document.getElementById('main').classList.add('hidden');
-  document.getElementById('syncbar').classList.remove('on');
-  ['l-u','l-p','r-n','r-u','r-p','r-p2','fp-u','fp-answer','fp-newpass','fp-newpass2'].forEach(id=>{let e=document.getElementById(id);if(e)e.value='';});
-  ['fp-step1','fp-step2','fp-step3'].forEach((id,i)=>{let el=document.getElementById(id);if(el)el.style.display=i===0?'':'none';});
-  document.getElementById('l-err').textContent='';
-  // Reset forgot and viewer panels
-  ['apanel-forgot','apanel-viewer'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
-  let tabs=document.getElementById('auth-tabs');if(tabs)tabs.style.display='';
-  let vu=document.getElementById('v-uname');if(vu)vu.value='';
-  let ve=document.getElementById('v-err');if(ve)ve.textContent='';
-}
 function initApp(){
   try{
   document.getElementById('authscr').style.display='none';
@@ -2178,7 +2300,7 @@ function initApp(){
     if(APP.liveMatch||APP.matches.some(m=>m.status==='live')){
       showTab('live');
     }
-    startSync(); // startSync will also handle auto-nav going forward
+    startViewerStream(); // live updates; also handles the one-time jump to Live
   } else {
     document.getElementById('main').style.marginTop='56px';
     try{
@@ -2207,8 +2329,9 @@ function initApp(){
   updateNotifBell();
   CURRENT_LANG=lsGet('stumply_lang')||'en';
   setTimeout(applyLanguage,150);
-  setTimeout(initFirebase,300);
-  showTab('home');
+  if(APP.role==='admin'){renderTournamentList();renderLegacyImport();}
+  if(APP.role==='viewer'&&APP.liveMatch){_autoNavLiveId=APP.liveMatch.id;showTab('live');}
+  else showTab('home');
   }catch(e){
     console.error('initApp error:',e);
     // Ensure auth screen is hidden and app is shown even if something fails
@@ -2217,41 +2340,6 @@ function initApp(){
     let mn=document.getElementById('main');if(mn)mn.classList.remove('hidden');
   }
 }
-function tryRestore(){
-  try{
-    let s=JSON.parse(lsGet(LS_SESSION)||'null');
-    if(!s)return false;
-    if(s.role==='admin'&&s.uname){
-      let u=getUsers()[s.uname];if(!u)return false;
-      APP.role='admin';APP.uname=s.uname;APP.dname=u.name;
-      loadState(s.uname);
-      initApp();return true;
-    }
-    if(s.role==='viewer'){
-      // Restore viewer session — pre-fill username if stored
-      let vu=s.viewUser||null;
-      if(vu){
-        let users=getUsers();let u=users[vu];
-        if(u){
-          APP.role='viewer';APP.uname=null;APP.viewUser=vu;APP.dname=u.name||vu;
-          if(u.data){
-            let d=u.data;
-            APP.tournament=d.tournament||{name:'Tournament',edition:'Season 1',year:2026,overs:20};
-            if(!APP.tournament.overs)APP.tournament.overs=20;
-            APP.teams=d.teams||[];APP.matches=d.matches||[];
-            APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
-            APP._liveTs=d._savedAt||0;
-          }
-          initApp();return true;
-        }
-      }
-      // No stored viewUser — show viewer panel
-      showViewer();return true;
-    }
-  }catch{}
-  return false;
-}
-
 // ══════════════════════════════════════════════════════════════════════════
 //  NAVIGATION
 // ══════════════════════════════════════════════════════════════════════════
@@ -2318,17 +2406,17 @@ function getBaseUrl(){
   return null; // can't determine URL
 }
 function updateShareLink(){
-  let el=document.getElementById('share-url');if(!el||!APP.uname)return;
+  let el=document.getElementById('share-url');if(!el||!APP.tid)return;
   let base=getBaseUrl();
   if(base){
-    el.value=base+'?view='+encodeURIComponent(APP.uname);
+    el.value=base+'?t='+encodeURIComponent(APP.tid);
     el.style.color='var(--em)';
     el.removeAttribute('title');
   } else {
-    // Running in an iframe/preview — show username only, let admin enter base URL
-    el.value='?view='+encodeURIComponent(APP.uname);
+    // Running in an iframe/preview — show the query only
+    el.value='?t='+encodeURIComponent(APP.tid);
     el.style.color='var(--amber)';
-    el.setAttribute('title','Replace the leading ? with your full site URL. E.g: https://stumply.vercel.app/?view='+APP.uname);
+    el.setAttribute('title','Add your site address in front, e.g. https://stumply.vercel.app/?t='+APP.tid);
     el.removeAttribute('readonly');
   }
 }
@@ -2657,17 +2745,17 @@ function renderMatches(){
         let mt=m.matchType||'League';
     let mtColor=mt==='Final'?'var(--gold)':mt==='Semi Final'?'var(--purple)':mt==='Quarter Final'||mt==='Round of 16'?'var(--blue)':mt.startsWith('Group')?'var(--amber)':'var(--em)';
     let mtBg=mt==='Final'?'rgba(240,192,64,.2)':mt==='Semi Final'?'rgba(160,64,240,.2)':mt==='Quarter Final'||mt==='Round of 16'?'rgba(64,144,240,.2)':mt.startsWith('Group')?'rgba(240,160,48,.2)':'rgba(0,201,122,.15)';
-    let stageBadge=`<span style="font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:8px;background:${mtBg};color:${mtColor};border:1px solid ${mtColor};margin-right:4px">${mt.toUpperCase()}</span>`;
+    let stageBadge=`<span style="font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:8px;background:${mtBg};color:${mtColor};border:1px solid ${mtColor};margin-right:4px">${esc(mt.toUpperCase())}</span>`;
     let stag=m.status==='live'?'<span class="tag tr">🔴 LIVE</span>':m.status==='completed'?'<span class="tag tg">✅ DONE</span>':'<span class="tag tb">UPCOMING</span>';
-    let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`<div style="font-family:var(--mono);font-size:11px;color:var(--dim)">${t?t.code:'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})</div>`;}).join('');
-    let wr=m.resultText?`<div style="color:var(--em);font-size:12px;margin-top:3px">🏆 ${m.resultText}</div>`:'';
+    let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`<div style="font-family:var(--mono);font-size:11px;color:var(--dim)">${t?esc(t.code):'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})</div>`;}).join('');
+    let wr=m.resultText?`<div style="color:var(--em);font-size:12px;margin-top:3px">🏆 ${esc(m.resultText)}</div>${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:11px;color:var(--dim);margin-top:2px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}`:'';
     let ab='';
     if(APP.role==='admin'){
       if(m.status==='scheduled'){
         ab+=`<button class="bsm bgld" onclick="startMatch('${m.id}')">▶ Start</button>`;
         ab+=`<button class="bsm bblu" onclick="openEditMatch('${m.id}')">✏️ Edit</button>`;
         ab+=`<button class="bsm bdng" onclick="deleteMatch('${m.id}')">🗑 Delete</button>`;
-        let prev=APP.matches.slice(0,idx).findLast(x=>x.status==='scheduled');
+        let prev=APP.matches.slice(0,idx).reverse().find(x=>x.status==='scheduled');
         let next=APP.matches.slice(idx+1).find(x=>x.status==='scheduled');
         if(prev)ab+=`<button class="bsm" style="background:var(--bg2);color:var(--dim);border:1px solid var(--bdr);padding:6px 9px" onclick="moveMatch('${m.id}',-1)" title="Move up">↑</button>`;
         if(next)ab+=`<button class="bsm" style="background:var(--bg2);color:var(--dim);border:1px solid var(--bdr);padding:6px 9px" onclick="moveMatch('${m.id}',1)" title="Move down">↓</button>`;
@@ -2679,7 +2767,7 @@ function renderMatches(){
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
           ${stageBadge}
-          <div style="font-family:var(--disp);font-size:14px">${tA.name} <span style="color:var(--dim)">vs</span> ${tB.name}</div>
+          <div style="font-family:var(--disp);font-size:14px">${esc(tA.name)} <span style="color:var(--dim)">vs</span> ${esc(tB.name)}</div>
         </div>
         <div style="margin-left:auto">${stag}</div>
       </div>
@@ -2754,7 +2842,7 @@ function startMatch(mid){
   let m=APP.matches.find(x=>x.id===mid);if(!m)return;
   let live=APP.matches.find(x=>x.status==='live');
   if(live&&live.id!==mid){toast('A match is already live!');return;}
-  APP.liveMatch=m;m.status='live';
+  APP.liveMatch=m;m.status='live';_undoStack=[];
   let opts=[m.teamAId,m.teamBId].map(id=>{let t=APP.teams.find(x=>x.id===id);return`<option value="${id}">${esc(t?t.name:id)}</option>`;}).join('');
   document.getElementById('toss-w').innerHTML=opts;
   openM('toss-mo');
@@ -2846,7 +2934,7 @@ function openManage(){
   let bwlPlayers2=getMatchXI(m,inn.bowlingTeamId);
   let bwlOpts=bwlPlayers2.map(p=>{
     let b=inn.bowlers[p.id],used=b?b.overs:0,bmx=bowlerMaxOvers(APP.tournament.overs||20),maxed=used>=bmx;
-    return`<option value="${p.id}" ${p.id===inn.currentBowler?'selected':''} ${maxed?'disabled':''}>${p.name} — ${used} ov${maxed?' ⛔('+bmx+')':p.id===inn.currentBowler?' (current)':''}</option>`;
+    return`<option value="${p.id}" ${p.id===inn.currentBowler?'selected':''} ${maxed?'disabled':''}>${esc(p.name)} — ${used} ov${maxed?' ⛔('+bmx+')':p.id===inn.currentBowler?' (current)':''}</option>`;
   }).join('');
   document.getElementById('mg-bwl').innerHTML=bwlOpts;
   document.getElementById('mg-bwarn').textContent='';
@@ -2882,8 +2970,39 @@ function applyBowler(){
 // ══════════════════════════════════════════════════════════════════════════
 //  SCORING ENGINE  (ICC rules)
 // ══════════════════════════════════════════════════════════════════════════
+// ── Undo: snapshot of the live match taken before every scoring action ──
+let _undoStack=[];
+let _inn2Timer=null;
+function pushUndo(){
+  let m=APP.liveMatch;if(!m)return;
+  try{
+    _undoStack.push({id:m.id,snap:JSON.stringify(m),fh:!!APP.pendingFreeHit});
+    if(_undoStack.length>30)_undoStack.shift();
+  }catch(e){}
+}
+function undoLast(){
+  if(APP.role!=='admin'){toast('Only admin can score');return;}
+  let u=_undoStack.pop();
+  if(!u){toast('Nothing to undo','warn');return;}
+  let idx=APP.matches.findIndex(x=>x.id===u.id);
+  if(idx<0||APP.matches.some(x=>x.status==='live'&&x.id!==u.id)){_undoStack=[];toast('Nothing to undo','warn');return;}
+  if(_inn2Timer){clearTimeout(_inn2Timer);_inn2Timer=null;}
+  let m=JSON.parse(u.snap);
+  APP.matches[idx]=m;APP.liveMatch=m;
+  APP.pendingFreeHit=u.fh;APP.pendingExtra=null;
+  ['nov-mo','ins-mo','wkt-mo','ex-mo','mg-mo','motm-mo','tourn-complete-mo'].forEach(id=>{let e=document.getElementById(id);if(e)e.classList.remove('on');});
+  try{closeCelebration();}catch(e){}
+  document.getElementById('livebadge').classList.remove('hidden');
+  saveState();renderLive();renderMatches();renderHistory();populateSCSelect();renderHome();
+  toast('↩ Last entry undone');
+}
+// Second innings ends as soon as the target is reached
+function checkChase(inn){
+  if(inn&&!inn.completed&&inn.number===2&&inn.target&&inn.runs>=inn.target)endInnings();
+}
 function addRun(r){
   if(!canScore())return;
+  pushUndo();
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   inn.runs+=r;
   let bs=inn.batsmen[inn.striker];
@@ -2900,6 +3019,7 @@ function addRun(r){
     if(prev<100&&curr>=100) notifyCentury(bs.name,curr);
     else if(prev<50&&curr>=50) notifyHalfCentury(bs.name,curr);
   }
+  checkChase(inn);
   flashScore();afterScore();
 }
 function addExtra(type){
@@ -2907,28 +3027,62 @@ function addExtra(type){
   APP.pendingExtra=type;
   document.getElementById('ex-title').textContent=type==='wide'?'Wide':type==='noball'?'No Ball':type==='bye'?'Bye':'Leg Bye';
   document.getElementById('ex-runs').value=1;
+  let br=document.getElementById('ex-bat-row');if(br)br.style.display=type==='noball'?'':'none';
+  let bc2=document.getElementById('ex-bat');if(bc2)bc2.checked=false;
+  let hint=document.getElementById('ex-hint');
+  if(hint)hint.textContent=(type==='wide'||type==='noball')
+    ?'Total for this delivery, including the 1 penalty run. Example: '+(type==='wide'?'wide + 2 run':'no ball + 2 run')+' = 3.'
+    :'Runs taken as '+(type==='bye'?'byes':'leg byes')+'.';
   openM('ex-mo');
 }
 function confirmExtra(){
-  let type=APP.pendingExtra,runs=parseInt(document.getElementById('ex-runs').value)||1;
+  let type=APP.pendingExtra,runs=parseInt(document.getElementById('ex-runs').value);
+  if(isNaN(runs)||runs<1)runs=1;
+  if(runs>8)runs=8;
+  let offBat=type==='noball'&&!!document.getElementById('ex-bat')?.checked;
   closeM('ex-mo');
+  if(!type||!canScore())return;
+  pushUndo();
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
-  inn.runs+=runs;inn.extras.total+=runs;inn.extras[type]=(inn.extras[type]||0)+runs;
   let bw=inn.bowlers[inn.currentBowler];
-  if(bw){bw.runs+=runs;if(type==='wide')bw.wides++;if(type==='noball')bw.noballs++;}
-  inn.currentPartnership.runs+=runs;
+  let bs=inn.batsmen[inn.striker];
+  inn.runs+=runs;inn.currentPartnership.runs+=runs;
   if(type==='wide'||type==='noball'){
+    // 1 penalty run + anything the batters ran / hit
+    let taken=runs-1;
+    let batRuns=offBat?taken:0;
+    let exRuns=runs-batRuns;
+    inn.extras.total+=exRuns;inn.extras[type]=(inn.extras[type]||0)+exRuns;
+    if(type==='wide'){
+      if(bw){bw.runs+=runs;bw.wides++;}
+    } else {
+      // No ball: bowler is charged the penalty and runs off the bat (not byes)
+      if(bw){bw.runs+=1+batRuns;bw.noballs++;}
+      if(bs){
+        bs.balls++;bs.runs+=batRuns;
+        if(batRuns===4)bs.fours++;if(batRuns===6)bs.sixes++;
+        let prev=bs.runs-batRuns;
+        if(prev<100&&bs.runs>=100)notifyCentury(bs.name,bs.runs);
+        else if(prev<50&&bs.runs>=50)notifyHalfCentury(bs.name,bs.runs);
+      }
+      APP.pendingFreeHit=true;
+    }
     inn.thisOver.push(type==='wide'?'wd':'nb');
-    if(type==='noball')APP.pendingFreeHit=true;
-    if(runs%2===1)swapEnds(inn);
+    // Strike changes only on runs actually taken, not on the penalty run
+    if(taken%2===1)swapEnds(inn);
     // wide/noball: NO advBall — not a legal delivery
   } else {
+    // Byes / leg byes: legal delivery, not charged to the bowler
+    inn.extras.total+=runs;inn.extras[type]=(inn.extras[type]||0)+runs;
     inn.currentPartnership.balls++;
     inn.thisOver.push(type==='bye'?`B${runs}`:`LB${runs}`);
-    let bs=inn.batsmen[inn.striker];if(bs)bs.balls++;
-    advBall(inn); // bye/legbye ARE legal deliveries
+    if(bs)bs.balls++;
+    APP.pendingFreeHit=false;
+    advBall(inn);
     if(runs%2===1)swapEnds(inn);
   }
+  APP.pendingExtra=null;
+  checkChase(inn);
   flashScore();afterScore();
 }
 function triggerWicket(){
@@ -2958,6 +3112,8 @@ function onDismChange(){
   document.getElementById('wkt-rorow').style.display=t==='Run Out'?'':'none';
 }
 function confirmWicket(){
+  if(!canScore()){closeM('wkt-mo');return;}
+  pushUndo();
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   let type=document.getElementById('wkt-type').value;
   let fielder=document.getElementById('wkt-fld').value.trim();
@@ -2969,14 +3125,17 @@ function confirmWicket(){
   let bname=bw?bw.name:'?';
   let dstr=buildDism(type,bname,fielder);
   let bs=inn.batsmen[dismissedId];
-  if(bs){bs.status='out';bs.dismissal=dstr;bs.balls++;}
+  if(bs){bs.status='out';bs.dismissal=dstr;}
+  // The striker faced this ball, whoever is dismissed
+  let facer=inn.batsmen[inn.striker];if(facer)facer.balls++;
+  inn.currentPartnership.balls++;
+  APP.pendingFreeHit=false;
   if(['Bowled','Caught','LBW','Stumped','Hit Wicket'].includes(type)&&bw)bw.wickets++;
   inn.wickets++;
   inn.fallOfWickets.push({score:inn.runs,wicket:inn.wickets,batsman:dname,over:ov(inn)});
   inn.partnerships.push({...inn.currentPartnership});
   inn.currentPartnership={runs:0,balls:0};
   inn.thisOver.push('W');
-  if(bw)bw.balls++;
   advBall(inn);
   closeM('wkt-mo');
   if(inn.wickets>=10){endInnings();return;}
@@ -3035,7 +3194,7 @@ function promptNewOver(inn){
   let bwlPlayers=getMatchXI(APP.liveMatch,inn.bowlingTeamId);
   let opts=bwlPlayers.map(p=>{
     let b=inn.bowlers[p.id],used=b?b.overs:0,bmx=bowlerMaxOvers(APP.tournament.overs||20),mx=used>=bmx,cur=p.id===inn.currentBowler;
-    return`<option value="${p.id}" ${mx||cur?'disabled':''}>${p.name} — ${used} ov${mx?' (MAX '+bmx+')':cur?' (prev)':''}</option>`;
+    return`<option value="${p.id}" ${mx||cur?'disabled':''}>${esc(p.name)} — ${used} ov${mx?' (MAX '+bmx+')':cur?' (prev)':''}</option>`;
   }).join('');
   document.getElementById('nov-bwl').innerHTML=opts;
   document.getElementById('nov-warn').textContent='';
@@ -3055,6 +3214,7 @@ function triggerRetiredHurt(){
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
   if(!inn||inn.completed||!inn.striker)return;
   let bs=inn.batsmen[inn.striker];if(!bs)return;
+  pushUndo();
   bs.status='retired';bs.dismissal='retired hurt';
   inn.striker=null;
   toast(`${esc(bs.name)} retired hurt — use ⚙️ Manage to set next batsman`,'warn');
@@ -3070,7 +3230,7 @@ function endInnings(){
   if(inn.number===1){
     toast('Innings 1 complete! Starting Innings 2...');
     saveState();
-    setTimeout(()=>startInnings(2,inn.bowlingTeamId,inn.battingTeamId),1500);
+    _inn2Timer=setTimeout(()=>{_inn2Timer=null;if(APP.liveMatch===m&&inn.completed&&m.innings.length===1)startInnings(2,inn.bowlingTeamId,inn.battingTeamId);},1500);
   } else {determineWinner(m);}
   renderLive();
 }
@@ -3153,13 +3313,13 @@ function ov(inn){return`${Math.floor(inn.legalBalls/6)}.${inn.legalBalls%6}`;}
 // ══════════════════════════════════════════════════════════════════════════
 function renderLive(){
   if(APP.role==='viewer'){
-    try{let d=JSON.parse(lsGet(LS_LIVE)||'null');if(d&&(d.ts||0)>APP._liveTs)readLive();}catch{}
     document.getElementById('livebadge').classList.toggle('hidden',!APP.matches.some(m=>m.status==='live'));
   }
   let el=document.getElementById('livecont');
   if(!APP.liveMatch){
     el.innerHTML=`<div style="text-align:center;padding:60px 0;color:var(--dim)">No live match.<br>
-      <span style="font-size:12px">${APP.role==='admin'?'Go to Matches and start a match.':'Waiting for admin. Auto-updates every 2s.'}</span>
+      <span style="font-size:12px">${APP.role==='admin'?'Go to Matches and start a match.':'Waiting for admin. Updates automatically.'}</span>
+      ${APP.role==='admin'&&_undoStack.length?'<br><button class="bsm" style="margin-top:14px" onclick="undoLast()">↩ Undo last ball (reopen match)</button>':''}
     </div>`;return;
   }
   let m=APP.liveMatch,inn=m.innings[m.currentInnings];
@@ -3176,12 +3336,12 @@ function renderLive(){
     rrrH=`<div class="ri">RRR:<span style="color:${parseFloat(rrr)>parseFloat(crr)?'var(--red)':'var(--em)'}">${rrr}</span></div>
       <div class="ri">Need:<span>${need} off ${bl}b</span></div>`;
   }
-  let tossStr=m.toss?`<span style="font-size:10px;font-family:var(--mono);color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${m.toss.decision.toUpperCase()}</span>`:'';
+  let tossStr=m.toss?`<span style="font-size:10px;font-family:var(--mono);color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${esc(String(m.toss.decision).toUpperCase())}</span>`:'';
   let lmt=m.matchType||'League';
   let lmtcol=lmt==='Final'?'var(--gold)':lmt==='Semi Final'?'var(--purple)':lmt==='Quarter Final'?'var(--blue)':lmt.startsWith('Group')?'var(--amber)':'var(--em)';
-  let stageBanner=lmt!=='League'?`<div style="text-align:center;font-family:var(--disp);font-size:11px;letter-spacing:2px;color:${lmtcol};background:rgba(0,0,0,.3);border:1px solid ${lmtcol};border-radius:6px;padding:4px 12px;margin-bottom:10px">${lmt.toUpperCase()}</div>`:'';
+  let stageBanner=lmt!=='League'?`<div style="text-align:center;font-family:var(--disp);font-size:11px;letter-spacing:2px;color:${lmtcol};background:rgba(0,0,0,.3);border:1px solid ${lmtcol};border-radius:6px;padding:4px 12px;margin-bottom:10px">${esc(lmt.toUpperCase())}</div>`:'';
   let overLog=`<div class="overlog"><span class="olbl">THIS OVER:</span>`;
-  (inn.thisOver||[]).forEach(b=>overLog+=`<div class="ball ${bc(b)}">${b}</div>`);
+  (inn.thisOver||[]).forEach(b=>overLog+=`<div class="ball ${bc(b)}">${esc(b)}</div>`);
   overLog+='</div>';
   let fhBanner=APP.pendingFreeHit&&APP.role==='admin'?'<div class="fhb" style="display:block">🟢 FREE HIT — Batsman cannot be dismissed (except Run Out)!</div>':'';
   let tgt='';
@@ -3192,7 +3352,7 @@ function renderLive(){
     </div>`;
   }
   let iebb=inn.completed?`<div class="iebb"><h2>Innings ${inn.number} Complete</h2>
-    <p>${batT?batT.name:''}: ${inn.runs}/${inn.wickets} (${ov(inn)} Ov)</p>
+    <p>${batT?esc(batT.name):''}: ${inn.runs}/${inn.wickets} (${ov(inn)} Ov)</p>
     ${inn.number===1?'<p style="color:var(--gold);margin-top:4px">Starting Innings 2...</p>':''}
   </div>`:'';
   // Warnings for missing striker/bowler
@@ -3205,6 +3365,7 @@ function renderLive(){
     <div class="mgbar">
       <span class="mglbl">⚡ Actions:</span>
       <button class="bsm bblu" onclick="openManage()">⚙️ Manage Players / Bowler</button>
+      <button class="bsm" onclick="undoLast()" style="background:var(--bg2);color:var(--txt);border:1px solid var(--bdr)">↩ Undo last ball</button>
       <button class="bsm bpur" onclick="triggerRetiredHurt()">🚑 Retired Hurt</button>
       <button class="bsm bdng" onclick="openDiscard()" style="margin-left:auto">🚫 Discard Match</button>
     </div>
@@ -3228,7 +3389,7 @@ function renderLive(){
   }
   el.innerHTML=`${stageBanner}${iebb}${warns}
   <div class="shero">
-    <div class="steam">${batT?batT.name.toUpperCase():''} — INN ${inn.number} &nbsp;${tossStr}</div>
+    <div class="steam">${batT?esc(batT.name.toUpperCase()):''} — INN ${inn.number} &nbsp;${tossStr}</div>
     <div class="sruns" id="sdisplay">${inn.runs}/${inn.wickets}</div>
     <div class="sovs">(${ov(inn)} Overs of ${APP.tournament.overs||20})</div>
     <div class="smeta">
@@ -3293,7 +3454,7 @@ function populateSCSelect(){
     +all.map(m=>{
       let tA=APP.teams.find(t=>t.id===m.teamAId),tB=APP.teams.find(t=>t.id===m.teamBId);
       let mt2=m.matchType||'League';
-      return`<option value="${m.id}">[${mt2}] ${tA?esc(tA.name):'?'} vs ${tB?esc(tB.name):'?'} (${esc(m.date)})</option>`;
+      return`<option value="${esc(m.id)}">[${esc(mt2)}] ${tA?esc(tA.name):'?'} vs ${tB?esc(tB.name):'?'} (${esc(m.date)})</option>`;
     }).join('');
   if(prev)sel.value=prev;
 }
@@ -3307,12 +3468,13 @@ function renderSC(){
   let mtcol=mtype==='Final'?'var(--gold)':mtype==='Semi Final'?'var(--purple)':mtype==='Quarter Final'?'var(--blue)':'var(--em)';
   let html=`<div style="margin-bottom:12px">
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-      <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(240,192,64,.1);color:${mtcol};border:1px solid ${mtcol}">${mtype.toUpperCase()}</span>
+      <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(240,192,64,.1);color:${mtcol};border:1px solid ${mtcol}">${esc(mtype.toUpperCase())}</span>
       <div style="font-family:var(--disp);font-size:16px">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
     </div>
     <div style="font-size:11px;color:var(--dim)">📍 ${esc(m.venue)} | ${esc(m.date)} | 👔 ${m.umpires.map(esc).join(' · ')}</div>
-    ${m.toss?`<div style="font-size:11px;color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${m.toss.decision.toUpperCase()}</div>`:''}
-    ${m.resultText?`<div style="color:var(--em);font-size:14px;margin-top:4px;font-family:var(--disp)">🏆 ${m.resultText}</div>`:''}
+    ${m.toss?`<div style="font-size:11px;color:var(--dim)">🪙 ${gtn(m.toss.winner)} elected to ${esc(String(m.toss.decision).toUpperCase())}</div>`:''}
+    ${m.resultText?`<div style="color:var(--em);font-size:14px;margin-top:4px;font-family:var(--disp)">🏆 ${esc(m.resultText)}</div>`:''}
+    ${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:12px;color:var(--dim);margin-top:3px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}
   </div>`;
   m.innings.forEach(inn=>{
     let bat=APP.teams.find(t=>t.id===inn.battingTeamId),bwl=APP.teams.find(t=>t.id===inn.bowlingTeamId);
@@ -3324,7 +3486,7 @@ function renderSC(){
       let sr=b.balls>0?((b.runs/b.balls)*100).toFixed(1):'0.0';
       let dis=b.status==='batting'?'<span class="tag tg">not out</span>'
         :b.status==='retired'?'<span class="tag ta">retired hurt</span>'
-        :`<span style="font-size:10px;color:var(--dim)">${b.dismissal}</span>`;
+        :`<span style="font-size:10px;color:var(--dim)">${esc(b.dismissal)}</span>`;
       html+=`<tr><td style="font-weight:600">${esc(b.name)}</td><td>${dis}</td>
         <td style="font-family:var(--mono);color:var(--gold);font-weight:700">${b.runs}</td>
         <td style="font-family:var(--mono)">${b.balls}</td><td style="font-family:var(--mono)">${b.fours}</td>
@@ -3336,7 +3498,7 @@ function renderSC(){
       &nbsp;|&nbsp;<b style="color:var(--txt)">Total: ${inn.runs}/${inn.wickets}</b>
     </div>`;
     if(inn.fallOfWickets.length)html+=`<div style="margin-bottom:8px"><span style="font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase">Fall of Wickets</span>
-      <div class="fow-list" style="margin-top:3px">${inn.fallOfWickets.map(f=>`<div class="fow-chip">${f.score}/${f.wicket} (${f.batsman})</div>`).join('')}</div></div>`;
+      <div class="fow-list" style="margin-top:3px">${inn.fallOfWickets.map(f=>`<div class="fow-chip">${f.score}/${f.wicket} (${esc(f.batsman)})</div>`).join('')}</div></div>`;
     html+=`<table style="margin-top:6px"><thead><tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>Eco</th><th>Wd</th><th>Nb</th></tr></thead><tbody>`;
     bwl&&bwl.players.forEach(p=>{
       let b=inn.bowlers[p.id];if(!b||(b.overs===0&&(b.balls||0)===0))return;
@@ -3644,6 +3806,12 @@ function renderFieldingStats(){
 }
 
 // ── Awards ─────────────────────────────────────────────────────────────
+function setPOTS(pid){
+  if(APP.role!=='admin')return;
+  APP.tournament.pots=pid||'';
+  saveState();renderAwards();
+  toast(pid?'🌟 Player of the Series saved':'Player of the Series set to auto');
+}
 function renderAwards(){
   let el=document.getElementById('stats-awards');if(!el)return;
   let done=APP.matches.filter(m=>m.status==='completed');
@@ -3696,6 +3864,30 @@ function renderAwards(){
   let champion=final&&final.winner&&final.winner!=='tie'?APP.teams.find(t=>t.id===final.winner):null;
 
   let html='';
+
+  // Player of the Series — suggested from all-round points, admin can override
+  let pool={};
+  const addP=(p,pts,txt)=>{if(!pool[p.id])pool[p.id]={id:p.id,name:p.name,team:p.team,pts:0,bits:[]};pool[p.id].pts+=pts;if(txt)pool[p.id].bits.push(txt);};
+  batting.forEach(p=>addP(p,p.runs,p.runs+' runs'));
+  bowling.forEach(p=>addP(p,p.wickets*20,p.wickets?p.wickets+' wkts':''));
+  fielding.forEach(p=>{let d=p.catches+p.stumpings+p.runOuts;addP(p,d*10,d?d+' dismissals':'');});
+  let ranked=Object.values(pool).sort((a,b)=>b.pts-a.pts);
+  let chosenId=APP.tournament.pots||'';
+  let pots=(chosenId&&pool[chosenId])||ranked[0];
+  if(pots){
+    html+=`<div class="award-card gold-award" style="margin-bottom:14px">
+      <div style="font-size:44px;flex-shrink:0">🌟</div>
+      <div class="award-info">
+        <div class="award-title" style="color:var(--gold)">PLAYER OF THE SERIES${chosenId&&pool[chosenId]?'':' (SO FAR)'}</div>
+        <div class="award-name" style="font-size:20px">${esc(pots.name)} <span style="font-size:11px;color:var(--dim)">(${esc(pots.team)})</span></div>
+        <div class="award-val">${esc(pots.bits.join(' · '))}</div>
+        ${APP.role==='admin'?`<select class="motm-sel" style="margin-top:8px" onchange="setPOTS(this.value)">
+          <option value="">Auto — best all-round performer</option>
+          ${ranked.map(p=>`<option value="${esc(p.id)}" ${p.id===chosenId?'selected':''}>${esc(p.name)} (${esc(p.team)}) — ${esc(p.bits.join(', '))}</option>`).join('')}
+        </select>`:''}
+      </div>
+    </div>`;
+  }
 
   // Champion first
   if(champion){
@@ -3754,16 +3946,17 @@ function renderCompleted(){
   let done=APP.matches.filter(m=>m.status==='completed');
   if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
   el.innerHTML=done.map(m=>{
-    let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`${t?t.code:'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})`;}).join(' | ');
+    let sc=m.innings.map(inn=>{let t=APP.teams.find(x=>x.id===inn.battingTeamId);return`${t?esc(t.code):'?'}: ${inn.runs}/${inn.wickets} (${ov(inn)})`;}).join(' | ');
     let hmt=m.matchType||'League';
     let hmtcol=hmt==='Final'?'var(--gold)':hmt==='Semi Final'?'var(--purple)':hmt==='Quarter Final'||hmt==='Round of 16'?'var(--blue)':hmt.startsWith('Group')?'var(--amber)':'var(--em)';
     return`<div class="hcard" onclick="showMHist('${m.id}')">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
-        <span style="font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.3);color:${hmtcol};border:1px solid ${hmtcol}">${hmt.toUpperCase()}</span>
+        <span style="font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.3);color:${hmtcol};border:1px solid ${hmtcol}">${esc(hmt.toUpperCase())}</span>
         <div class="hteams">${gtn(m.teamAId)} vs ${gtn(m.teamBId)}</div>
       </div>
       <div class="hsc">${sc}</div>
-      <div class="hres" style="color:${m.winner==='no_result'?'var(--amber)':'var(--em)'}">${m.resultText||'—'}</div>
+      <div class="hres" style="color:${m.winner==='no_result'?'var(--amber)':'var(--em)'}">${esc(m.resultText||'—')}</div>
+      ${m.motm&&playerNameInMatch(m,m.motm)?`<div style="font-size:11px;color:var(--dim);margin-top:2px">🏅 Player of the Match: <b style="color:var(--gold)">${esc(playerNameInMatch(m,m.motm))}</b></div>`:''}
       <div style="font-size:10px;color:var(--dim);margin-top:2px">📍 ${esc(m.venue)} | 📅 ${esc(m.date)}</div>
     </div>`;
   }).join('');
@@ -3780,37 +3973,43 @@ function showMHist(mid){
 function renderPoints(){
   let el=document.getElementById('pt');
   let s={};
-  APP.teams.forEach(t=>{s[t.id]={p:0,w:0,l:0,nr:0,pts:0,rf:0,bf:0,ra:0,ba:0};});
+  const blank=()=>({p:0,w:0,l:0,t:0,nr:0,pts:0,rf:0,bf:0,ra:0,ba:0});
+  APP.teams.forEach(t=>{s[t.id]=blank();});
   // Only League and Group matches count toward the points table
   let leagueTypes=new Set(['League','Group A','Group B','Group C','Group D']);
+  let quota=(APP.tournament.overs||20)*6;
   APP.matches.filter(m=>m.status==='completed'&&leagueTypes.has(m.matchType||'League')).forEach(m=>{
-    if(!s[m.teamAId]||!s[m.teamBId])return;
-    s[m.teamAId].p++;s[m.teamBId].p++;
-    if(m.winner==='tie'){s[m.teamAId].pts++;s[m.teamBId].pts++;s[m.teamAId].nr++;s[m.teamBId].nr++;}
-    else if(m.winner&&m.winner!=='no_result'){s[m.winner].w++;s[m.winner].pts+=2;let l=m.teamAId===m.winner?m.teamBId:m.teamAId;if(s[l])s[l].l++;}
+    let A=s[m.teamAId],B=s[m.teamBId];
+    if(!A||!B)return;
+    A.p++;B.p++;
+    if(m.winner==='tie'){A.pts++;B.pts++;A.t++;B.t++;}
+    else if(m.winner==='no_result'||!m.winner){A.pts++;B.pts++;A.nr++;B.nr++;return;} // 1 point each, excluded from NRR
+    else if(s[m.winner]){s[m.winner].w++;s[m.winner].pts+=2;let l=m.teamAId===m.winner?m.teamBId:m.teamAId;if(s[l])s[l].l++;}
     m.innings.forEach(inn=>{
-      let b=Math.min(inn.legalBalls,(APP.tournament.overs||20)*6);
+      // A side that is bowled out is treated as having faced its full quota of overs
+      let b=inn.wickets>=10?quota:Math.min(inn.legalBalls,quota);
       if(s[inn.battingTeamId]){s[inn.battingTeamId].rf+=inn.runs;s[inn.battingTeamId].bf+=b;}
       if(s[inn.bowlingTeamId]){s[inn.bowlingTeamId].ra+=inn.runs;s[inn.bowlingTeamId].ba+=b;}
     });
   });
   let sorted=APP.teams.map(t=>{
-    let x=s[t.id]||{p:0,w:0,l:0,nr:0,pts:0,rf:0,bf:0,ra:0,ba:0};
+    let x=s[t.id]||blank();
     let rrf=x.bf>0?x.rf/(x.bf/6):0,rra=x.ba>0?x.ra/(x.ba/6):0;
     return{team:t,...x,nrr:(rrf-rra).toFixed(3)};
   }).sort((a,b)=>b.pts-a.pts||parseFloat(b.nrr)-parseFloat(a.nrr));
   if(!sorted.length){el.innerHTML='<p style="color:var(--dim)">No teams yet.</p>';return;}
-  el.innerHTML=`<table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>NR</th><th>Pts</th><th>NRR</th></tr></thead><tbody>`
+  el.innerHTML=`<div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>T</th><th>NR</th><th>Pts</th><th>NRR</th></tr></thead><tbody>`
     +sorted.map((x,i)=>`<tr>
       <td style="color:var(--gold);font-family:var(--mono)">${i+1}</td>
-      <td><span class="tag tg">${x.team.code}</span> ${x.team.name}</td>
+      <td><span class="tag tg">${esc(x.team.code)}</span> ${esc(x.team.name)}</td>
       <td style="font-family:var(--mono)">${x.p}</td>
       <td style="font-family:var(--mono);color:var(--em)">${x.w}</td>
       <td style="font-family:var(--mono);color:var(--red)">${x.l}</td>
+      <td style="font-family:var(--mono)">${x.t}</td>
       <td style="font-family:var(--mono)">${x.nr}</td>
       <td style="font-family:var(--mono);font-weight:700;color:var(--gold)">${x.pts}</td>
-      <td style="font-family:var(--mono);color:${parseFloat(x.nrr)>=0?'var(--em)':'var(--red)'}">${x.nrr}</td>
-    </tr>`).join('')+'</tbody></table>';
+      <td style="font-family:var(--mono);color:${parseFloat(x.nrr)>=0?'var(--em)':'var(--red)'}">${x.nrr>0?'+':''}${x.nrr}</td>
+    </tr>`).join('')+'</tbody></table></div>';
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -3830,7 +4029,7 @@ function renderHome(){
     let tA=APP.teams.find(t=>t.id===live.teamAId),tB=APP.teams.find(t=>t.id===live.teamBId);
     let inn=live.innings[live.currentInnings];
     lel.innerHTML=`<div style="color:var(--red);font-family:var(--disp)">🔴 LIVE</div>
-      <div style="font-family:var(--disp);font-size:14px;margin-top:3px">${tA?tA.name:'?'} vs ${tB?tB.name:'?'}</div>
+      <div style="font-family:var(--disp);font-size:14px;margin-top:3px">${tA?esc(tA.name):'?'} vs ${tB?esc(tB.name):'?'}</div>
       ${inn?`<div style="font-family:var(--mono);font-size:18px;color:var(--gold);margin-top:3px">${inn.runs}/${inn.wickets} (${ov(inn)})</div>`:''}
       <button class="bsm" style="margin-top:8px" onclick="showTab('live')">View Live →</button>`;
   } else lel.innerHTML='<p style="color:var(--dim)">No live match right now.</p>';
@@ -3840,8 +4039,8 @@ function renderHome(){
   uel.innerHTML=up.slice(0,3).map(m=>{
     let tA=APP.teams.find(t=>t.id===m.teamAId),tB=APP.teams.find(t=>t.id===m.teamBId);
     return`<div style="padding:7px 0;border-bottom:1px solid var(--bdr)">
-      <div style="font-family:var(--disp)">${tA?tA.name:'?'} <span style="color:var(--dim)">vs</span> ${tB?tB.name:'?'}</div>
-      <div style="font-size:11px;color:var(--dim)">📅 ${m.date} | 📍 ${m.venue}</div>
+      <div style="font-family:var(--disp)">${tA?esc(tA.name):'?'} <span style="color:var(--dim)">vs</span> ${tB?esc(tB.name):'?'}</div>
+      <div style="font-size:11px;color:var(--dim)">📅 ${esc(m.date)} | 📍 ${esc(m.venue)}</div>
     </div>`;
   }).join('');
 }
@@ -3849,6 +4048,18 @@ function renderHome(){
 // ══════════════════════════════════════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════════════════════════════════════
+function rawTeamName(id){return (APP.teams.find(x=>x.id===id)||{name:id||'—'}).name;}
+function playerNameInMatch(m,pid){
+  if(!m||!pid)return '';
+  for(let inn of (m.innings||[])){
+    if(inn.batsmen&&inn.batsmen[pid])return inn.batsmen[pid].name;
+    if(inn.bowlers&&inn.bowlers[pid])return inn.bowlers[pid].name;
+  }
+  return '';
+}
+function activeTabName(){
+  let v=document.querySelector('.view.active');return v?v.id.replace('view-',''):'home';
+}
 function gtn(id){if(!id||id==='tie')return id==='tie'?'Tie':'—';return esc((APP.teams.find(x=>x.id===id)||{name:id}).name);}
 function openM(id){document.getElementById(id).classList.add('on');}
 function closeM(id){document.getElementById(id).classList.remove('on');}
@@ -3874,10 +4085,7 @@ document.addEventListener('keydown',e=>{
   if(document.getElementById('apanel-login').classList.contains('on'))doLogin();
   else if(document.getElementById('apanel-reg').classList.contains('on'))doRegister();
   else if(document.getElementById('apanel-viewer').classList.contains('on'))doGuest();
-  else if(document.getElementById('apanel-forgot').classList.contains('on')){
-    if(document.getElementById('fp-step2').style.display!=='none')fpStep2();
-    else fpStep1();
-  }
+  else if(document.getElementById('apanel-forgot').classList.contains('on'))fpStep1();
 });
 
 
@@ -3901,9 +4109,9 @@ function bindActions(){
         // SECURITY: whitelist of allowed functions — NO eval()
         var ALLOWED = {
           doLogin,doRegister,doGuest,doLogout,showForgot,showLogin,showViewer,
-          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,exportAccount,copyExportCode,showImportAccount,importAccount,importAccountFromAuth,connectFirebase,disconnectFirebase,syncNow,
+          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,syncNow,newTournament,
           deleteTeam,delPlayer,deleteMatch,confirmDeleteMatch,moveMatch,startMatch,showMHist,openEditMatch,openDiscard,openManage,triggerRetiredHurt,enableNotifications,skipNotifications,toggleNotifications,
-          switchTab,fpStep1,fpStep2,
+          switchTab,fpStep1,
           showTab,saveTournament,addTeam,clearBulk,filterPlayers,
           copyShareLink,openShareLink,updateBowlerMaxLabel,
           openSchedModal,scheduleMatch,cancelSchModal,
@@ -4434,9 +4642,8 @@ function applyLanguage(){
   });
   // Placeholders
   const phMap={
-    'l-u':'enter username','l-p':'enter password',
+    'l-p':'enter password',
     'r-n':'Your Name','r-u':'enter username','r-p':'enter password','r-p2':'enter password',
-    'fp-u':'enter username','fp-answer':'Your Answer','fp-newpass':'enter password','fp-newpass2':'enter password',
     'v-uname':'enter username',
   };
   Object.entries(phMap).forEach(([id,key])=>{
@@ -4560,6 +4767,7 @@ function setLang(code){
 let _lastCompletedMatch=null;
 
 function showCelebration(m){
+  if(m.status!=='completed'||!APP.matches.includes(m))return; // match was undone
   _lastCompletedMatch=m;
   let winTeam=m.winner&&m.winner!=='tie'&&m.winner!=='no_result'
     ? APP.teams.find(t=>t.id===m.winner) : null;
@@ -4593,7 +4801,7 @@ function showCelebration(m){
     document.getElementById('celeb-motm-name').textContent=motm.name;
     document.getElementById('celeb-motm-stat').textContent=motm.stat;
     motmPrev.style.display='block';
-    m.motm=motm.pid;
+    if(!m.motm){m.motm=motm.pid;saveState();}
   } else {
     motmPrev.style.display='none';
   }
@@ -4610,7 +4818,7 @@ function showCelebration(m){
 
   // If final match — show tournament completion
   if(m.matchType==='Final'){
-    setTimeout(()=>showTournamentComplete(m),14000);
+    setTimeout(()=>{if(m.status==='completed'&&APP.matches.includes(m))showTournamentComplete(m);},14000);
   }
 }
 
@@ -4678,7 +4886,7 @@ function openMOTM(){
     cards.innerHTML=`<div class="motm-card">
       <div class="motm-medal">🏅</div>
       <div class="motm-info">
-        <div class="motm-title">Suggested Man of the Match</div>
+        <div class="motm-title">Suggested Player of the Match</div>
         <div class="motm-name">${esc(auto.name)}</div>
         <div class="motm-stat">${esc(auto.stat)}</div>
       </div>
@@ -4707,7 +4915,8 @@ function saveMOTM(){
   if(pid) m.motm=pid;
   closeM('motm-mo');
   saveState();
-  toast('🏅 Man of the Match saved!');
+  renderMatches();renderHistory();
+  toast('🏅 Player of the Match saved!');
 }
 
 // ── Tournament Complete ───────────────────────────────────────────────
@@ -4731,17 +4940,16 @@ function showTournamentComplete(finalMatch){
 
 // ── Update determineWinner to trigger celebration ─────────────────────
 // (Patch: override the celebration call point)
-const _origDetermineWinner=determineWinner;
 function determineWinner(m){
   let i1=m.innings[0],i2=m.innings[1];if(!i2)return;
   let wktsLeft=10-i2.wickets;
   if(i2.runs>i1.runs){
     m.winner=i2.battingTeamId;
-    m.resultText=`${gtn(i2.battingTeamId)} won by ${wktsLeft} wicket${wktsLeft===1?'':'s'}`;
+    m.resultText=`${rawTeamName(i2.battingTeamId)} won by ${wktsLeft} wicket${wktsLeft===1?'':'s'}`;
   } else if(i1.runs>i2.runs){
     let margin=i1.runs-i2.runs;
     m.winner=i1.battingTeamId;
-    m.resultText=`${gtn(i1.battingTeamId)} won by ${margin} run${margin===1?'':'s'}`;
+    m.resultText=`${rawTeamName(i1.battingTeamId)} won by ${margin} run${margin===1?'':'s'}`;
   } else {
     m.winner='tie';m.resultText='Match Tied!';
   }
@@ -4755,276 +4963,6 @@ function determineWinner(m){
 
 // ── Update bindActions ALLOWED whitelist ─────────────────────────────────
 // (done via the existing ALLOWED object — just add new functions)
-// ══════════════════════════════════════════════════════════════════════════
-//  CLOUD SYNC — Firebase Realtime Database
-//  Enables real-time sync across ALL devices (iPhone/Android/laptop/tablet)
-//  Free tier: 1GB storage, 10GB/month — plenty for cricket tournaments
-// ══════════════════════════════════════════════════════════════════════════
-const LS_FB_URL = 'stumply_fb_url';  // stored Firebase DB URL
-let FB_URL = null;      // active Firebase base URL
-let FB_PUSH_TIMER = null;
-let FB_PULL_TIMER = null;
-let _fbConnected = false;
-
-function fbUrl(path){ return FB_URL ? FB_URL.replace(/\/$/, '') + path + '.json' : null; }
-
-// ── Connect to Firebase ───────────────────────────────────────────────
-function connectFirebase(){
-  let inp = document.getElementById('firebase-url-input');
-  let err = document.getElementById('firebase-err');
-  if(err) err.textContent = '';
-  let url = (inp ? inp.value : '').trim().replace(/\/$/, '');
-  if(!url){ if(err) err.textContent = 'Please enter your Firebase Database URL'; return; }
-  if(!url.startsWith('https://') || !url.includes('firebaseio.com')){
-    if(err) err.textContent = 'URL must be: https://your-project-default-rtdb.firebaseio.com'; return;
-  }
-  // Test the connection with a small write
-  let testUrl = url + '/stumply_test.json';
-  fetch(testUrl, {method:'PUT', body:JSON.stringify({ts:Date.now()}), headers:{'Content-Type':'application/json'}})
-    .then(r => r.ok ? r.json() : Promise.reject('HTTP '+r.status))
-    .then(() => {
-      FB_URL = url;
-      lsSet(LS_FB_URL, url);
-      _fbConnected = true;
-      updateCloudStatus('connected');
-      if(inp) inp.value = '';
-      document.getElementById('firebase-setup-panel').style.display = 'none';
-      document.getElementById('firebase-connected-panel').style.display = '';
-      toast('☁️ Firebase connected! Syncing now...');
-      // Push current data up immediately
-      pushToFirebase();
-      // Start pull polling
-      startFirebasePull();
-    })
-    .catch(e => {
-      if(err) err.textContent = 'Connection failed. Check URL and make sure Realtime Database is enabled in test mode. Error: '+e;
-      updateCloudStatus('error');
-    });
-}
-
-function disconnectFirebase(){
-  FB_URL = null;
-  lsSet(LS_FB_URL, '');
-  _fbConnected = false;
-  if(FB_PULL_TIMER){ clearInterval(FB_PULL_TIMER); FB_PULL_TIMER = null; }
-  updateCloudStatus('disconnected');
-  document.getElementById('firebase-setup-panel').style.display = '';
-  document.getElementById('firebase-connected-panel').style.display = 'none';
-  toast('Disconnected from Firebase');
-}
-
-function updateCloudStatus(state){
-  let dot = document.getElementById('cloud-dot');
-  let txt = document.getElementById('cloud-status-txt');
-  if(!dot || !txt) return;
-  const states = {
-    'connected':    ['#22a03c', '☁️ Cloud sync active — all devices syncing automatically'],
-    'syncing':      ['#f0a030', '🔄 Syncing...'],
-    'error':        ['#e84040', '⚠ Sync error — check Firebase URL'],
-    'disconnected': ['#9e9e9e', 'Not connected — scores saved on this device only'],
-    'offline':      ['#f0a030', '📡 Offline — will sync when connection returns'],
-  };
-  let [color, message] = states[state] || states['disconnected'];
-  dot.style.background = color;
-  txt.textContent = message;
-}
-
-// ── Push data TO Firebase ─────────────────────────────────────────────
-function pushToFirebase(){
-  if(!FB_URL || !APP.uname) return;
-  let url = fbUrl('/users/'+APP.uname);
-  if(!url) return;
-  let payload = {
-    name:    APP.dname,
-    hash:    getUsers()[APP.uname]?.hash || '',
-    data: {
-      tournament: APP.tournament,
-      teams:      APP.teams,
-      matches:    APP.matches,
-      liveId:     APP.liveMatch ? APP.liveMatch.id : null,
-      _savedAt:   Date.now(),
-    }
-  };
-  updateCloudStatus('syncing');
-  fetch(url, {
-    method: 'PUT',
-    body: JSON.stringify(payload),
-    headers: {'Content-Type':'application/json'}
-  })
-  .then(r => r.ok ? updateCloudStatus('connected') : updateCloudStatus('error'))
-  .catch(() => updateCloudStatus('offline'));
-}
-
-// ── Pull data FROM Firebase (for viewer or login on new device) ────────
-function pullFromFirebase(uname, callback){
-  if(!FB_URL) { callback(null); return; }
-  let url = fbUrl('/users/'+uname);
-  if(!url){ callback(null); return; }
-  fetch(url)
-    .then(r => r.ok ? r.json() : null)
-    .then(data => callback(data))
-    .catch(() => callback(null));
-}
-
-// ── Pull live data for VIEWER (cross-device real-time) ────────────────
-function pullLiveFromFirebase(viewUser, callback){
-  if(!FB_URL){ callback(null); return; }
-  let url = fbUrl('/users/'+viewUser);
-  fetch(url)
-    .then(r => r.ok ? r.json() : null)
-    .then(data => callback(data))
-    .catch(() => callback(null));
-}
-
-// ── Start Firebase pull polling for viewer ────────────────────────────
-function startFirebasePull(){
-  if(FB_PULL_TIMER) clearInterval(FB_PULL_TIMER);
-  FB_PULL_TIMER = setInterval(()=>{
-    if(!APP.viewUser || !FB_URL) return;
-    pullLiveFromFirebase(APP.viewUser, fbData => {
-      if(!fbData || !fbData.data) return;
-      let d = fbData.data;
-      let newTs = d._savedAt || 0;
-      if(newTs <= APP._liveTs) return; // no new data
-      APP.tournament = d.tournament || APP.tournament;
-      if(!APP.tournament.overs) APP.tournament.overs = 20;
-      APP.teams   = d.teams   || APP.teams;
-      APP.matches = d.matches || APP.matches;
-      APP.liveMatch = d.liveId ? (APP.matches.find(m=>m.id===d.liveId)||null) : null;
-      APP._liveTs = newTs;
-      APP.dname   = fbData.name || APP.viewUser;
-      // Trigger UI update
-      let hasLive = APP.matches.some(m=>m.status==='live');
-      document.getElementById('livebadge').classList.toggle('hidden', !hasLive);
-      renderHome(); renderMatches(); renderLive(); populateSCSelect();
-      if(hasLive && APP.liveMatch){
-        let lv = document.getElementById('view-live');
-        if(lv && !lv.classList.contains('active')) showTab('live');
-      }
-    });
-  }, 1500); // poll every 1.5s from Firebase
-}
-
-// ── syncNow: manual push ──────────────────────────────────────────────
-function syncNow(){
-  if(!FB_URL){ toast('Connect Firebase first'); return; }
-  pushToFirebase();
-  toast('🔄 Syncing to cloud...');
-}
-
-// ── Init Firebase on load ─────────────────────────────────────────────
-function initFirebase(){
-  let savedUrl = lsGet(LS_FB_URL);
-  if(!savedUrl) return;
-  FB_URL = savedUrl;
-  _fbConnected = true;
-  updateCloudStatus('connected');
-  // Update admin panel UI if visible
-  let setupPanel = document.getElementById('firebase-setup-panel');
-  let connPanel  = document.getElementById('firebase-connected-panel');
-  if(setupPanel) setupPanel.style.display = 'none';
-  if(connPanel)  connPanel.style.display  = '';
-  // If viewer, start Firebase pull
-  if(APP.role === 'viewer' && APP.viewUser) startFirebasePull();
-}
-
-// ── Patch saveState to also push to Firebase ─────────────────────────
-const _origSaveState = saveState;
-function saveState(){
-  _origSaveState();
-  // Push to Firebase (debounced — max once per 500ms)
-  if(FB_URL && APP.uname){
-    if(FB_PUSH_TIMER) clearTimeout(FB_PUSH_TIMER);
-    FB_PUSH_TIMER = setTimeout(pushToFirebase, 500);
-  }
-}
-
-// ── Patch loginAs to pull from Firebase first (cross-device login) ─────
-const _origLoginAs = loginAs;
-function loginAs(uname, name){
-  // Try to load from Firebase first if connected
-  if(FB_URL){
-    let fbUrlForUser = fbUrl('/users/'+uname);
-    if(fbUrlForUser){
-      fetch(fbUrlForUser)
-        .then(r => r.ok ? r.json() : null)
-        .then(fbData => {
-          if(fbData && fbData.data && (fbData.data._savedAt||0) > (userGet(uname)?.data?._savedAt||0)){
-            // Firebase has newer data — merge it to localStorage first
-            let users = getUsers();
-            if(!users[uname]) users[uname] = {hash:fbData.hash||'',name:fbData.name||name,secQ:'',secA:'',data:null};
-            users[uname].data = fbData.data;
-            putUsers(users);
-            toast('☁️ Loaded latest data from cloud');
-          }
-          _origLoginAs(uname, name);
-        })
-        .catch(() => _origLoginAs(uname, name));
-      return;
-    }
-  }
-  _origLoginAs(uname, name);
-}
-
-// ══════════════════════════════════════════════════════════════════════════
-//  EXPORT / IMPORT ACCOUNT (cross-device support)
-// ══════════════════════════════════════════════════════════════════════════
-function exportAccount(){
-  if(!APP.uname){toast('Sign in first');return;}
-  let users=getUsers();
-  let u=users[APP.uname];if(!u){toast('Account not found');return;}
-  // Export: user record + current data
-  let exportObj={v:1,uname:APP.uname,user:u};
-  let json=JSON.stringify(exportObj);
-  // Base64 encode for easy copy-paste
-  let code=btoa(unescape(encodeURIComponent(json)));
-  let el=document.getElementById('export-output');
-  let ta=document.getElementById('export-code');
-  if(el)el.style.display='block';
-  if(ta)ta.value=code;
-  // Try native share/download
-  toast('✅ Export code ready — copy and paste on your other device');
-}
-function copyExportCode(){
-  let ta=document.getElementById('export-code');if(!ta)return;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(ta.value).then(()=>toast('✅ Code copied to clipboard!')).catch(()=>{ta.select();document.execCommand('copy');toast('✅ Copied!');});
-  } else {
-    ta.select();document.execCommand('copy');toast('✅ Copied!');
-  }
-}
-function showImportAccount(){
-  let ip=document.getElementById('import-panel');
-  if(ip)ip.style.display=ip.style.display==='none'?'block':'none';
-}
-function _doImport(code, errElId){
-  let errEl=document.getElementById(errElId);
-  if(errEl)errEl.textContent='';
-  if(!code.trim()){if(errEl)errEl.textContent='Please paste your export code';return;}
-  try{
-    let json=decodeURIComponent(escape(atob(code.trim())));
-    let obj=JSON.parse(json);
-    if(!obj.v||!obj.uname||!obj.user){if(errEl)errEl.textContent='Invalid export code';return;}
-    let users=getUsers();
-    // Import/overwrite the user record
-    users[obj.uname]=obj.user;
-    putUsers(users);
-    toast('✅ Account imported! Signing you in...');
-    setTimeout(()=>loginAs(obj.uname,obj.user.name),600);
-  }catch(e){
-    if(errEl)errEl.textContent='Invalid code. Please export again from the other device.';
-    console.error('Import error:',e);
-  }
-}
-function importAccount(){
-  let code=document.getElementById('import-code')?.value||'';
-  _doImport(code,'import-err');
-}
-function importAccountFromAuth(){
-  let code=document.getElementById('auth-import-code')?.value||'';
-  _doImport(code,'auth-import-err');
-}
-
 // Show warning if localStorage is blocked (private/incognito mode)
 (function(){
   try{var t='__cs_ls_test__';localStorage.setItem(t,t);localStorage.removeItem(t);}
@@ -5041,36 +4979,48 @@ if('serviceWorker' in navigator){
 // Bind all data-action elements (auth buttons need this before login)
 bindActions();
 
-// Check for ?view=USERNAME in URL (shared viewer link)
-(function checkViewParam(){
+// ── Start-up: shared link → saved viewer → saved admin session → sign-in screen
+(async function boot(){
+  let params;try{params=new URLSearchParams(location.search);}catch(e){params=new URLSearchParams('');}
+  let t=params.get('t'),view=cleanUname(params.get('view'));
+  if(!CLOUD_OK){showAuthScreen('');return;}
+  let loading=document.getElementById('boot-msg');
+  const busy=msg=>{if(loading){loading.textContent=msg||'';loading.style.display=msg?'block':'none';}};
   try{
-    let params=new URLSearchParams(location.search);
-    let viewUser=params.get('view');
-    if(viewUser){
-      APP.role='viewer';APP.uname=null;APP.viewUser=viewUser;
-      // Load initial data immediately
-      let users=getUsers();
-      let u=users[viewUser];
-      if(u&&u.data){
-        let d=u.data;
-        APP.tournament=d.tournament||{name:'Tournament',edition:'Season 1',year:2026,overs:20};
-        if(!APP.tournament.overs)APP.tournament.overs=20;
-        APP.teams=d.teams||[];APP.matches=d.matches||[];
-        APP.liveMatch=d.liveId?(APP.matches.find(m=>m.id===d.liveId)||null):null;
-        APP._liveTs=d._savedAt||0;
-        APP.dname=u.name||viewUser;
-      } else {
-        // fallback to broadcast
-        readLive();
-      }
-      // Don't save session — pure view link, no re-login
-      initApp();
+    if(t){busy('Loading tournament…');await openViewer(t);busy('');return;}
+    if(view){
+      busy('Loading tournament…');
+      let list=await tournamentsOfUser(view);
+      if(list&&list.length){await openViewer(list[0].tid);busy('');return;}
+      busy('');showAuthScreen('');showViewer();
+      document.getElementById('v-uname').value=view;
+      document.getElementById('v-err').textContent=list?'This admin has no tournaments yet':'Username not found — check the link';
       return;
     }
-  }catch(e){console.error('boot error:',e);}
-  if(!tryRestore()){
-    document.getElementById('authscr').style.display='flex';
+  }catch(e){
+    busy('');showAuthScreen('');showViewer();
+    document.getElementById('v-err').textContent=e.message==='NOT_FOUND'?'That tournament is no longer available':authErrText(e.message);
+    return;
   }
+  let saved=safeParse(lsGet(LS_AUTH),null);
+  if(saved&&saved.uid&&saved.refreshToken){
+    AUTH=saved;busy('Signing you in…');
+    try{await enterAdmin();busy('');return;}
+    catch(e){
+      busy('');
+      if(e.message==='NETWORK'){showAuthScreen('No connection — connect to the internet and reload to continue.');return;}
+      AUTH=null;persistAuth();
+      showAuthScreen(e.message==='SESSION_EXPIRED'?'Your session has ended. Please sign in again.':'');
+      return;
+    }
+  }
+  let vt=lsGet(LS_VIEW);
+  if(vt){
+    busy('Loading tournament…');
+    try{await openViewer(vt);busy('');return;}catch(e){lsRemove(LS_VIEW);}
+    busy('');
+  }
+  showAuthScreen('');
 })();
 </script>
 </body>
