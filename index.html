@@ -542,6 +542,17 @@ tr:hover td{background:#f0faff}
   transition:border-color .2s;
 }
 .mr select:focus,.mr input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(26,122,46,.10)}
+/* Radios and checkboxes keep their native look and size everywhere */
+input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[type="checkbox"]{
+  -webkit-appearance:auto;appearance:auto;width:18px;height:18px;min-height:0;min-width:18px;
+  padding:0;margin:2px 0 0;border:none;border-radius:0;background:none;box-shadow:none;flex:0 0 auto;
+  accent-color:var(--em);
+}
+/* A tappable option row inside a dialog (not an uppercase field caption) */
+.mr label.optlbl{
+  display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin:0;
+  font-size:13px;color:var(--txt);letter-spacing:0;text-transform:none;font-weight:400;line-height:1.4;
+}
 .mact{display:flex;gap:10px;margin-top:18px}
 .mact .bsm{flex:1;padding:10px;font-size:13px;text-align:center}
 
@@ -580,7 +591,8 @@ tr:hover td{background:#f0faff}
   font-family:var(--mono);font-size:12px;
   padding:10px 20px;border-radius:10px;z-index:999;
   opacity:0;transition:opacity .3s;pointer-events:none;
-  box-shadow:0 8px 28px rgba(0,0,0,.25);white-space:nowrap;
+  box-shadow:0 8px 28px rgba(0,0,0,.25);
+  max-width:calc(100vw - 24px);width:max-content;text-align:center;line-height:1.4;
 }
 #toast.on{opacity:1}
 
@@ -613,6 +625,11 @@ tr:hover td{background:#f0faff}
 .stat-table tr:hover td{background:#f0f9f3}
 .stat-table .num{text-align:right;color:var(--txt)}
 .stat-table .hi{color:var(--em);font-weight:700;font-size:12px}
+.stat-table th.hi{color:#ffd76a;font-size:9px}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.stabs{display:flex;gap:2px;margin-bottom:14px;background:var(--bg2);border-radius:8px;padding:4px;border:1px solid var(--bdr);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.stabs::-webkit-scrollbar{display:none}
+.stabs .stab-btn{flex:1 0 auto}
 
 /* ── AWARD CARDS ── */
 .stat-medal{display:inline-block;font-size:18px;margin-right:6px;vertical-align:middle}
@@ -686,6 +703,14 @@ tr:hover td{background:#f0faff}
   .stab-btn{min-width:58px;font-size:10px;padding:5px 6px}
   #stats-awards > div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
   #sch-mo .mb > div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
+}
+/* Phones and small tablets: the tabs move to their own scrollable row under the logo */
+@media(max-width:820px){
+  #topbar{flex-wrap:wrap;height:auto;padding-top:7px;padding-bottom:0;row-gap:0}
+  .nav-tabs{order:3;flex:0 0 100%;padding:5px 0 7px;gap:4px}
+  .tab-btn{flex:1 0 auto;font-size:11px;padding:6px 6px;white-space:nowrap;text-align:center}
+  th,td{padding-left:7px;padding-right:7px}
+  #uinfo{margin-left:auto}
 }
 @media(min-width:481px) and (max-width:768px){
   .tcol{grid-template-columns:1fr 1fr}
@@ -829,13 +854,13 @@ tr:hover td{background:#f0faff}
     <div class="celeb-team" id="celeb-team">Team Name</div>
     <div class="celeb-result" id="celeb-result">Won the match</div>
     <div id="celeb-motm-preview" style="margin:12px 0;padding:10px 14px;background:linear-gradient(135deg,#fffbf0,#fff8e1);border:1px solid var(--gdim);border-radius:10px;font-size:12px;color:var(--dim);display:none">
-      <div style="font-family:var(--disp);font-size:10px;letter-spacing:1.5px;color:var(--dim);margin-bottom:4px">MAN OF THE MATCH</div>
+      <div style="font-family:var(--disp);font-size:10px;letter-spacing:1.5px;color:var(--dim);margin-bottom:4px">PLAYER OF THE MATCH</div>
       <div id="celeb-motm-name" style="font-family:var(--disp);font-size:16px;color:var(--gold)"></div>
       <div id="celeb-motm-stat" style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:2px"></div>
     </div>
     <div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap">
       <button class="celeb-btn" data-action="closeCelebration()">Continue →</button>
-      <button style="background:var(--goldlt);color:var(--gold);border:1.5px solid var(--gdim);border-radius:10px;padding:12px 20px;font-family:var(--disp);font-size:14px;letter-spacing:.5px;cursor:pointer" data-action="openAfterCelebration()">🏅 Select MOTM</button>
+      <button style="background:var(--goldlt);color:var(--gold);border:1.5px solid var(--gdim);border-radius:10px;padding:12px 20px;font-family:var(--disp);font-size:14px;letter-spacing:.5px;cursor:pointer" data-action="openAfterCelebration()">🏅 Choose Player of the Match</button>
     </div>
   </div>
 </div>
@@ -847,7 +872,7 @@ tr:hover td{background:#f0faff}
     <p style="font-size:12px;color:var(--dim);margin-bottom:14px">Select the best performers for this match. These appear in History and Stats.</p>
     <div id="motm-auto-cards"></div>
     <div class="mr" style="margin-top:10px">
-      <label>✏️ Override — Man of the Match</label>
+      <label>✏️ Choose Player of the Match</label>
       <select id="motm-player-sel" class="motm-sel"></select>
     </div>
     <div class="mact">
@@ -995,7 +1020,7 @@ tr:hover td{background:#f0faff}
               ② Send the link to friends via WhatsApp / SMS<br>
               ③ They open it → enter your username → scores update every second<br>
               ④ No login needed for viewers — read-only access<br>
-              ⑤ After the match ends → <span style="background:var(--goldlt);color:var(--gold);border:1px solid var(--gdim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">🏅 Select MOTM</span> → view full stats in <b>🏆 History</b>
+              ⑤ After the match ends → <span style="background:var(--goldlt);color:var(--gold);border:1px solid var(--gdim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">🏅 Choose Player of the Match</span> → view full stats in <b>🏆 History</b>
             </div>
           </div>
         </div>
@@ -1179,7 +1204,7 @@ tr:hover td{background:#f0faff}
   <div class="stitle">🏆 History & Stats</div>
 
   <!-- Stats sub-tabs -->
-  <div style="display:flex;gap:2px;flex-wrap:wrap;margin-bottom:14px;background:var(--bg2);border-radius:8px;padding:4px;border:1px solid var(--bdr)">
+  <div class="stabs">
     <button class="stab-btn stab-on" data-action="switchStatTab('matches')"   id="stab-matches">📋 Matches</button>
     <button class="stab-btn"         data-action="switchStatTab('points')"    id="stab-points">📊 Points Table</button>
     <button class="stab-btn"         data-action="switchStatTab('batting')"   id="stab-batting">🏏 Batting</button>
@@ -1348,7 +1373,7 @@ tr:hover td{background:#f0faff}
     <div class="mt gold" id="ex-title">Extra</div>
     <div class="mr"><label>Runs off this delivery</label><input class="ifield" id="ex-runs" type="number" value="1" min="1" max="8" inputmode="numeric">
       <div id="ex-hint" style="font-size:11px;color:var(--dim);margin-top:5px"></div></div>
-    <div class="mr" id="ex-bat-row" style="display:none"><label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px"><input type="checkbox" id="ex-bat" style="width:18px;height:18px"> Runs came off the bat (credit the batter)</label></div>
+    <div class="mr" id="ex-bat-row" style="display:none"><label class="optlbl"><input type="checkbox" id="ex-bat"> Runs came off the bat (credit the batter)</label></div>
     <div class="mact">
       <button class="bsm bgld" data-action="confirmExtra()">✔ OK</button>
       <button class="bsm bdng" data-action="closeM('ex-mo')">✕ Cancel</button>
@@ -1434,21 +1459,21 @@ tr:hover td{background:#f0faff}
     <div class="mr">
       <label>Action</label>
       <div style="display:flex;flex-direction:column;gap:7px;margin-top:4px">
-        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
+        <label class="optlbl" style="padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
           <input type="radio" name="disc-action" id="disc-no-result" value="no_result" checked style="margin-top:2px;flex-shrink:0">
           <span>
             <b style="color:var(--amber)">No Result</b>
-            <span style="display:block;font-size:11px;color:var(--dim);margin-top:2px">Match stays in history as "No Result". Scores so far are saved. No points awarded.</span>
+            <span style="display:block;font-size:11px;color:var(--dim);margin-top:2px">Match stays in history as "No Result". Scores so far are saved. Each team gets 1 point.</span>
           </span>
         </label>
-        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
+        <label class="optlbl" style="padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
           <input type="radio" name="disc-action" id="disc-reschedule" value="reschedule" style="margin-top:2px;flex-shrink:0">
           <span>
             <b style="color:var(--blue)">Reset & Reschedule</b>
             <span style="display:block;font-size:11px;color:var(--dim);margin-top:2px">Clears all scores and puts the match back as "Scheduled" so it can be restarted fresh.</span>
           </span>
         </label>
-        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
+        <label class="optlbl" style="padding:9px 11px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px">
           <input type="radio" name="disc-action" id="disc-delete" value="delete" style="margin-top:2px;flex-shrink:0">
           <span>
             <b style="color:var(--red)">Delete Match</b>
@@ -1806,6 +1831,9 @@ function packedFromCloud(raw){
   return {meta:raw.meta,teams:raw.teams,order:raw.order,liveId:raw.liveId||'',
     matches:(raw.matches&&typeof raw.matches==='object')?raw.matches:{},_savedAt:raw._savedAt||0};
 }
+// Unique ids even when several things are created in the same millisecond
+let _uidN=0;
+function uid(prefix){return prefix+Date.now().toString(36)+'_'+(_uidN++).toString(36)+Math.random().toString(36).slice(2,6);}
 function newTid(){return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
 function sortTournaments(o){
   return Object.entries(o||{}).filter(([k,v])=>v&&typeof v==='object').map(([tid,v])=>({tid,
@@ -2283,6 +2311,18 @@ function refreshView(){
   else if(a==='history')renderHistory();
 }
 
+// Keep the page content and the viewer status bar just below the top bar,
+// whatever height it has on this screen.
+function layoutTop(){
+  let tb=document.getElementById('topbar'),sb=document.getElementById('syncbar'),mn=document.getElementById('main');
+  if(!tb||!mn||tb.classList.contains('hidden'))return;
+  let h=tb.offsetHeight;
+  if(sb)sb.style.top=h+'px';
+  let sbh=(sb&&sb.classList.contains('on'))?sb.offsetHeight:0;
+  mn.style.marginTop=(h+sbh)+'px';
+}
+window.addEventListener('resize',layoutTop);
+window.addEventListener('orientationchange',()=>setTimeout(layoutTop,200));
 function initApp(){
   try{
   document.getElementById('authscr').style.display='none';
@@ -2295,14 +2335,12 @@ function initApp(){
   document.querySelectorAll('.admin-only').forEach(e=>e.classList.toggle('hidden',APP.role!=='admin'));
   if(APP.role==='viewer'){
     document.getElementById('syncbar').classList.add('on');
-    document.getElementById('main').style.marginTop='80px';
     // If a live match exists on load, go straight to Live tab
     if(APP.liveMatch||APP.matches.some(m=>m.status==='live')){
       showTab('live');
     }
     startViewerStream(); // live updates; also handles the one-time jump to Live
   } else {
-    document.getElementById('main').style.marginTop='56px';
     try{
       let tn=document.getElementById('t-name');if(tn)tn.value=APP.tournament.name||'';
       let te=document.getElementById('t-ed');if(te)te.value=APP.tournament.edition||'';
@@ -2332,6 +2370,7 @@ function initApp(){
   if(APP.role==='admin'){renderTournamentList();renderLegacyImport();}
   if(APP.role==='viewer'&&APP.liveMatch){_autoNavLiveId=APP.liveMatch.id;showTab('live');}
   else showTab('home');
+  layoutTop();setTimeout(layoutTop,400);
   }catch(e){
     console.error('initApp error:',e);
     // Ensure auth screen is hidden and app is shown even if something fails
@@ -2482,7 +2521,7 @@ function addTeam(){
     let r=document.getElementById('bp-r'+i).value;
     if(!n){toast(`Player ${i} name is required — all 11 players must be filled`,'warn');
       document.getElementById('bp-n'+i).focus();return;}
-    mandatory.push({id:'pl_'+Date.now()+'_'+i,name:n,jersey:j,role:r,mandatory:true});
+    mandatory.push({id:uid('pl_'),name:n,jersey:j,role:r,mandatory:true});
   }
   // Read optional substitutes (12-14)
   let players=[...mandatory];
@@ -2492,9 +2531,9 @@ function addTeam(){
     if(!n)continue; // optional — skip if blank
     let j=parseInt(document.getElementById('bp-j'+i)?.value)||i;
     let r=document.getElementById('bp-r'+i)?.value||'Batsman';
-    players.push({id:'pl_'+Date.now()+'_'+i,name:n,jersey:j,role:r,mandatory:false,isSub:true});
+    players.push({id:uid('pl_'),name:n,jersey:j,role:r,mandatory:false,isSub:true});
   }
-  APP.teams.push({id:'tm_'+Date.now(),name,code,city,players});
+  APP.teams.push({id:uid('tm_'),name,code,city,players});
   clearBulk();renderTeamList();populatePlayerTeamSel();saveState();
   let subCount=players.filter(p=>p.isSub).length;
   toast(`✅ ${name} added — 11 players${subCount?` + ${subCount} sub${subCount>1?'s':''}`:''}`);
@@ -2658,7 +2697,7 @@ function getXIFromRows(side, teamId){
     if(existing){
       players.push({id:existing.id,name:nm,jersey:existing.jersey,role:existing.role,isSub:existing.isSub||false});
     } else {
-      players.push({id:'xi_'+Date.now()+'_'+i,name:nm,jersey:i+1,role:'Batsman',isSub:!isMandatory});
+      players.push({id:uid('xi_'),name:nm,jersey:i+1,role:'Batsman',isSub:!isMandatory});
     }
   });
   return players;
@@ -2722,7 +2761,7 @@ function scheduleMatch(){
   } else {
     // New match
     APP.matches.push({
-      id:'m_'+Date.now(),teamAId:a,teamBId:b,
+      id:uid('m_'),teamAId:a,teamBId:b,
       matchType,playingXI:{[a]:xiA,[b]:xiB},
       venue,date,umpires,
       status:'scheduled',innings:[],winner:null,toss:null,resultText:null
@@ -2840,6 +2879,7 @@ function openEditMatch(mid){
 // ══════════════════════════════════════════════════════════════════════════
 function startMatch(mid){
   let m=APP.matches.find(x=>x.id===mid);if(!m)return;
+  if(m.status==='completed'){toast('This match is already completed','warn');return;}
   let live=APP.matches.find(x=>x.status==='live');
   if(live&&live.id!==mid){toast('A match is already live!');return;}
   APP.liveMatch=m;m.status='live';_undoStack=[];
@@ -2890,6 +2930,7 @@ function startInnings(num,batId,bwlId){
   let bwO=bwlPlayers.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
   document.getElementById('ins-op1').innerHTML=opO;
   document.getElementById('ins-op2').innerHTML=opO;
+  if(batPlayers.length>1)document.getElementById('ins-op2').selectedIndex=1;
   document.getElementById('ins-bwl').innerHTML=bwO;
   document.getElementById('ins-title').textContent=`🏏 Innings ${num} — ${batT?batT.name:batId} batting`;
   openM('ins-mo');saveState();
@@ -3306,6 +3347,9 @@ function canScore(){
   if(!inn.striker){toast('No striker set — use ⚙️ Manage');return false;}
   return true;
 }
+// Economy rate from runs, completed overs and extra balls
+function econ(runs,overs,balls){let b=(overs||0)*6+(balls||0);return b>0?(runs||0)*6/b:null;}
+function econTxt(runs,overs,balls){let e=econ(runs,overs,balls);return e===null?'—':e.toFixed(2);}
 function ov(inn){return`${Math.floor(inn.legalBalls/6)}.${inn.legalBalls%6}`;}
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -3417,7 +3461,7 @@ function renderLive(){
       M:<span style="color:var(--blue)">${bw?bw.maidens:0}</span>
       R:<span style="color:var(--blue)">${bw?bw.runs:0}</span>
       W:<span style="color:var(--blue)">${bw?bw.wickets:0}</span>
-      Eco:<span style="color:var(--blue)">${bw&&bw.overs>0?(bw.runs/bw.overs).toFixed(2):'—'}</span>
+      Eco:<span style="color:var(--blue)">${bw?econTxt(bw.runs,bw.overs,bw.balls):'—'}</span>
     </div>
   </div>
   ${overLog}
@@ -3480,7 +3524,7 @@ function renderSC(){
     let bat=APP.teams.find(t=>t.id===inn.battingTeamId),bwl=APP.teams.find(t=>t.id===inn.bowlingTeamId);
     html+=`<div style="margin-bottom:20px">
       <div class="inns-hdr">${bat?esc(bat.name):'?'} — Innings ${inn.number}: <b>${inn.runs}/${inn.wickets}</b> (${ov(inn)} / ${APP.tournament.overs||20} Ov)</div>
-      <table><thead><tr><th>Batsman</th><th>Dismissal</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead><tbody>`;
+      <div class="tblwrap"><table><thead><tr><th>Batsman</th><th>Dismissal</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead><tbody>`;
     bat&&bat.players.forEach(p=>{
       let b=inn.batsmen[p.id];if(!b||b.status==='yet')return;
       let sr=b.balls>0?((b.runs/b.balls)*100).toFixed(1):'0.0';
@@ -3492,14 +3536,14 @@ function renderSC(){
         <td style="font-family:var(--mono)">${b.balls}</td><td style="font-family:var(--mono)">${b.fours}</td>
         <td style="font-family:var(--mono)">${b.sixes}</td><td style="font-family:var(--mono)">${sr}</td></tr>`;
     });
-    html+=`</tbody></table>
+    html+=`</tbody></table></div>
     <div style="font-size:11px;color:var(--dim);margin:6px 0;font-family:var(--mono)">
       Extras: ${inn.extras.total} (w${inn.extras.wide||0} nb${inn.extras.noball||0} b${inn.extras.bye||0} lb${inn.extras.legbye||0})
       &nbsp;|&nbsp;<b style="color:var(--txt)">Total: ${inn.runs}/${inn.wickets}</b>
     </div>`;
     if(inn.fallOfWickets.length)html+=`<div style="margin-bottom:8px"><span style="font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase">Fall of Wickets</span>
       <div class="fow-list" style="margin-top:3px">${inn.fallOfWickets.map(f=>`<div class="fow-chip">${f.score}/${f.wicket} (${esc(f.batsman)})</div>`).join('')}</div></div>`;
-    html+=`<table style="margin-top:6px"><thead><tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>Eco</th><th>Wd</th><th>Nb</th></tr></thead><tbody>`;
+    html+=`<div class="tblwrap"><table style="margin-top:6px"><thead><tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>Eco</th><th>Wd</th><th>Nb</th></tr></thead><tbody>`;
     bwl&&bwl.players.forEach(p=>{
       let b=inn.bowlers[p.id];if(!b||(b.overs===0&&(b.balls||0)===0))return;
       html+=`<tr><td style="font-weight:600">${esc(b.name)}</td>
@@ -3507,11 +3551,11 @@ function renderSC(){
         <td style="font-family:var(--mono)">${b.maidens}</td>
         <td style="font-family:var(--mono)">${b.runs}</td>
         <td style="font-family:var(--mono);color:var(--red);font-weight:700">${b.wickets}</td>
-        <td style="font-family:var(--mono)">${b.overs>0?(b.runs/b.overs).toFixed(2):'—'}</td>
+        <td style="font-family:var(--mono)">${econTxt(b.runs,b.overs,b.balls)}</td>
         <td style="font-family:var(--mono)">${b.wides||0}</td>
         <td style="font-family:var(--mono)">${b.noballs||0}</td></tr>`;
     });
-    html+='</tbody></table></div>';
+    html+='</tbody></table></div></div>';
   });
   el.innerHTML=html;
 }
@@ -3730,22 +3774,22 @@ function renderBowlingStats(){
   let done=APP.matches.filter(m=>m.status==='completed');
   if(!done.length){el.innerHTML='<p style="color:var(--dim)">No completed matches yet.</p>';return;}
   let {bowling}=collectPlayerStats();
-  let bowlers=bowling.filter(p=>p.wickets>0||p.overs>0);
+  let bowlers=bowling.filter(p=>p.wickets>0||p.overs>0||p.balls>0);
   if(!bowlers.length){el.innerHTML='<p style="color:var(--dim)">No bowling data yet.</p>';return;}
 
   // Sort by wickets desc, then economy asc
-  bowlers.sort((a,b)=>b.wickets-a.wickets||(a.overs>0&&b.overs>0?(a.runs/a.overs)-(b.runs/b.overs):0));
+  bowlers.sort((a,b)=>b.wickets-a.wickets||((econ(a.runs,a.overs,a.balls)??99)-(econ(b.runs,b.overs,b.balls)??99)));
 
   let rows=bowlers.map((p,i)=>{
     let totalOv=p.overs+Math.round(p.balls/6*10)/10;
-    let eco=p.overs>0?(p.runs/p.overs).toFixed(2):'—';
+    let eco=econTxt(p.runs,p.overs,p.balls);
     let avg=p.wickets>0?(p.runs/p.wickets).toFixed(2):'—';
     let best=p.bestWickets>0?`${p.bestWickets}/${p.bestRuns}`:'—';
     let medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
     return`<tr>
       <td style="font-family:var(--body)">${medal} <b>${esc(p.name)}</b><br><span style="font-size:9px;color:var(--dim)">${esc(p.team)}</span></td>
       <td class="num">${p.matches}</td>
-      <td class="num">${p.overs}.${p.balls}</td>
+      <td class="num">${p.overs+Math.floor(p.balls/6)}.${p.balls%6}</td>
       <td class="num">${p.runs}</td>
       <td class="num hi">${p.wickets}</td>
       <td class="num">${best}</td>
@@ -3836,13 +3880,13 @@ function renderAwards(){
   let orangeCap=batting.reduce((a,b)=>b.runs>a.runs?b:a,batting[0]);
   // Purple Cap — most wickets
   let purpleCapArr=bowling.filter(p=>p.wickets>0);
-  let purpleCap=purpleCapArr.length?purpleCapArr.reduce((a,b)=>b.wickets>a.wickets||(b.wickets===a.wickets&&(b.runs/b.overs)<(a.runs/a.overs))?b:a,purpleCapArr[0]):null;
+  let purpleCap=purpleCapArr.length?purpleCapArr.reduce((a,b)=>b.wickets>a.wickets||(b.wickets===a.wickets&&(econ(b.runs,b.overs,b.balls)??99)<(econ(a.runs,a.overs,a.balls)??99))?b:a,purpleCapArr[0]):null;
   // Best Striker — highest strike rate (min 20 balls)
   let strikers=batting.filter(p=>p.balls>=20);
   let bestSR=strikers.length?strikers.reduce((a,b)=>((b.runs/b.balls)>(a.runs/a.balls))?b:a,strikers[0]):null;
   // Best Economy — lowest economy (min 2 overs)
   let econBowlers=bowling.filter(p=>p.overs>=2);
-  let bestEcon=econBowlers.length?econBowlers.reduce((a,b)=>(b.runs/b.overs)<(a.runs/a.overs)?b:a,econBowlers[0]):null;
+  let bestEcon=econBowlers.length?econBowlers.reduce((a,b)=>econ(b.runs,b.overs,b.balls)<econ(a.runs,a.overs,a.balls)?b:a,econBowlers[0]):null;
   // Most Sixes
   let mostSixes=batting.filter(p=>p.sixes>0).reduce((a,b)=>b.sixes>a.sixes?b:a,batting[0]);
   // Most Fours
@@ -3908,7 +3952,7 @@ function renderAwards(){
   html+=award('🎳','Best Bowling Figure','purple-award',bestBowling?.name,bestBowling?.team,`${bestBowling?.bestWickets}/${bestBowling?.bestRuns}`,'');
   html+=award('💥','Most Sixes','blue-award',mostSixes?.sixes>0?mostSixes.name:null,mostSixes?.team,mostSixes?.sixes+' sixes','');
   html+=award('🔥','Fastest Striker','red-award',bestSR?.name,bestSR?.team,`SR: ${bestSR?((bestSR.runs/bestSR.balls)*100).toFixed(1):'—'}`,`${bestSR?.runs} runs off ${bestSR?.balls}b`);
-  html+=award('🧊','Best Economy','green-award',bestEcon?.name,bestEcon?.team,`Eco: ${bestEcon?(bestEcon.runs/bestEcon.overs).toFixed(2):'—'}`,`${bestEcon?.wickets} wkts`);
+  html+=award('🧊','Best Economy','green-award',bestEcon?.name,bestEcon?.team,`Eco: ${bestEcon?econTxt(bestEcon.runs,bestEcon.overs,bestEcon.balls):'—'}`,`${bestEcon?.wickets} wkts`);
   html+=award('🧤','Best Fielder','blue-award',bestFielder?.name,bestFielder?.team,`${bestFielder?(bestFielder.catches+bestFielder.stumpings+bestFielder.runOuts):0} dismissals`,`${bestFielder?.catches||0}c ${bestFielder?.stumpings||0}st ${bestFielder?.runOuts||0}ro`);
   if(centurion.length) html+=award('💯','Centuries','gold-award',centurion[0].name,centurion[0].team,centurion[0].centuries+' × 100','');
   if(halfCens.length)  html+=award('5️⃣0️⃣','Half-Centuries','gold-award',halfCens[0].name,halfCens[0].team,halfCens[0].halfCenturies+' × 50','');
@@ -4066,8 +4110,8 @@ function closeM(id){document.getElementById(id).classList.remove('on');}
 function toast(msg,type){
   let el=document.getElementById('toast');
   el.textContent=msg;
-  el.style.borderColor=type==='warn'?'var(--amber)':'var(--bdr)';
-  el.style.color=type==='warn'?'var(--amber)':'var(--txt)';
+  el.style.border='1px solid '+(type==='warn'?'#ffb74d':'transparent');
+  el.style.color=type==='warn'?'#ffcc80':'#fff';
   el.classList.add('on');
   clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),3500);
 }
@@ -4896,14 +4940,20 @@ function openMOTM(){
   }
   // Populate player dropdown
   let sel=document.getElementById('motm-player-sel');
-  sel.innerHTML='<option value="">— Select player —</option>';
-  m.innings.forEach((inn,ii)=>{
-    let batTeam=APP.teams.find(t=>t.id===inn.battingTeamId);
+  let seen={},opts='<option value="">— Select player —</option>';
+  m.innings.forEach(inn=>{
+    let batTeam=APP.teams.find(t=>t.id===inn.battingTeamId),bwlTeam=APP.teams.find(t=>t.id===inn.bowlingTeamId);
     Object.entries(inn.batsmen||{}).forEach(([pid,b])=>{
       if(b.status==='yet')return;
-      sel.innerHTML+=`<option value="${pid}">${esc(b.name)} (${batTeam?batTeam.code:'?'}) — ${b.runs||0}R</option>`;
+      (seen[pid]=seen[pid]||{name:b.name,team:batTeam?batTeam.code:'?',bits:[]}).bits.push(`${b.runs||0} runs`);
+    });
+    Object.entries(inn.bowlers||{}).forEach(([pid,bw])=>{
+      if(!(bw.overs||bw.balls))return;
+      (seen[pid]=seen[pid]||{name:bw.name,team:bwlTeam?bwlTeam.code:'?',bits:[]}).bits.push(`${bw.wickets||0}/${bw.runs||0}`);
     });
   });
+  Object.entries(seen).forEach(([pid,p])=>{opts+=`<option value="${esc(pid)}">${esc(p.name)} (${esc(p.team)}) — ${esc(p.bits.join(', '))}</option>`;});
+  sel.innerHTML=opts;
   // Pre-select auto pick
   if(auto)sel.value=auto.pid||'';
   openM('motm-mo');
