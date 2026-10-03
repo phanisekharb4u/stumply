@@ -17,6 +17,8 @@ Cricket tournament app: teams, fixtures, ball-by-ball live scoring, scorecards, 
 
 ## Deploy
 
+On Cloudflare Pages: connect this repo, leave the build command empty. `_headers` sets the Content-Security-Policy there; `vercel.json` does the same on Vercel.
+
 Static site, no build step: `index.html`, `firebase-config.js`, `sw.js`, `manifest.json`, icons. `vercel.json` sets the Content-Security-Policy.
 
 ## Data layout
