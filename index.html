@@ -2596,10 +2596,27 @@ function addTeam(){
   toast(`✅ ${name} added — 11 players${subCount?` + ${subCount} sub${subCount>1?'s':''}`:''}`);
 }
 function deleteTeam(id){
+  if(APP.role!=='admin')return;
   let t0=APP.teams.find(t=>t.id===id);if(!t0)return;
-  if(APP.matches.some(m=>m.teamAId===id||m.teamBId===id)){toast('This team has matches — delete those matches first','warn');return;}
-  if(!window.confirm('Delete team '+t0.name+'?'))return;
-  APP.teams=APP.teams.filter(t=>t.id!==id);renderTeamList();populatePlayerTeamSel();saveState();}
+  let ms=APP.matches.filter(m=>m.teamAId===id||m.teamBId===id);
+  if(ms.some(m=>m.status==='live')){toast(t0.name+' is playing a live match — finish or discard it first','warn');return;}
+  let msg='Delete team '+t0.name+'?';
+  if(ms.length){
+    let done=ms.filter(m=>m.status==='completed').length,up=ms.length-done;
+    let parts=[];if(done)parts.push(done+' completed');if(up)parts.push(up+' upcoming');
+    msg='Delete team '+t0.name+' and its '+ms.length+' match'+(ms.length===1?'':'es')+' ('+parts.join(', ')+')?\n\n'
+      +'Those scorecards are removed and the points table, stats and awards are recalculated without them. This cannot be undone.';
+  }
+  if(!window.confirm(msg))return;
+  let gone=new Set(ms.map(m=>m.id));
+  APP.matches=APP.matches.filter(m=>!gone.has(m.id));
+  try{_undoStack=_undoStack.filter(u=>!gone.has(u.id));}catch(e){}
+  t0.players.forEach(p=>{delete APP.photos[p.id];});delete APP.photos[id];
+  APP.teams=APP.teams.filter(t=>t.id!==id);
+  renderTeamList();populatePlayerTeamSel();filterPlayers();renderMatches();populateSCSelect();renderSC();renderHistory();renderHome();
+  saveState();
+  toast(ms.length?t0.name+' and '+ms.length+' match'+(ms.length===1?'':'es')+' deleted':t0.name+' deleted');
+}
 function renderTeamList(){
   let el=document.getElementById('tlist');if(!el)return;
   if(!APP.teams.length){el.innerHTML='<p style="color:var(--dim)">No teams yet.</p>';return;}
@@ -2997,6 +3014,8 @@ function renderMatches(){
         if(next)ab+=`<button class="bsm" style="background:var(--bg2);color:var(--dim);border:1px solid var(--bdr);padding:6px 9px" onclick="moveMatch('${m.id}',1)" title="Move down">↓</button>`;
       }else if(m.status==='live'){
         ab+=`<button class="bsm" onclick="showTab('live')">🔴 Score</button>`;
+      }else if(m.status==='completed'){
+        ab+=`<button class="bsm bdng" onclick="deleteMatch('${m.id}')">🗑 Delete</button>`;
       }
     }
     return`<div class="card" id="mc-${m.id}">
@@ -3025,7 +3044,7 @@ function deleteMatch(mid){
   let div=document.createElement('div');
   div.className='del-confirm';
   div.style.cssText='margin-top:8px;background:rgba(232,64,64,.15);border:1px solid var(--red);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--red)';
-  div.innerHTML=`Are you sure you want to delete this match?
+  div.innerHTML=`${m.status==='completed'?'Delete this completed match? Its scorecard is removed and the points table, stats and awards are recalculated without it. This cannot be undone.':'Are you sure you want to delete this match?'}
     <div style="display:flex;gap:7px;margin-top:7px">
       <button class="bsm bdng" style="flex:1" onclick="confirmDeleteMatch('${mid}')">Yes, Delete</button>
       <button class="bsm" style="flex:1;background:var(--bg2);color:var(--dim);border:1px solid var(--bdr)" onclick="this.closest('.del-confirm').remove()">Cancel</button>
@@ -3033,8 +3052,12 @@ function deleteMatch(mid){
   card.appendChild(div);
 }
 function confirmDeleteMatch(mid){
+  if(APP.role!=='admin')return;
+  let dm=APP.matches.find(x=>x.id===mid);
+  if(dm&&dm.status==='live'){toast('Cannot delete a live match — end it first','warn');return;}
   APP.matches=APP.matches.filter(x=>x.id!==mid);
-  renderMatches();populateSCSelect();saveState();toast('Match deleted');
+  try{_undoStack=_undoStack.filter(u=>u.id!==mid);}catch(e){}
+  renderMatches();populateSCSelect();renderSC();renderHistory();renderHome();saveState();toast('Match deleted');
 }
 function moveMatch(mid,dir){
   let idx=APP.matches.findIndex(x=>x.id===mid);if(idx<0)return;
