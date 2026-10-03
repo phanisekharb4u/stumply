@@ -6,17 +6,40 @@
       "$tid": {
         ".read": true,
         ".write": "auth != null && (data.exists() ? data.child('owner').val() === auth.uid : newData.child('owner').val() === auth.uid)",
-        "owner": { ".validate": "newData.val() === auth.uid" },
-        "ownerName": { ".validate": "newData.isString() && newData.val().length <= 80" },
-        "meta": { ".validate": "newData.isString() && newData.val().length <= 4000" },
-        "teams": { ".validate": "newData.isString() && newData.val().length <= 400000" },
-        "order": { ".validate": "newData.isString() && newData.val().length <= 40000" },
-        "liveId": { ".validate": "newData.isString() && newData.val().length <= 80" },
-        "_savedAt": { ".validate": "newData.isNumber()" },
-        "matches": {
-          "$mid": { ".validate": "newData.isString() && newData.val().length <= 400000" }
+        "owner": {
+          ".validate": "newData.val() === auth.uid"
         },
-        "$other": { ".validate": false }
+        "ownerName": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "meta": {
+          ".validate": "newData.isString() && newData.val().length <= 4000"
+        },
+        "teams": {
+          ".validate": "newData.isString() && newData.val().length <= 400000"
+        },
+        "order": {
+          ".validate": "newData.isString() && newData.val().length <= 40000"
+        },
+        "liveId": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "_savedAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "matches": {
+          "$mid": {
+            ".validate": "newData.isString() && newData.val().length <= 400000"
+          }
+        },
+        "photos": {
+          "$pid": {
+            ".validate": "newData.isString() && newData.val().length <= 60000"
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     },
     "userTournaments": {
@@ -24,12 +47,24 @@
         ".read": true,
         ".write": "auth != null && auth.uid === $uid",
         "$tid": {
-          "name": { ".validate": "newData.isString() && newData.val().length <= 80" },
-          "edition": { ".validate": "newData.isString() && newData.val().length <= 80" },
-          "year": { ".validate": "newData.isString() && newData.val().length <= 10" },
-          "live": { ".validate": "newData.isBoolean()" },
-          "updatedAt": { ".validate": "newData.isNumber()" },
-          "$other": { ".validate": false }
+          "name": {
+            ".validate": "newData.isString() && newData.val().length <= 80"
+          },
+          "edition": {
+            ".validate": "newData.isString() && newData.val().length <= 80"
+          },
+          "year": {
+            ".validate": "newData.isString() && newData.val().length <= 10"
+          },
+          "live": {
+            ".validate": "newData.isBoolean()"
+          },
+          "updatedAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": false
+          }
         }
       }
     },
@@ -43,9 +78,15 @@
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
         ".write": "auth != null && auth.uid === $uid",
-        "name": { ".validate": "newData.isString() && newData.val().length <= 80" },
-        "uname": { ".validate": "newData.isString() && newData.val().length <= 40" },
-        "$other": { ".validate": false }
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "uname": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     }
   }
