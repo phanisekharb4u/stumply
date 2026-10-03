@@ -826,6 +826,21 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
 
 /* ── Demo video modal ── */
 #demo-mo .mb{max-width:600px}
+.hsec{border-bottom:1px solid var(--bdr)}
+.hsec:last-of-type{border-bottom:none}
+.hsec summary{cursor:pointer;list-style:none;padding:12px 2px;font-family:var(--disp);font-size:14px;letter-spacing:.4px;color:var(--txt);display:flex;align-items:center;gap:10px}
+.hsec summary::-webkit-details-marker{display:none}
+.hsec summary::after{content:'＋';margin-left:auto;color:var(--dim);font-family:var(--mono)}
+.hsec[open] summary::after{content:'－'}
+.hsec[open] summary{color:var(--em)}
+.hico{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.hbody{font-size:13px;color:var(--txt2,#334);line-height:1.6;padding:0 4px 12px 36px}
+.hbody ol,.hbody ul{margin:0;padding-left:18px}
+.hbody li{margin-bottom:5px}
+.hbody p{margin:8px 0 0;color:var(--dim);font-size:12px}
+#help-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:5px 9px;font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:var(--body)}
+#help-btn:hover{background:rgba(255,255,255,.2)}
+@media(max-width:520px){#help-btn .lbl,#lang-btn .lbl{display:none}#help-btn,#lang-btn{padding:5px 8px}}
 .demo-step{
   display:flex;gap:13px;align-items:flex-start;
   padding:12px 0;border-bottom:1px solid var(--bdr);
@@ -923,135 +938,63 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
 
     <!-- Header -->
     <div style="background:linear-gradient(135deg,#1a4a2e,#2d7a4a);padding:22px 24px 18px;position:relative">
-      <div style="font-family:var(--disp);font-size:22px;letter-spacing:2px;color:#fff">📖 HOW TO USE STUMPLY</div>
-      <div style="font-size:12px;color:rgba(255,255,255,.65);margin-top:4px">Follow these steps to run your cricket tournament</div>
+      <div style="font-family:var(--disp);font-size:22px;letter-spacing:2px;color:#fff">❓ HELP — HOW TO USE STUMPLY</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:4px">Create tournaments, schedule and score matches, and follow everything live</div>
       <button data-action="closeM('demo-mo')" style="position:absolute;top:14px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
     </div>
 
-    <!-- Steps -->
-    <div style="padding:6px 0 4px;overflow-y:auto;max-height:70vh">
-
-      <!-- Step 1 -->
-      <div style="display:flex;gap:0;border-bottom:1px solid var(--bdr)">
-        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#e8f5eb,#f5fbf6);display:flex;flex-direction:column;align-items:center;padding-top:18px">
-          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
-          <div style="width:2px;flex:1;background:var(--edim);margin-top:6px"></div>
-        </div>
-        <div style="padding:16px 18px 18px 12px;flex:1">
-          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--em);margin-bottom:8px">⚙️ Create Your Tournament</div>
-          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
-            After logging in, click the <span style="background:var(--emlt);color:var(--em);border:1px solid var(--edim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">⚙️ Admin</span> tab in the top navigation.
-          </div>
-          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
-            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
-              ① Enter your <b>Tournament Name</b> (e.g. "Street Cricket Cup 2026")<br>
-              ② Enter <b>Edition</b> (e.g. "Season 1") and <b>Year</b><br>
-              ③ Select <b>Overs Format</b> — T20, T10, 8-over, or Custom<br>
-              ④ Click <span style="background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;border-radius:4px;font-size:11px;padding:2px 8px;font-family:var(--disp)">💾 Save Tournament</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 2 -->
-      <div style="display:flex;gap:0;border-bottom:1px solid var(--bdr)">
-        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#f0f8ff,#f5faff);display:flex;flex-direction:column;align-items:center;padding-top:18px">
-          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1565c0,#2979d4);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
-          <div style="width:2px;flex:1;background:var(--bdr2);margin-top:6px"></div>
-        </div>
-        <div style="padding:16px 18px 18px 12px;flex:1">
-          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--blue);margin-bottom:8px">🏏 Add Teams &amp; Players</div>
-          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
-            Still in <span style="background:var(--bg4);border:1px solid var(--bdr);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">⚙️ Admin</span>, scroll down to <b>Add Teams</b>.
-          </div>
-          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
-            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
-              ① Enter <b>Team Name</b>, <b>Code</b> (2-3 letters, e.g. MI), <b>City</b><br>
-              ② Enter <b>11 player names</b> — these are required (numbered in gold)<br>
-              ③ Optionally add up to 3 substitutes (numbered in amber)<br>
-              ④ Click <span style="background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;border-radius:4px;font-size:11px;padding:2px 8px;font-family:var(--disp)">✅ Add Team</span><br>
-              ⑤ Repeat for every team in your tournament
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 3 -->
-      <div style="display:flex;gap:0;border-bottom:1px solid var(--bdr)">
-        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#fff8e1,#fffdf5);display:flex;flex-direction:column;align-items:center;padding-top:18px">
-          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#c17f00,#e09500);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
-          <div style="width:2px;flex:1;background:var(--gdim);margin-top:6px"></div>
-        </div>
-        <div style="padding:16px 18px 18px 12px;flex:1">
-          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--gold);margin-bottom:8px">📋 Schedule a Match</div>
-          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
-            Click the <span style="background:var(--bg4);border:1px solid var(--bdr);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">📋 Matches</span> tab, then click <span style="background:var(--emlt);color:var(--em);border:1px solid var(--edim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">+ Schedule</span>.
-          </div>
-          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
-            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
-              ① Select <b>Team A</b> and <b>Team B</b> from your teams<br>
-              ② Choose <b>Match Stage</b> — League, Quarter Final, Semi Final, Final<br>
-              ③ Enter <b>Venue</b>, <b>Date</b>, and <b>Umpire names</b><br>
-              ④ Playing XI is auto-filled — adjust if needed<br>
-              ⑤ Click <span style="background:linear-gradient(135deg,#1a7a2e,#22a03c);color:#fff;border-radius:4px;font-size:11px;padding:2px 8px;font-family:var(--disp)">📅 Schedule</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 4 -->
-      <div style="display:flex;gap:0;border-bottom:1px solid var(--bdr)">
-        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#fdecea,#fff8f8);display:flex;flex-direction:column;align-items:center;padding-top:18px">
-          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
-          <div style="width:2px;flex:1;background:rgba(192,57,43,.25);margin-top:6px"></div>
-        </div>
-        <div style="padding:16px 18px 18px 12px;flex:1">
-          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--red);margin-bottom:8px">🔴 Score the Match Live</div>
-          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
-            Click <span style="background:var(--emlt);color:var(--em);border:1px solid var(--edim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">▶ Start</span> on the match card.
-          </div>
-          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
-            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
-              ① Set the <b>toss</b> — who won and chose to bat or bowl<br>
-              ② Select <b>2 opening batsmen</b> and the <b>opening bowler</b><br>
-              ③ The <span style="background:var(--redlt);color:var(--red);border:1px solid rgba(192,57,43,.3);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">🔴 Live</span> tab opens automatically<br>
-              ④ Tap the scoring buttons for each ball:<br>
-              &nbsp;&nbsp;&nbsp;• <b>Dot, 1, 2, 3, 4, 6</b> — for runs<br>
-              &nbsp;&nbsp;&nbsp;• <b>WIDE / NO BALL / BYE / LEG BYE</b> — for extras<br>
-              &nbsp;&nbsp;&nbsp;• <b>⚡ WICKET</b> — enter dismissal details<br>
-              ⑤ <b>Score updates automatically</b> after every ball — viewers see it live!
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 5 -->
-      <div style="display:flex;gap:0">
-        <div style="width:48px;flex-shrink:0;background:linear-gradient(180deg,#f3e5f5,#fdf5ff);display:flex;flex-direction:column;align-items:center;padding-top:18px">
-          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6a1b9a,#8e24aa);color:#fff;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
-        </div>
-        <div style="padding:16px 18px 22px 12px;flex:1">
-          <div style="font-family:var(--disp);font-size:15px;letter-spacing:.5px;color:var(--purple);margin-bottom:8px">👁 Share Live Scores</div>
-          <div style="font-size:13px;color:var(--txt2);line-height:1.7">
-            Share the link so anyone can watch scores update in real time.
-          </div>
-          <div style="margin-top:10px;background:var(--bg4);border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)">
-            <div style="font-size:12px;color:var(--txt2);line-height:1.8">
-              ① In <span style="background:var(--bg4);border:1px solid var(--bdr);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">⚙️ Admin</span> → scroll to <b>Share Link</b> → click <b>📋 Copy Link</b><br>
-              ② Send the link to friends via WhatsApp / SMS<br>
-              ③ They open it → enter your username → scores update every second<br>
-              ④ No login needed for viewers — read-only access<br>
-              ⑤ After the match ends → <span style="background:var(--goldlt);color:var(--gold);border:1px solid var(--gdim);border-radius:4px;font-family:var(--mono);font-size:11px;padding:1px 7px">🏅 Choose Player of the Match</span> → view full stats in <b>🏆 History</b>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- end steps -->
+    <!-- Help sections -->
+    <div style="padding:6px 18px 4px;max-height:66vh;overflow-y:auto;-webkit-overflow-scrolling:touch">
+      <p style="font-size:12px;color:var(--dim);margin:10px 2px 8px;line-height:1.5">Tap a heading to open it. <b>Admins</b> run tournaments and score matches. <b>Viewers</b> only watch, and need no account.</p>
+      <details class="hsec" open>
+        <summary><span class="hico">👁</span>Watch live scores (viewers)</summary>
+        <div class="hbody"><ol><li>Open the share link the admin sent you. No sign-in is needed.</li><li>Or, on the sign-in screen, tap <span class="demo-tag">Watch as Viewer</span> and type the admin's username.</li><li>The <span class="demo-tag">Live</span> tab shows the current score and updates by itself after every ball.</li><li>Use <span class="demo-tag">Scores</span> for full scorecards and <span class="demo-tag">History</span> for results, the points table, stats and awards.</li></ol></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">🔑</span>Create an account and sign in (admins)</summary>
+        <div class="hbody"><ol><li>On the sign-in screen tap <span class="demo-tag">Register</span>.</li><li>Enter your name, a username (viewers use it to find you), your email and a password of at least 6 characters.</li><li>Next time, sign in with your email and password under <span class="demo-tag">Sign In</span>.</li><li>Forgot the password? Tap <span class="demo-tag">Forgot password?</span> and a reset link is emailed to you.</li></ol></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">🏆</span>Create a tournament</summary>
+        <div class="hbody"><ol><li>Open the <span class="demo-tag">Admin</span> tab.</li><li>Under <span class="demo-tag">My Tournaments</span>, type a name and tap <span class="demo-tag">New tournament</span>. You can run as many as you like and switch between them with <span class="demo-tag">Open</span>.</li><li>Under <span class="demo-tag">Tournament Info</span>, set the name, edition, year and overs per innings, then tap <span class="demo-tag">Save Tournament</span>.</li><li>Each bowler may bowl at most one fifth of the overs (4 in a T20).</li></ol></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">🏏</span>Add teams and players</summary>
+        <div class="hbody"><ol><li>In <span class="demo-tag">Admin</span>, go to <span class="demo-tag">Add Team + Squad</span>.</li><li>Enter the team name, a code of 2 to 4 letters, and the city.</li><li>Fill in all 11 players. Up to 3 substitutes are optional; substitutes can field but cannot bat or bowl.</li><li>Tap <span class="demo-tag">Add Team</span>. Repeat for every team.</li><li>To change a squad later, use <span class="demo-tag">Edit Players</span>: pick the team, then rename, renumber, change role, mark the captain, add or remove players.</li><li>Photos are optional. Tap the camera circle next to a player, or in the Teams list for a team logo.</li></ol></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">📅</span>Schedule matches</summary>
+        <div class="hbody"><ol><li>Open the <span class="demo-tag">Matches</span> tab and tap <span class="demo-tag">+ Schedule</span>.</li><li>Choose the two teams. The playing XI is filled in from each squad; edit it if needed.</li><li>Choose the stage (League, Group, Quarter Final, Semi Final, Final), the date, and optionally the venue and umpires.</li><li>Tap <span class="demo-tag">Schedule</span>. The match appears as Upcoming.</li><li>On an upcoming match you can <span class="demo-tag">Edit</span>, <span class="demo-tag">Delete</span>, or move it up and down the list.</li></ol><p>Only League and Group matches count towards the points table.</p></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">🔴</span>Score a match live</summary>
+        <div class="hbody"><ol><li>On the match card tap <span class="demo-tag">Start</span>. Set the toss, then pick the two openers and the opening bowler.</li><li>For each ball tap the runs: <span class="demo-tag">DOT</span> <span class="demo-tag">1</span> <span class="demo-tag">2</span> <span class="demo-tag">3</span> <span class="demo-tag">4</span> <span class="demo-tag">6</span>.</li><li><span class="demo-tag">WIDE</span> and <span class="demo-tag">NO BALL</span>: enter the total for that ball including the 1 penalty run. For a no ball, tick the box if the runs came off the bat. The next ball after a no ball is a free hit.</li><li><span class="demo-tag">BYE</span> and <span class="demo-tag">LEG BYE</span>: enter the runs taken.</li><li><span class="demo-tag">WICKET</span>: choose how the batter was out, the fielder if caught or stumped, and the next batter.</li><li>At the end of each over, choose the next bowler.</li><li>Made a mistake? Tap <span class="demo-tag">Undo last ball</span>. It works repeatedly and can even reopen a match that just ended.</li><li><span class="demo-tag">Manage Players / Bowler</span> changes the batters or bowler mid-over. <span class="demo-tag">Retired Hurt</span> takes the striker off without a wicket.</li><li><span class="demo-tag">Discard Match</span> ends the match as No Result, resets it, or deletes it.</li></ol><p>The innings ends by itself when the overs are bowled, 10 wickets fall, or the target is reached. If the connection drops, keep scoring; it syncs when you are back online.</p></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">🔗</span>Share scores with your audience</summary>
+        <div class="hbody"><ol><li>In <span class="demo-tag">Admin</span> → <span class="demo-tag">Tournament Info</span>, tap <span class="demo-tag">Copy Link</span>.</li><li>Send the link by WhatsApp or SMS. Anyone who opens it can watch, with no account.</li><li>Each tournament has its own link. Viewers can also find you by your username.</li></ol></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">🏅</span>After the match</summary>
+        <div class="hbody"><ul><li>When a match ends, the app suggests a Player of the Match. Keep it or choose another player.</li><li>The full scorecard is in <span class="demo-tag">Scores</span>.</li><li>In <span class="demo-tag">History</span> → <span class="demo-tag">Awards</span> you will find the Player of the Series, Orange Cap, Purple Cap and other awards. Admins can choose the Player of the Series themselves.</li></ul></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">📊</span>History and stats</summary>
+        <div class="hbody"><ul><li><span class="demo-tag">Completed Matches</span>: every result. Tap a match for its scorecard.</li><li><span class="demo-tag">Points Table</span>: win 2 points, tie or no result 1 point each, ranked by points then net run rate.</li><li><span class="demo-tag">Batting</span>, <span class="demo-tag">Bowling</span>, <span class="demo-tag">Fielding</span>: totals for every player across the tournament.</li><li>Past tournaments stay in My Tournaments, so their history is always available.</li></ul></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">🗑</span>Delete or correct things</summary>
+        <div class="hbody"><ul><li>A wrong ball: Undo last ball on the Live screen.</li><li>A match: Delete on its card in Matches (upcoming or completed).</li><li>A team: ✕ in Admin → Teams. If it has matches, they are deleted with it after you confirm.</li><li>A tournament: open a different one first, then tap the bin next to it in My Tournaments.</li><li>Deletions cannot be undone.</li></ul></div>
+      </details>
+      <details class="hsec">
+        <summary><span class="hico">📱</span>Phone, language and offline</summary>
+        <div class="hbody"><ul><li>Install it like an app: in your phone browser menu choose Add to Home Screen.</li><li>Change language with the <span class="demo-tag">🌐</span> button. Some screens are still in English.</li><li>Scoring keeps working without internet and syncs when the connection returns.</li></ul></div>
+      </details>
+    </div>
 
     <!-- Footer -->
     <div style="padding:14px 20px;border-top:1px solid var(--bdr);display:flex;gap:9px">
-      <button class="btnpri" style="flex:1;margin:0;padding:11px" data-action="closeM('demo-mo')">✅ Got it — Let's play cricket! 🏏</button>
+      <button class="btnpri" style="flex:1;margin:0;padding:11px" data-action="closeM('demo-mo')">✅ Got it</button>
     </div>
 
   </div>
@@ -1108,6 +1051,9 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
       </div>
       <div class="divd">or</div>
       <button class="btnalt" data-action="showViewer()">👁 Watch as Viewer (live scores, read-only)</button>
+      <div style="text-align:center;margin-top:12px">
+        <a style="font-size:12px;color:var(--blue);cursor:pointer;text-decoration:underline" data-action="openM('demo-mo')">❓ Help — how to use Stumply</a>
+      </div>
     </div>
     <!-- Viewer Panel -->
     <div id="apanel-viewer" class="apanel">
@@ -1178,6 +1124,7 @@ input[type="radio"],input[type="checkbox"],.mr input[type="radio"],.mr input[typ
       style="background:none;border:none;font-size:16px;cursor:pointer;padding:2px 5px;opacity:0.5;display:none">🔔</button>
     <button class="btn-out" data-action="doLogout()">Logout</button>
   </div>
+  <button id="help-btn" data-action="openM('demo-mo')" title="Help — how to use Stumply" aria-label="Help">❓<span class="lbl"> Help</span></button>
   <button id="lang-btn" data-action="openLangModal()" title="Change language / భాష మార్చు">🌐</button>
 </div>
 
@@ -4968,7 +4915,7 @@ function applyLanguage(){
   let lo=document.querySelector('.btn-out');
   if(lo&&APP.role!=='viewer')lo.textContent=L['Logout']||'Logout';
   let langBtn=document.getElementById('lang-btn');
-  if(langBtn){let lv=strip(L['Language'])||'Language';langBtn.textContent='🌐 '+lv;langBtn.title=lv;}
+  if(langBtn){let lv=strip(L['Language'])||'Language';langBtn.innerHTML='🌐<span class="lbl"> '+esc(lv)+'</span>';langBtn.title=lv;}
 
   // 6. Live scoring buttons
   document.querySelectorAll('.bex').forEach(el=>{
