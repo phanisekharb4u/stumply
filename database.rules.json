@@ -66,7 +66,8 @@
             ".validate": false
           }
         }
-      }
+      },
+      ".read": "auth != null && root.child('owners').child(auth.uid).val() === true"
     },
     "usernames": {
       "$uname": {
@@ -84,9 +85,21 @@
         "uname": {
           ".validate": "newData.isString() && newData.val().length <= 40"
         },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "lastSeen": {
+          ".validate": "newData.isNumber()"
+        },
         "$other": {
           ".validate": false
         }
+      },
+      ".read": "auth != null && root.child('owners').child(auth.uid).val() === true"
+    },
+    "owners": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid"
       }
     }
   }
