@@ -1199,6 +1199,17 @@ html:not([lang="en"]) *{letter-spacing:0!important}
     <p style="font-size:11px;color:var(--dim);margin-top:4px;line-height:1.5">A single match is a one-off game outside any tournament: add the two teams, schedule it and score it. It has its own share link and no points table.</p>
   </div>
   <!-- One-time import from the old version -->
+  <!-- Site owner only: who is using Stumply -->
+  <div class="card" id="usage-card" style="display:none">
+    <div class="ch">📈 Site Usage <span class="tag tg" style="margin-left:6px">OWNER ONLY</span></div>
+    <div id="usage-sum" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin-bottom:10px"></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px">
+      <input class="ifield" id="usage-q" placeholder="Search admin or tournament" style="flex:1;min-width:150px">
+      <button class="bsm bblu" data-action="loadUsage()" style="white-space:nowrap">🔄 Refresh</button>
+    </div>
+    <div id="usage-list" style="max-height:420px;overflow-y:auto;-webkit-overflow-scrolling:touch"></div>
+    <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5">Only you can see this card. Viewers are not counted because they do not sign in. Email addresses are listed in the Firebase console under Authentication.</p>
+  </div>
   <div class="card" id="legacy-card" style="display:none;background:linear-gradient(135deg,#fffbf0,#fff8e1);border-color:var(--gdim)">
     <div class="ch" style="color:var(--gold)">📥 Data found on this device</div>
     <p style="font-size:12px;color:var(--dim);margin-bottom:6px;line-height:1.5">Saved by the earlier version of Stumply. Import it into your account to keep it.</p>
@@ -1956,6 +1967,50 @@ function renderTournamentList(){
   }).join('');
 }
 
+// ── Site owner: who is using Stumply ──────────────────────────────────
+let _isOwner=false,_usage=null;
+async function loadUsage(){
+  if(!_isOwner||APP.role!=='admin')return;
+  try{
+    let [users,idx]=await Promise.all([dbReq('GET','users',undefined,true),dbReq('GET','userTournaments',undefined,true)]);
+    _usage={users:users||{},idx:idx||{},at:Date.now()};
+  }catch(e){toast(authErrText(e.message),'warn');}
+  renderUsage();
+}
+function usageAgo(ts){
+  if(!ts)return '—';
+  let d=Math.floor((Date.now()-ts)/86400000);
+  if(d<=0)return 'Today';if(d===1)return 'Yesterday';if(d<60)return d+' days ago';
+  return new Date(ts).toISOString().slice(0,10);
+}
+function renderUsage(){
+  let card=document.getElementById('usage-card');if(!card)return;
+  let show=_isOwner&&APP.role==='admin';card.style.display=show?'':'none';
+  if(!show||!_usage)return;
+  let now=Date.now(),wk=7*86400000,rows=[];
+  let uids=new Set([...Object.keys(_usage.users),...Object.keys(_usage.idx)]);
+  uids.forEach(uid=>{
+    let u=_usage.users[uid]||{},ts=Object.entries(_usage.idx[uid]||{}).map(([tid,t])=>Object.assign({tid},t)).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+    let last=Math.max(u.lastSeen||0,...ts.map(t=>t.updatedAt||0));
+    rows.push({uid,name:String(u.name||'(no name)'),uname:String(u.uname||''),created:u.createdAt||0,last,ts});
+  });
+  rows.sort((a,b)=>b.last-a.last);
+  let allT=rows.flatMap(r=>r.ts);
+  let box=(n,l)=>`<div style="background:var(--bg5);border:1px solid var(--bdr);border-radius:10px;padding:9px 6px;text-align:center"><div style="font-family:var(--disp);font-size:22px;color:var(--em)">${n}</div><div style="font-size:10px;color:var(--dim)">${l}</div></div>`;
+  document.getElementById('usage-sum').innerHTML=box(rows.length,'Admins')+box(allT.length,'Tournaments')+box(allT.filter(t=>t.live).length,'Live now')+
+    box(rows.filter(r=>r.last&&now-r.last<wk).length,'Active this week')+box(rows.filter(r=>r.created&&now-r.created<wk).length,'New this week');
+  let q=(document.getElementById('usage-q').value||'').trim().toLowerCase();
+  let list=q?rows.filter(r=>(r.name+' '+r.uname+' '+r.ts.map(t=>t.name).join(' ')).toLowerCase().includes(q)):rows;
+  document.getElementById('usage-list').innerHTML=list.length?list.map(r=>`<div data-noi18n style="padding:9px 0;border-bottom:1px solid var(--bdr)">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:baseline"><b style="font-size:13px">${esc(r.name)}</b>${r.uname?`<span style="font-size:11px;color:var(--dim)">@${esc(r.uname)}</span>`:''}
+      <span style="margin-left:auto;font-size:11px;color:var(--dim)">${usageAgo(r.last)}</span></div>
+    <div style="font-size:11px;color:var(--dim);margin-top:2px">${r.ts.length} tournament${r.ts.length===1?'':'s'}${r.created?' · joined '+new Date(r.created).toISOString().slice(0,10):''}</div>
+    ${r.ts.slice(0,8).map(t=>`<div style="font-size:12px;margin-top:3px"><a href="?t=${encodeURIComponent(t.tid)}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">${esc(t.name||'Untitled')}</a> <span style="color:var(--dim);font-size:11px">${esc(t.edition||'')} · ${usageAgo(t.updatedAt)}</span>${t.live?' <span class="tag tr">🔴 LIVE</span>':''}</div>`).join('')}
+    ${r.ts.length>8?`<div style="font-size:11px;color:var(--dim);margin-top:3px">+ ${r.ts.length-8} more</div>`:''}
+  </div>`).join(''):'<p style="color:var(--dim);font-size:12px">Nothing found.</p>';
+}
+document.addEventListener('input',e=>{if(e.target&&e.target.id==='usage-q')renderUsage();});
+
 // ── One-time import of data saved on this device by the old version ───
 function legacyAccounts(){
   let done=safeParse(lsGet(LS_LEGACY_DONE),[]);if(!Array.isArray(done))done=[];
@@ -2138,6 +2193,11 @@ async function enterAdmin(){
   try{prof=await dbReq('GET','users/'+AUTH.uid,undefined,true);}
   catch(e){if(e.message!=='NETWORK')throw e;offline=true;}
   if(prof&&typeof prof==='object'){AUTH.name=String(prof.name||'');AUTH.uname=String(prof.uname||'');persistAuth();}
+  if(!offline){ // usage tracking: when this admin was last here (ignored if the database rules are older)
+    dbReq('PATCH','users/'+AUTH.uid,{lastSeen:Date.now()},true).catch(()=>{});
+    _isOwner=false;
+    dbReq('GET','owners/'+AUTH.uid,undefined,true).then(v=>{_isOwner=v===true;if(_isOwner)loadUsage();else renderUsage();}).catch(()=>{});
+  }
   stopViewerStream();
   APP.role='admin';APP.viewTid=null;APP.uname=AUTH.uname||'';APP.dname=AUTH.name||AUTH.email||'Admin';
   if(!offline){
@@ -2180,6 +2240,7 @@ async function doRegister(){
       await dbReq('PUT','usernames/'+uname,AUTH.uid,true);
     }
     await dbReq('PUT','users/'+AUTH.uid,{name,uname},true);
+    try{await dbReq('PATCH','users/'+AUTH.uid,{createdAt:Date.now()},true);}catch(e){}
     AUTH.name=name;AUTH.uname=uname;persistAuth();
     ok.textContent='✅ Account created! Signing you in...';
     await enterAdmin();
@@ -4320,7 +4381,7 @@ function bindActions(){
         // SECURITY: whitelist of allowed functions — NO eval()
         var ALLOWED = {
           doLogin,doRegister,doGuest,doLogout,showForgot,showLogin,showViewer,
-          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,syncNow,newTournament,newSingleMatch,
+          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,syncNow,newTournament,newSingleMatch,loadUsage,
           deleteTeam,delPlayer,deleteMatch,confirmDeleteMatch,moveMatch,startMatch,showMHist,openEditMatch,openDiscard,openManage,triggerRetiredHurt,enableNotifications,skipNotifications,toggleNotifications,
           switchTab,fpStep1,
           showTab,saveTournament,addTeam,clearBulk,filterPlayers,
