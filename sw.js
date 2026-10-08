@@ -1,5 +1,5 @@
 // Stumply Service Worker v4 — offline support + push notifications
-const CACHE = 'stumply-v4';
+const CACHE = 'stumply-v5';
 const ASSETS = ['/', '/index.html', '/firebase-config.js', '/manifest.json', '/icon-192.png', '/icon-512.png'];
 
 // ── Install ──────────────────────────────────────────────────────────
