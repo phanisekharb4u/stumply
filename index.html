@@ -3234,9 +3234,13 @@ function getXIFromRows(side, teamId){
 
 let _schConfirmKey=null;
 // A single match only offers the Friendly stage (plus whatever an existing match already uses)
+let _stageHTML=null;
 function limitStages(keep){
-  let single=!!APP.tournament.single;
-  [...document.getElementById('sch-stage').options].forEach(o=>{let off=single&&o.value!=='Friendly'&&o.value!==keep;o.hidden=off;o.disabled=off;});
+  let sel=document.getElementById('sch-stage');
+  if(_stageHTML===null)_stageHTML=sel.innerHTML;
+  sel.innerHTML=_stageHTML;
+  if(APP.tournament.single)[...sel.options].forEach(o=>{if(o.value!=='Friendly'&&o.value!==keep)o.remove();});
+  if(CURRENT_LANG!=='en'&&typeof i18nWalk==='function')i18nWalk(sel);
 }
 function openSchedModal(){
   if(APP.teams.length<2){toast('Add at least 2 teams first');return;}
@@ -3909,6 +3913,8 @@ function confirmRetiredHurt(){
   pushUndo();
   bs.status='retired';bs.dismissal='retired hurt';
   inn[end]=null;
+  inn.partnerships=inn.partnerships||[];inn.partnerships.push({...inn.currentPartnership});
+  inn.currentPartnership={runs:0,balls:0};
   toast(`${bs.name} retired hurt — use ⚙️ Manage to set next batsman`,'warn');
   afterScore();openManage();
 }
@@ -3929,13 +3935,14 @@ function endInnings(){
 // ══════════════════════════════════════════════════════════════════════════
 //  DISCARD / ABANDON MATCH
 // ══════════════════════════════════════════════════════════════════════════
+function setDiscardText(){setTxt(document.getElementById('disc-nr-txt'),'Match stays in history as "No Result". Scores so far are saved.'+(APP.tournament.single?'':' Each team gets 1 point.'));}
 function openDiscard(){
   if(!APP.liveMatch){toast('No live match');return;}
   // Reset to defaults
   let r=document.getElementById('disc-no-result');
   if(r)r.checked=true;
   let e=document.getElementById('disc-err');if(e)e.textContent='';
-  setTxt(document.getElementById('disc-nr-txt'),'Match stays in history as "No Result". Scores so far are saved.'+(APP.tournament.single?'':' Each team gets 1 point.'));
+  setDiscardText();
   let rs=document.getElementById('disc-reason');
   if(rs)rs.value='Rain/Bad Weather';
   openM('discard-mo');
@@ -4006,6 +4013,7 @@ function econTxt(runs,overs,balls){let e=econ(runs,overs,balls);return e===null?
 function hasBowled(b){return !!(b&&((b.overs||0)||(b.balls||0)||(b.runs||0)||(b.wides||0)||(b.noballs||0)));}
 function todayISO(){return new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);}
 function ov(inn){return`${Math.floor(inn.legalBalls/6)}.${inn.legalBalls%6}`;}
+function dispDism(d){let m=String(d||'').match(/^c (.+) b \1$/);return m?'c & b '+m[1]:(d||'');}
 function scTxt(inn){return inn.wickets>=10?`${inn.runs} all out`:`${inn.runs}/${inn.wickets}`;}
 function plural(n,w){n=n||0;return n+' '+w+(n===1?'':'s');}
 function venueTxt(m){return m&&m.venue&&m.venue!=='TBD'?m.venue:'Venue not set';}
@@ -4216,7 +4224,7 @@ function renderSC(){
       let sr=b.balls>0?((b.runs/b.balls)*100).toFixed(1):'—';
       let dis=b.status==='batting'?'<span class="tag tg">not out</span>'
         :b.status==='retired'?'<span class="tag ta">retired hurt</span>'
-        :`<span style="font-size:10px;color:var(--dim)">${esc(b.dismissal)}</span>`;
+        :`<span style="font-size:10px;color:var(--dim)">${esc(dispDism(b.dismissal))}</span>`;
       html+=`<tr><td style="font-weight:600;white-space:nowrap">${av(pid,20)}${esc(b.name)}${isCaptain(pid)?' <span style="color:var(--dim);font-weight:400">(c)</span>':''}</td><td>${dis}</td>
         <td style="font-family:var(--mono);color:var(--gold);font-weight:700">${b.runs}</td>
         <td style="font-family:var(--mono)">${b.balls}</td><td style="font-family:var(--mono)">${b.fours}</td>
@@ -4271,6 +4279,7 @@ function switchStatTab(tab){
   else if(tab==='awards')    renderAwards();
 }
 function renderHistory(){
+  setDiscardText();
   let pb=document.getElementById('stab-points'),single=!!APP.tournament.single;
   if(pb){pb.style.display=single?'none':'';if(single&&pb.classList.contains('stab-on'))switchStatTab('matches');}
   renderCompleted();
