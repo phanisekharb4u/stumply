@@ -1957,6 +1957,7 @@ function esc(s){
     .replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;')
     .replace(/'/g,'&#39;')
+    .replace(/'/g,'&#39;')
     .replace(/\//g,'&#x2F;');
 }
 
@@ -2112,20 +2113,49 @@ function packState(){
     order:JSON.stringify(APP.matches.map(m=>m.id)),matches,photos:Object.assign({},APP.photos),
     liveId:APP.liveMatch?APP.liveMatch.id:'',_savedAt:Date.now()};
 }
+// ── Data from the cloud is untrusted: anyone can own a tournament and edit its raw data.
+// Clean it before it reaches the screen so it cannot inject code into a viewer's page.
+const SAFE_ID=/^[A-Za-z0-9_-]{1,80}$/;
+const ID_KEYS=new Set(['id','teamAId','teamBId','battingTeamId','bowlingTeamId','striker','nonStriker','currentBowler','lastOverBowler','motm','winner','captainId','liveId','pots','tid']);
+const NUM_KEYS=new Set(['runs','wickets','balls','fours','sixes','overs','maidens','wides','noballs','legalBalls','ballInOver','number','target','score','wicket','currentInnings','total','wide','noball','bye','legbye','completedAt','year']);
+const MAP_KEYS=new Set(['batsmen','bowlers','playingXI']);
+function cleanData(v,key,depth){
+  if(depth>12)return null;
+  if(v==null)return v;
+  if(typeof v==='string'){
+    if(ID_KEYS.has(key))return (SAFE_ID.test(v)||v==='tie'||v==='no_result')?v:null;
+    if(NUM_KEYS.has(key)){let n=Number(v);return isFinite(n)?n:0;}
+    return v.replace(/[<>`]/g,'').slice(0,2000);
+  }
+  if(typeof v==='number')return isFinite(v)?v:0;
+  if(typeof v==='boolean')return v;
+  if(Array.isArray(v))return v.slice(0,5000).map(x=>cleanData(x,key==='bowlOrder'?'id':'',depth+1)).filter(x=>x!==undefined);
+  if(typeof v==='object'){
+    let o={};
+    Object.keys(v).forEach(k=>{
+      if(k==='__proto__'||k==='constructor'||k==='prototype')return;
+      if(MAP_KEYS.has(key)&&!SAFE_ID.test(k))return;
+      o[k]=cleanData(v[k],MAP_KEYS.has(key)?'':k,depth+1);
+    });
+    return o;
+  }
+  return null;
+}
 function applyPacked(st){
   st=st||{};
   let t=safeParse(st.meta,null);
-  APP.tournament=(t&&typeof t==='object'&&!Array.isArray(t))?t:blankTournament();
+  APP.tournament=(t&&typeof t==='object'&&!Array.isArray(t))?cleanData(t,'',0):blankTournament();
   if(!APP.tournament.overs)APP.tournament.overs=20;
   let teams=safeParse(st.teams,[]);
-  APP.teams=(Array.isArray(teams)?teams:[]).filter(x=>x&&typeof x==='object');
-  APP.teams.forEach(x=>{if(!Array.isArray(x.players))x.players=[];});
+  APP.teams=(Array.isArray(teams)?teams:[]).filter(x=>x&&typeof x==='object').map(x=>cleanData(x,'',0)).filter(x=>x.id);
+  APP.teams.forEach(x=>{if(!Array.isArray(x.players))x.players=[];x.players=x.players.filter(p=>p&&p.id);});
   let order=safeParse(st.order,[]);if(!Array.isArray(order))order=[];
   let raw=(st.matches&&typeof st.matches==='object')?st.matches:{},seen={},list=[];
   order.concat(Object.keys(raw)).forEach(id=>{
-    if(seen[id]||typeof raw[id]!=='string')return;seen[id]=1;
+    if(seen[id]||typeof raw[id]!=='string'||!SAFE_ID.test(id))return;seen[id]=1;
     let m=safeParse(raw[id],null);
-    if(!m||typeof m!=='object')return;
+    if(!m||typeof m!=='object'||Array.isArray(m))return;
+    m=cleanData(m,'',0);
     if(!Array.isArray(m.innings))m.innings=[];
     if(!Array.isArray(m.umpires))m.umpires=[];
     m.id=id;list.push(m);
@@ -2133,7 +2163,7 @@ function applyPacked(st){
   APP.matches=list;
   APP.liveMatch=st.liveId?(list.find(m=>m.id===st.liveId)||null):null;
   APP.photos={};
-  if(st.photos&&typeof st.photos==='object')Object.keys(st.photos).forEach(k=>{if(typeof st.photos[k]==='string')APP.photos[k]=st.photos[k];});
+  if(st.photos&&typeof st.photos==='object')Object.keys(st.photos).forEach(k=>{if(SAFE_ID.test(k)&&typeof st.photos[k]==='string'&&PHOTO_RE.test(st.photos[k]))APP.photos[k]=st.photos[k];});
 }
 function packedFromCloud(raw){
   return {meta:raw.meta,teams:raw.teams,order:raw.order,liveId:raw.liveId||'',
@@ -2145,7 +2175,7 @@ let _uidN=0;
 function uid(prefix){return prefix+Date.now().toString(36)+'_'+(_uidN++).toString(36)+Math.random().toString(36).slice(2,6);}
 function newTid(){return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
 function sortTournaments(o){
-  return Object.entries(o||{}).filter(([k,v])=>v&&typeof v==='object').map(([tid,v])=>({tid,
+  return Object.entries(o||{}).filter(([k,v])=>v&&typeof v==='object'&&SAFE_ID.test(k)).map(([tid,v])=>({tid,
     name:String(v.name||'Tournament'),edition:String(v.edition||''),year:String(v.year||''),
     updatedAt:Number(v.updatedAt)||0,live:!!v.live}))
     .sort((a,b)=>(b.live-a.live)||(b.updatedAt-a.updatedAt));
