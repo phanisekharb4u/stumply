@@ -29,17 +29,18 @@
         },
         "matches": {
           "$mid": {
-            ".validate": "newData.isString() && newData.val().length <= 400000"
+            ".validate": "$mid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.isString() && newData.val().length <= 400000"
           }
         },
         "photos": {
           "$pid": {
-            ".validate": "newData.isString() && newData.val().length <= 60000"
+            ".validate": "$pid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.isString() && newData.val().length <= 60000 && newData.val().beginsWith('data:image/')"
           }
         },
         "$other": {
           ".validate": false
-        }
+        },
+        ".validate": "$tid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.hasChildren(['owner','meta'])"
       }
     },
     "userTournaments": {
@@ -64,7 +65,8 @@
           },
           "$other": {
             ".validate": false
-          }
+          },
+          ".validate": "$tid.matches(/^[A-Za-z0-9_-]{1,80}$/)"
         }
       },
       ".read": "auth != null && root.child('owners').child(auth.uid).val() === true"
@@ -72,7 +74,8 @@
     "usernames": {
       "$uname": {
         ".read": true,
-        ".write": "auth != null && !data.exists() && newData.val() === auth.uid"
+        ".write": "auth != null && !data.exists() && newData.val() === auth.uid",
+        ".validate": "$uname.matches(/^[a-z0-9_]{3,30}$/) && newData.isString()"
       }
     },
     "users": {
