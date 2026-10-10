@@ -1356,7 +1356,6 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
         <div class="divd">or</div>
         <button type="button" class="btnalt idpbtn idp-google" style="display:none" data-action="idpStart('google.com')"><span class="idpic" style="background:#fff;color:#1a73e8;border:1px solid #dadce0">G</span>Continue with Google</button>
         <button type="button" class="btnalt idpbtn idp-twitter" style="display:none" data-action="idpStart('twitter.com')"><span class="idpic" style="background:#000;color:#fff">X</span>Continue with X (Twitter)</button>
-        <button type="button" class="btnalt idpbtn idp-facebook" style="display:none" data-action="idpStart('facebook.com')"><span class="idpic" style="background:#1877F2;color:#fff">f</span>Continue with Facebook</button>
       </div>
       <div class="divd">or</div>
       <button class="btnalt" data-action="showViewer()">👁 Watch as Viewer (live scores, read-only)</button>
@@ -1417,10 +1416,9 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
         <div class="divd">or</div>
         <button type="button" class="btnalt idpbtn idp-google" style="display:none" data-action="idpStart('google.com')"><span class="idpic" style="background:#fff;color:#1a73e8;border:1px solid #dadce0">G</span>Continue with Google</button>
         <button type="button" class="btnalt idpbtn idp-twitter" style="display:none" data-action="idpStart('twitter.com')"><span class="idpic" style="background:#000;color:#fff">X</span>Continue with X (Twitter)</button>
-        <button type="button" class="btnalt idpbtn idp-facebook" style="display:none" data-action="idpStart('facebook.com')"><span class="idpic" style="background:#1877F2;color:#fff">f</span>Continue with Facebook</button>
       </div>
     </div>
-    <!-- First sign-in with Google / X / Facebook: choose name and username -->
+    <!-- First sign-in with Google / X: choose name and username -->
     <div id="apanel-setup" class="apanel">
       <div style="font-weight:700;font-size:17px;margin-bottom:4px">👋 One last step</div>
       <p style="font-size:13px;color:var(--dim);margin-bottom:14px">Choose the name and username viewers will see.</p>
@@ -2652,9 +2650,9 @@ async function saveProfile(name,uname){
   AUTH.name=name;AUTH.uname=uname;persistAuth();
 }
 
-// ── Sign in with Google / X / Facebook (redirect flow through Firebase) ──
-const IDPS={'google.com':'google','twitter.com':'twitter','facebook.com':'facebook'};
-const IDP_NAMES={'google.com':'Google','twitter.com':'X (Twitter)','facebook.com':'Facebook'};
+// ── Sign in with Google / X (redirect flow through Firebase) ──
+const IDPS={'google.com':'google','twitter.com':'twitter'};
+const IDP_NAMES={'google.com':'Google','twitter.com':'X (Twitter)'};
 const idpContinue=()=>location.origin+'/';
 let _idpProbe=null;
 function ssGet(k){try{return sessionStorage.getItem(k);}catch(e){return null;}}
@@ -2693,7 +2691,7 @@ function idpErrText(code,pid){
   if(/INVALID_IDP_RESPONSE|INVALID_CONTINUE_URI|UNAUTHORIZED_DOMAIN|MISSING_OR_INVALID_NONCE/.test(code))return n+' sign-in did not complete. Please try again.';
   return authErrText(code);
 }
-// Back from Google / X / Facebook: finish the sign-in. Returns the provider id when it handled the page.
+// Back from Google / X: finish the sign-in. Returns the provider id when it handled the page.
 async function idpFinish(){
   let st=safeParse(ssGet('stumply_idp'),null);
   let q=new URLSearchParams(location.search);
