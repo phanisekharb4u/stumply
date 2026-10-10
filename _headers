@@ -6,3 +6,12 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Cross-Origin-Opener-Policy: same-origin
+
+/sw.js
+  Cache-Control: no-cache
+
+/
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache

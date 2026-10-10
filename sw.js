@@ -1,5 +1,8 @@
-// Stumply Service Worker v4 — offline support + push notifications
-const CACHE = 'stumply-v7';
+// Stumply Service Worker v5 — offline support + push notifications
+const CACHE = 'stumply-v8';
+// Caches left by the first versions, which served the page from cache before the network.
+// A browser that still has one is showing the old sign-in screen, so reload it once.
+const LEGACY = ['stumply-v1', 'stumply-v2', 'stumply'];
 const ASSETS = ['/', '/index.html', '/firebase-config.js', '/manifest.json', '/icon-192.png', '/icon-512.png', '/icon-mark.svg', '/apple-touch-icon.png', '/favicon-32.png'];
 
 // ── Install ──────────────────────────────────────────────────────────
@@ -10,10 +13,16 @@ self.addEventListener('install', e => {
 
 // ── Activate ─────────────────────────────────────────────────────────
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-  ));
-  self.clients.claim();
+  e.waitUntil((async () => {
+    const keys = await caches.keys();
+    const stale = keys.some(k => LEGACY.includes(k));
+    await Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
+    await self.clients.claim();
+    if (stale) {
+      const wins = await self.clients.matchAll({ type: 'window' });
+      wins.forEach(w => { try { w.navigate(w.url); } catch (err) {} });
+    }
+  })());
 });
 
 // ── Fetch: network first so new versions reach users; cache is the offline fallback
@@ -21,7 +30,7 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return; // never touch cloud-sync calls
   e.respondWith(
-    fetch(req).then(res => {
+    fetch(req, req.mode === 'navigate' ? { cache: 'no-cache' } : undefined).then(res => {
       if (res && res.ok) {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(req, copy));

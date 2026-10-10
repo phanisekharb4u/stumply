@@ -32,6 +32,15 @@
           "value": "same-origin"
         }
       ]
+    },
+    {
+      "source": "/(sw.js|index.html|)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
     }
   ]
 }
