@@ -19,22 +19,53 @@
           ".validate": "newData.isString() && newData.val().length <= 400000"
         },
         "order": {
+          ".write": "auth != null && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
           ".validate": "newData.isString() && newData.val().length <= 40000"
         },
         "liveId": {
+          ".write": "auth != null && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
           ".validate": "newData.isString() && newData.val().length <= 80"
         },
         "_savedAt": {
+          ".write": "auth != null && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
           ".validate": "newData.isNumber()"
         },
         "matches": {
           "$mid": {
+            ".write": "auth != null && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
             ".validate": "$mid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.isString() && newData.val().length <= 400000"
           }
         },
         "photos": {
           "$pid": {
             ".validate": "$pid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.isString() && newData.val().length <= 60000 && newData.val().beginsWith('data:image/')"
+          }
+        },
+        "live": {
+          ".write": "auth != null && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
+          ".validate": "newData.hasChildren(['rev'])",
+          "rev": {
+            ".validate": "newData.isNumber()"
+          },
+          "mid": {
+            ".validate": "newData.isString() && newData.val().length <= 80"
+          },
+          "m": {
+            ".validate": "newData.isString() && newData.val().length <= 400000"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "scorers": {
+          "$uid": {
+            ".validate": "$uid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.hasChildren(['uname'])",
+            "uname": {
+              ".validate": "newData.isString() && newData.val().length <= 40"
+            },
+            "$other": {
+              ".validate": false
+            }
           }
         },
         "$other": {
@@ -58,9 +89,11 @@
             ".validate": "newData.isString() && newData.val().length <= 10"
           },
           "live": {
+            ".write": "auth != null && root.child('tournaments').child($tid).child('owner').val() === $uid && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
             ".validate": "newData.isBoolean()"
           },
           "updatedAt": {
+            ".write": "auth != null && root.child('tournaments').child($tid).child('owner').val() === $uid && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
             ".validate": "newData.isNumber()"
           },
           "$other": {
@@ -103,6 +136,63 @@
     "owners": {
       "$uid": {
         ".read": "auth != null && auth.uid === $uid"
+      }
+    },
+    "public": {
+      ".read": true,
+      ".indexOn": [
+        "updatedAt"
+      ],
+      "$tid": {
+        ".write": "auth != null && root.child('tournaments').child($tid).child('owner').val() === auth.uid",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "edition": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "city": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "by": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "teams": {
+          ".validate": "newData.isNumber()"
+        },
+        "live": {
+          ".write": "auth != null && data.parent().exists() && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
+          ".validate": "newData.isBoolean()"
+        },
+        "updatedAt": {
+          ".write": "auth != null && data.parent().exists() && root.child('tournaments').child($tid).child('scorers').child(auth.uid).exists()",
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        },
+        ".validate": "$tid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.hasChildren(['name','updatedAt'])"
+      }
+    },
+    "scorerOf": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$tid": {
+          ".write": "auth != null && ((auth.uid === $uid && !newData.exists()) || root.child('tournaments').child($tid).child('owner').val() === auth.uid)",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length <= 80"
+          },
+          "ownerName": {
+            ".validate": "newData.isString() && newData.val().length <= 80"
+          },
+          "owner": {
+            ".validate": "newData.isString() && newData.val() === auth.uid"
+          },
+          "$other": {
+            ".validate": false
+          },
+          ".validate": "$tid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.hasChildren(['name','owner'])"
+        }
       }
     }
   }

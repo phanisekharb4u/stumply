@@ -1265,6 +1265,7 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
   #print-area .noprint,#print-area .av,#print-area details{display:none!important}
   #print-area .inns-hdr{background:#eee!important;color:#000!important;padding:5px;margin-top:10px}
 }
+body.co-scorer .owner-only{display:none!important}
 </style>
 </head>
 <body>
@@ -1416,6 +1417,12 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
       <div id="v-err" class="emsg"></div>
       <button class="btnpri" style="margin-top:8px" data-action="doGuest()">👁 Watch Live →</button>
       <div id="v-list"></div>
+      <div style="margin-top:14px;border-top:1px solid var(--bdr);padding-top:12px">
+        <div style="font-family:var(--disp);font-size:13px;color:var(--em);letter-spacing:.5px;margin-bottom:8px">🌍 DISCOVER TOURNAMENTS</div>
+        <input id="dc-q" type="search" placeholder="Search by name or city" autocomplete="off"
+          style="width:100%;background:var(--bg2);border:1px solid var(--bdr);color:var(--txt);font-size:13px;padding:9px 11px;border-radius:6px;outline:none">
+        <div id="dc-list" style="max-height:360px;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-top:4px"></div>
+      </div>
       <div style="margin-top:10px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;padding:9px 12px;font-size:11px;color:var(--dim)">
         🔔 <b style="color:var(--txt)">Enable notifications?</b> Get alerted when a match starts, wickets fall, and the result is announced.
         <div style="margin-top:7px;display:flex;gap:7px">
@@ -1629,7 +1636,8 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
     <p style="font-size:12px;color:var(--dim);margin-bottom:6px;line-height:1.5">Saved by the earlier version of Stumply. Import it into your account to keep it.</p>
     <div id="legacy-import"></div>
   </div>
-  <div class="card">
+  <div class="card" id="coscorer-note" style="display:none;background:#FBF3DC;border-color:var(--gdim)"></div>
+  <div class="card owner-only">
     <div class="ch">🏆 Tournament Info</div>
     <div class="frow">
       <div class="fg"><label>Name</label><input class="ifield" id="t-name" placeholder="My Tournament"></div>
@@ -1663,6 +1671,13 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
         <div style="font-size:11px;color:var(--dim);margin-top:18px">Bowler max: <b id="t-bwl-max" style="color:var(--gold)">4 ov</b></div>
       </div>
     </div>
+    <div class="frow">
+      <div class="fg" style="max-width:220px"><label>📍 City / area (optional)</label><input class="ifield" id="t-city" maxlength="40" placeholder="e.g. Guntur"></div>
+      <div class="fg" style="align-self:flex-end">
+        <label style="display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer;text-transform:none;letter-spacing:0"><input type="checkbox" id="t-listed" style="width:20px;height:20px"> 🌍 Show on the Discover page</label>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--dim);margin:-4px 0 12px">Discover lets anyone find this tournament by name or city without your link. Leave it off to keep it link-only.</div>
     <div style="margin-bottom:12px">
       <div style="font-size:11px;color:var(--dim);margin-bottom:6px">🔗 Share live view link with audience:</div>
       <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
@@ -1674,7 +1689,18 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
     </div>
     <button class="bsm bgld" data-action="saveTournament()">💾 Save Tournament</button>
   </div>
-  <div class="card">
+  <div class="card owner-only" id="scorer-card">
+    <div class="ch">🤝 Co-scorers</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:8px;line-height:1.5">Let a friend score this tournament from their own Stumply account. They can schedule, start and score matches. They cannot change settings, teams or photos.</p>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <input class="ifield" id="scr-uname" placeholder="Their Stumply username" autocapitalize="none" autocomplete="off" style="flex:1;min-width:160px">
+      <button class="bsm bgld" data-action="addScorer()" style="white-space:nowrap">➕ Add co-scorer</button>
+    </div>
+    <div id="scr-err" class="emsg"></div>
+    <div id="scorer-list" style="margin-top:6px"></div>
+    <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5">Only one person should score a live match at a time. Changes made by others show up here within a few seconds.</p>
+  </div>
+  <div class="card owner-only">
     <div class="ch">🏏 Add Team + Squad</div>
     <div class="frow">
       <div class="fg"><label>Team Name</label><input class="ifield" id="nt-name" placeholder="Mumbai Indians"></div>
@@ -1688,8 +1714,8 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
       <button class="bsm" style="background:rgba(106,144,176,.1);color:var(--dim);border:1px solid var(--bdr)" data-action="clearBulk()">🔄 Clear</button>
     </div>
   </div>
-  <div class="card"><div class="ch">📋 Teams</div><div id="tlist"></div></div>
-  <div class="card">
+  <div class="card owner-only"><div class="ch">📋 Teams</div><div id="tlist"></div></div>
+  <div class="card owner-only">
     <div class="ch">👤 Edit Players</div>
     <div class="fg"><label>Select Team</label><select class="sfield" id="pt-sel"></select></div>
     <div id="plist"></div>
@@ -2213,7 +2239,7 @@ function packState(){
   APP.matches.forEach(m=>{matches[m.id]=JSON.stringify(m);});
   return {meta:JSON.stringify(APP.tournament),teams:JSON.stringify(APP.teams),
     order:JSON.stringify(APP.matches.map(m=>m.id)),matches,photos:Object.assign({},APP.photos),
-    liveId:APP.liveMatch?APP.liveMatch.id:'',_savedAt:Date.now()};
+    liveId:APP.liveMatch?APP.liveMatch.id:'',scorers:Object.assign({},APP.scorers||{}),_savedAt:Date.now()};
 }
 // ── Data from the cloud is untrusted: anyone can own a tournament and edit its raw data.
 // Clean it before it reaches the screen so it cannot inject code into a viewer's page.
@@ -2266,12 +2292,27 @@ function applyPacked(st){
   APP.liveMatch=st.liveId?(list.find(m=>m.id===st.liveId)||null):null;
   APP.photos={};
   if(st.photos&&typeof st.photos==='object')Object.keys(st.photos).forEach(k=>{if(SAFE_ID.test(k)&&typeof st.photos[k]==='string'&&PHOTO_RE.test(st.photos[k]))APP.photos[k]=st.photos[k];});
+  APP.scorers={};
+  if(st.scorers&&typeof st.scorers==='object')Object.keys(st.scorers).forEach(k=>{let v=st.scorers[k];if(SAFE_ID.test(k)&&v&&typeof v==='object')APP.scorers[k]={uname:cleanUname(v.uname)};});
 }
 function packedFromCloud(raw){
   return {meta:raw.meta,teams:raw.teams,order:raw.order,liveId:raw.liveId||'',
     matches:(raw.matches&&typeof raw.matches==='object')?raw.matches:{},
-    photos:(raw.photos&&typeof raw.photos==='object')?raw.photos:{},_savedAt:raw._savedAt||0};
+    photos:(raw.photos&&typeof raw.photos==='object')?raw.photos:{},
+    scorers:(raw.scorers&&typeof raw.scorers==='object')?raw.scorers:{},_savedAt:raw._savedAt||0};
 }
+// What the cloud last confirmed, plus the small "live" node viewers follow
+function pushedFromCloud(tid,raw){
+  let lv=raw&&raw.live&&typeof raw.live==='object'?raw.live:null;
+  return {tid,st:packedFromCloud(raw),rev:lv?Number(lv.rev)||0:0,liveKey:lv?JSON.stringify({rev:lv.rev,mid:lv.mid||'',m:lv.m||''}):''};
+}
+// The live match for viewers, with commentary cut to the last 12 balls
+function liteMatch(json){
+  let m=safeParse(json,null);if(!m||typeof m!=='object')return '';
+  (m.innings||[]).forEach(i=>{if(i&&Array.isArray(i.log)&&i.log.length>12)i.log=i.log.slice(-12);if(i)i.deliveries=[];});
+  return JSON.stringify(m);
+}
+function ownerOnly(){if(APP.coScorer){toast('Only the tournament owner can change this','warn');return true;}return false;}
 // Unique ids even when several things are created in the same millisecond
 let _uidN=0;
 function uid(prefix){return prefix+Date.now().toString(36)+'_'+(_uidN++).toString(36)+Math.random().toString(36).slice(2,6);}
@@ -2300,38 +2341,51 @@ function updateCloudStatus(state){
 // ── Saving (admin) ────────────────────────────────────────────────────
 let _pushed=null;        // {tid,st} last state the cloud confirmed
 let _idxPushed={};       // tid → index entry last written
+let _pubPushed={};       // tid → Discover entry last written
 let _pushTimer=null,_pushing=null,_dirty=false,_retryTimer=null,_photoWarned=false,_photoRetryAt=0;
 function saveState(){
   if(APP.role!=='admin'||!AUTH||!APP.tid)return;
   _dirty=true;
-  try{lsSet(LS_TCACHE+APP.tid,JSON.stringify({uid:AUTH.uid,dirty:true,st:packState()}));}catch(e){}
+  try{lsSet(LS_TCACHE+APP.tid,JSON.stringify({uid:AUTH.uid,co:!!APP.coScorer,owner:APP.ownerUid||'',ownerName:APP.ownerName||'',dirty:true,st:packState()}));}catch(e){}
   if(_pushTimer)clearTimeout(_pushTimer);
   _pushTimer=setTimeout(()=>{_pushTimer=null;pushNow();},400);
 }
 function pushNow(){
   if(_pushing)return _pushing.then(()=>_dirty?pushNow():true);
   if(APP.role!=='admin'||!AUTH||!APP.tid)return Promise.resolve(true);
-  let tid=APP.tid,st=packState(),uid=AUTH.uid;
+  let tid=APP.tid,st=packState(),uid=AUTH.uid,co=!!APP.coScorer;
   _dirty=false;
   updateCloudStatus('syncing');
   _pushing=(async()=>{
     try{
-      let oldPhotos=(_pushed&&_pushed.tid===tid&&_pushed.st.photos)||{};
-      if(!_pushed||_pushed.tid!==tid){
+      await null; // let _pushing be set before the finally below can clear it
+      let fresh=!_pushed||_pushed.tid!==tid;
+      if(fresh&&co){let raw=await dbReq('GET','tournaments/'+tid);if(!raw)throw new Error('NOT_FOUND');_pushed=pushedFromCloud(tid,raw);fresh=false;}
+      let oldPhotos=(!fresh&&_pushed.st.photos)||{};
+      // Photos (owner only) — worked out first so viewers know to reload them
+      let pp={},newPhotos=co?oldPhotos:(st.photos||{});
+      Object.keys(newPhotos).forEach(id=>{if(newPhotos[id]!==oldPhotos[id])pp[id]=newPhotos[id];});
+      Object.keys(oldPhotos).forEach(id=>{if(!(id in newPhotos))pp[id]=null;});
+      let liveM=st.liveId&&st.matches[st.liveId]?liteMatch(st.matches[st.liveId]):'';
+      let rev=fresh?st._savedAt:_pushed.rev,liveKey;
+      if(fresh){
         let body=Object.assign({owner:uid,ownerName:APP.dname||''},st);delete body.photos;
+        if(!Object.keys(body.scorers||{}).length)delete body.scorers;
+        body.live={rev,mid:st.liveId||'',m:liveM};liveKey=JSON.stringify(body.live);
         await dbReq('PUT','tournaments/'+tid,body,true);
         oldPhotos={};
       } else {
         let patch={},old=_pushed.st;
-        ['meta','teams','order','liveId'].forEach(k=>{if(st[k]!==old[k])patch[k]=st[k];});
+        (co?['order','liveId']:['meta','teams','order','liveId']).forEach(k=>{if(st[k]!==old[k])patch[k]=st[k];});
         Object.keys(st.matches).forEach(id=>{if(st.matches[id]!==old.matches[id])patch['matches/'+id]=st.matches[id];});
         Object.keys(old.matches).forEach(id=>{if(!(id in st.matches))patch['matches/'+id]=null;});
+        // Anything other than the live match changing means viewers reload everything once
+        if(Object.keys(patch).some(k=>k!=='matches/'+st.liveId)||(Object.keys(pp).length&&Date.now()>=_photoRetryAt))rev=st._savedAt;
+        let lv={rev,mid:st.liveId||'',m:liveM};liveKey=JSON.stringify(lv);
+        if(liveKey!==_pushed.liveKey)patch.live=lv;
         if(Object.keys(patch).length){patch._savedAt=st._savedAt;await dbReq('PATCH','tournaments/'+tid,patch,true);}
       }
       // Photos go in their own request: if it is refused, scores are still saved
-      let pp={},newPhotos=st.photos||{};
-      Object.keys(newPhotos).forEach(id=>{if(newPhotos[id]!==oldPhotos[id])pp[id]=newPhotos[id];});
-      Object.keys(oldPhotos).forEach(id=>{if(!(id in newPhotos))pp[id]=null;});
       let photosSaved=newPhotos;
       if(Object.keys(pp).length&&Date.now()<_photoRetryAt)photosSaved=oldPhotos;
       else if(Object.keys(pp).length){
@@ -2342,11 +2396,30 @@ function pushNow(){
           if(!_photoWarned){_photoWarned=true;toast('Photos could not be saved to the cloud. Publish the updated database rules, then tap Save now.','warn');}
         }
       }
-      _pushed={tid,st:Object.assign({},st,{photos:photosSaved})};
+      let keep=co?{photos:photosSaved,meta:_pushed.st.meta,teams:_pushed.st.teams,scorers:_pushed.st.scorers}:{photos:photosSaved};
+      _pushed={tid,st:Object.assign({},st,keep),rev,liveKey};
       let t=safeParse(st.meta,{})||{};
       let idx={name:String(t.name||''),edition:String(t.edition||''),year:String(t.year||''),live:!!st.liveId};
       let key=JSON.stringify(idx);
-      if(_idxPushed[tid]!==key){
+      if(co){
+        // Co-scorer: keep the owner's LIVE badges up to date (best effort)
+        if(_idxPushed[tid]!==key){_idxPushed[tid]=key;
+          let ow=APP.ownerUid,up={live:idx.live,updatedAt:st._savedAt};
+          if(ow)dbReq('PATCH','userTournaments/'+ow+'/'+tid,up,true).catch(()=>{});
+          if(t.listed)dbReq('PATCH','public/'+tid,up,true).catch(()=>{});}
+      } else {
+        // Discover listing (best effort: older database rules simply refuse it)
+        let pub=t.listed?{name:idx.name.slice(0,80),edition:idx.edition.slice(0,80),city:String(t.city||'').slice(0,40),by:String(APP.uname||'').slice(0,40),
+          teams:(safeParse(st.teams,[])||[]).length,live:idx.live}:null;
+        let pk=JSON.stringify(pub);
+        if(_pubPushed[tid]!==pk){
+          try{if(pub){pub.updatedAt=st._savedAt;await dbReq('PUT','public/'+tid,pub,true);}
+              else if(_pubPushed[tid]!==undefined||t.wasListed)await dbReq('DELETE','public/'+tid,undefined,true);
+              _pubPushed[tid]=pk;}
+          catch(e){if(e.message==='NETWORK')throw e;_pubPushed[tid]=pk;}
+        }
+      }
+      if(!co&&_idxPushed[tid]!==key){
         idx.updatedAt=st._savedAt;
         await dbReq('PUT','userTournaments/'+uid+'/'+tid,idx,true);
         _idxPushed[tid]=key;
@@ -2354,12 +2427,13 @@ function pushNow(){
         if(row)Object.assign(row,idx);else _tlist.unshift(Object.assign({tid},idx));
         renderTournamentList();
       }
-      if(!_dirty){try{lsSet(LS_TCACHE+tid,JSON.stringify({uid,dirty:false,st}));}catch(e){}}
+      if(!_dirty){try{lsSet(LS_TCACHE+tid,JSON.stringify({uid,co,owner:APP.ownerUid||'',ownerName:APP.ownerName||'',dirty:false,st}));}catch(e){}}
       updateCloudStatus('connected');
       return true;
     }catch(e){
       _dirty=true;
       if(e.message==='SESSION_EXPIRED'){toast('Your session has ended — please sign in again to save.','warn');}
+      if(e.message==='PERMISSION_DENIED'&&co){toast('Saving was refused — you may no longer be a scorer for this tournament.','warn');}
       updateCloudStatus(e.message==='NETWORK'?'offline':'error');
       if(_retryTimer)clearTimeout(_retryTimer);
       _retryTimer=setTimeout(()=>{_retryTimer=null;if(_dirty)pushNow();},6000);
@@ -2390,13 +2464,15 @@ async function openTournament(tid){
   let raw=null,offline=false;
   try{raw=await dbReq('GET','tournaments/'+tid);}
   catch(e){if(e.message!=='NETWORK'||!cached)throw e;offline=true;}
-  if(raw&&raw.owner!==AUTH.uid)throw new Error('PERMISSION_DENIED');
+  if(raw&&raw.owner!==AUTH.uid&&!(raw.scorers&&raw.scorers[AUTH.uid]))throw new Error('PERMISSION_DENIED');
+  let co=raw?raw.owner!==AUTH.uid:!!(cached&&cached.co);
   let cloud=raw?packedFromCloud(raw):null;
   let useLocal=cached&&cached.st&&(offline||!cloud||(cached.dirty&&(cached.st._savedAt||0)>(cloud._savedAt||0)));
   if(!useLocal&&!cloud)throw new Error('NOT_FOUND');
   applyPacked(useLocal?cached.st:cloud);
   APP.tid=tid;lsSet(LS_CUR,tid);
-  _pushed=cloud?{tid,st:cloud}:null;
+  APP.coScorer=co;APP.ownerUid=raw?String(raw.owner||''):(cached&&cached.owner)||'';APP.ownerName=raw?String(raw.ownerName||''):(cached&&cached.ownerName)||'';
+  _pushed=cloud?pushedFromCloud(tid,raw):null;
   resetScoringSession();
   if(useLocal){_dirty=true;if(!offline)pushNow();else updateCloudStatus('offline');}
   else{_dirty=false;updateCloudStatus('connected');}
@@ -2404,7 +2480,7 @@ async function openTournament(tid){
 async function createTournament(meta,teams,matches,liveId){
   await flushSave();
   let tid=newTid();
-  APP.tid=tid;APP.tournament=meta;APP.teams=teams||[];APP.matches=matches||[];APP.photos={};
+  APP.tid=tid;APP.tournament=meta;APP.teams=teams||[];APP.matches=matches||[];APP.photos={};APP.scorers={};APP.coScorer=false;APP.ownerUid=AUTH.uid;
   APP.liveMatch=liveId?(APP.matches.find(m=>m.id===liveId)||null):null;
   _pushed=null;lsSet(LS_CUR,tid);resetScoringSession();
   saveState();
@@ -2428,7 +2504,12 @@ async function switchTournament(tid){
   if(APP.role!=='admin'||tid===APP.tid)return;
   await flushSave();
   try{await openTournament(tid);}
-  catch(e){toast(e.message==='NOT_FOUND'?'That tournament no longer exists':authErrText(e.message),'warn');return;}
+  catch(e){
+    if(_slist.some(x=>x.tid===tid)&&(e.message==='NOT_FOUND'||e.message==='PERMISSION_DENIED')){
+      dbReq('DELETE','scorerOf/'+AUTH.uid+'/'+tid,undefined,true).catch(()=>{});
+      _slist=_slist.filter(x=>x.tid!==tid);renderTournamentList();
+      toast('You are no longer a scorer for that tournament','warn');return;}
+    toast(e.message==='NOT_FOUND'?'That tournament no longer exists':authErrText(e.message),'warn');return;}
   initApp();showTab('admin');
   toast('Switched to '+(APP.tournament.name||'tournament'));
 }
@@ -2438,6 +2519,9 @@ async function deleteTournament(tid){
   let row=_tlist.find(x=>x.tid===tid);
   if(!window.confirm('Delete "'+(row?row.name:'this tournament')+'" and all its matches? This cannot be undone.'))return;
   try{
+    let sc=await dbReq('GET','tournaments/'+tid+'/scorers').catch(()=>null);
+    await Promise.all(Object.keys(sc&&typeof sc==='object'?sc:{}).filter(k=>SAFE_ID.test(k)).map(k=>dbReq('DELETE','scorerOf/'+k+'/'+tid,undefined,true).catch(()=>{})));
+    await dbReq('DELETE','public/'+tid,undefined,true).catch(()=>{});
     await dbReq('DELETE','tournaments/'+tid,undefined,true);
     await dbReq('DELETE','userTournaments/'+AUTH.uid+'/'+tid,undefined,true);
   }catch(e){toast(authErrText(e.message),'warn');return;}
@@ -2447,7 +2531,13 @@ async function deleteTournament(tid){
 }
 function renderTournamentList(){
   let el=document.getElementById('tourn-list');if(!el||APP.role!=='admin')return;
-  if(!_tlist.length){el.innerHTML='<p style="color:var(--dim);font-size:12px">No tournaments yet.</p>';return;}
+  let sl=(_slist||[]).map(t=>{let cur=t.tid===APP.tid;
+    return `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--bdr)">
+      <div style="flex:1;min-width:140px"><div style="font-family:var(--disp);font-size:14px">🤝 ${esc(t.name)} ${cur?'<span class="tag tg">OPEN</span>':''}</div>
+      <div style="font-size:11px;color:var(--dim)">Co-scorer${t.ownerName?' · owner '+esc(t.ownerName):''}</div></div>
+      ${cur?'':`<button class="bsm bblu" onclick="switchTournament('${esc(t.tid)}')">Open</button>`}</div>`;}).join('');
+  let sh=sl?`<div style="font-size:11px;font-weight:700;color:var(--dim);margin-top:12px">🤝 YOU SCORE FOR</div>${sl}`:'';
+  if(!_tlist.length){el.innerHTML='<p style="color:var(--dim);font-size:12px">No tournaments yet.</p>'+sh;return;}
   el.innerHTML=_tlist.map(t=>{
     let cur=t.tid===APP.tid;
     return `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--bdr)">
@@ -2458,11 +2548,111 @@ function renderTournamentList(){
       ${cur?'':`<button class="bsm bblu" onclick="switchTournament('${esc(t.tid)}')">Open</button>
       <button class="bsm bdng" onclick="deleteTournament('${esc(t.tid)}')">🗑</button>`}
     </div>`;
-  }).join('');
+  }).join('')+sh;
+}
+
+// ── Co-scorers: other Stumply accounts that may score this tournament ──
+function renderScorers(){
+  let el=document.getElementById('scorer-list');if(!el)return;
+  let ids=Object.keys(APP.scorers||{});
+  el.innerHTML=ids.length?ids.map(id=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bdr)">
+    <div style="flex:1">🤝 <b>@${esc(APP.scorers[id].uname||'?')}</b></div>
+    <button class="bsm bdng" onclick="removeScorer('${id}')">Remove</button></div>`).join('')
+    :'<p style="color:var(--dim);font-size:12px">No co-scorers yet.</p>';
+  let note=document.getElementById('coscorer-note');
+  if(note){note.style.display=APP.coScorer?'':'none';
+    if(APP.coScorer)note.innerHTML=`<div class="ch">🤝 You are a co-scorer</div><p style="font-size:12px;color:var(--dim);line-height:1.5">You are scoring <b>${esc(APP.tournament.name||'')}</b> for ${esc(APP.ownerName||'the owner')}. You can schedule, start and score matches. Only the owner can change the tournament settings, teams and photos.</p>`;}
+  document.body.classList.toggle('co-scorer',!!APP.coScorer);
+}
+async function addScorer(){
+  if(APP.role!=='admin'||ownerOnly())return;
+  let inp=document.getElementById('scr-uname'),err=document.getElementById('scr-err');setTxt(err,'');
+  let un=cleanUname(inp.value);
+  if(un.length<3){setTxt(err,'Enter their Stumply username.');inp.focus();return;}
+  try{
+    let uid=await dbReq('GET','usernames/'+un);
+    if(!uid||typeof uid!=='string'||!SAFE_ID.test(uid)){setTxt(err,'No Stumply account has that username.');return;}
+    if(uid===AUTH.uid){setTxt(err,'That is your own username.');return;}
+    if(APP.scorers[uid]){setTxt(err,'@'+un+' is already a co-scorer.');return;}
+    if(Object.keys(APP.scorers).length>=10){setTxt(err,'You can add up to 10 co-scorers.');return;}
+    await flushSave();
+    await dbReq('PATCH','tournaments/'+APP.tid,{['scorers/'+uid]:{uname:un}},true);
+    APP.scorers[uid]={uname:un};if(_pushed)_pushed.st.scorers=Object.assign({},APP.scorers);
+    await dbReq('PUT','scorerOf/'+uid+'/'+APP.tid,{name:String(APP.tournament.name||'Tournament').slice(0,80),owner:AUTH.uid,ownerName:String(APP.dname||'').slice(0,80)},true);
+    inp.value='';renderScorers();saveState();
+    toast('🤝 @'+un+' can now score this tournament');
+  }catch(e){setTxt(err,e.message==='PERMISSION_DENIED'?'The database refused this. Publish the latest database rules first.':authErrText(e.message));}
+}
+async function removeScorer(uid){
+  if(APP.role!=='admin'||ownerOnly()||!APP.scorers[uid])return;
+  let un=APP.scorers[uid].uname;
+  if(!window.confirm('Remove @'+un+' as a co-scorer?'))return;
+  try{
+    await dbReq('PATCH','tournaments/'+APP.tid,{['scorers/'+uid]:null},true);
+    await dbReq('DELETE','scorerOf/'+uid+'/'+APP.tid,undefined,true).catch(()=>{});
+    delete APP.scorers[uid];if(_pushed)_pushed.st.scorers=Object.assign({},APP.scorers);
+    renderScorers();saveState();toast('@'+un+' removed');
+  }catch(e){toast(authErrText(e.message),'warn');}
+}
+// When several people work on one tournament, pick up their changes every few seconds
+let _collabTimer=null;
+function collabActive(){return APP.role==='admin'&&!!APP.tid&&(APP.coScorer||Object.keys(APP.scorers||{}).length>0);}
+function startCollab(){if(_collabTimer)clearInterval(_collabTimer);_collabTimer=setInterval(collabTick,6000);}
+async function collabTick(){
+  if(!collabActive()||_dirty||_pushing||_pushTimer||document.visibilityState==='hidden'||!_pushed)return;
+  if(document.querySelector('.mo.on')||document.getElementById('celebration-overlay').classList.contains('on'))return;
+  let tid=APP.tid;
+  try{
+    let at=await dbReq('GET','tournaments/'+tid+'/_savedAt');
+    if(tid!==APP.tid||_dirty||_pushing||!_pushed||at===_pushed.st._savedAt)return;
+    let raw=await dbReq('GET','tournaments/'+tid);
+    if(tid!==APP.tid||_dirty||_pushing)return;
+    if(!raw||(APP.coScorer&&!(raw.scorers&&raw.scorers[AUTH.uid]))){
+      toast('You are no longer a scorer for this tournament','warn');
+      dbReq('DELETE','scorerOf/'+AUTH.uid+'/'+tid,undefined,true).catch(()=>{});
+      _slist=_slist.filter(x=>x.tid!==tid);lsRemove(LS_CUR);lsRemove(LS_TCACHE+tid);_pushed=null;
+      try{await enterAdmin();}catch(e){}
+      return;
+    }
+    applyPacked(packedFromCloud(raw));_pushed=pushedFromCloud(tid,raw);
+    APP.liveMatch=APP.matches.find(m=>m.status==='live')||null;
+    resetScoringSession();
+    try{lsSet(LS_TCACHE+tid,JSON.stringify({uid:AUTH.uid,co:!!APP.coScorer,owner:APP.ownerUid||'',ownerName:APP.ownerName||'',dirty:false,st:_pushed.st}));}catch(e){}
+    document.getElementById('livebadge').classList.toggle('hidden',!APP.liveMatch);
+    renderHome();renderMatches();renderLive();populateSCSelect();renderHistory();renderTeamList();populatePlayerTeamSel();renderScorers();
+    toast('🔄 Updated with changes from another scorer');
+  }catch(e){}
+}
+
+// ── Discover: tournaments their owners chose to list publicly ─────────
+let _disc=null;
+async function loadDiscover(){
+  let el=document.getElementById('dc-list');if(!el||!CLOUD_OK)return;
+  el.innerHTML='<p style="color:var(--dim);font-size:12px">Loading…</p>';
+  try{
+    let r=await fetch(DB_URL+'/public.json?orderBy=%22updatedAt%22&limitToLast=60');
+    if(!r.ok)throw new Error('HTTP');
+    let o=await r.json();
+    _disc=Object.entries(o&&typeof o==='object'?o:{}).filter(([k,v])=>SAFE_ID.test(k)&&v&&typeof v==='object').map(([tid,v])=>({tid,
+      name:String(v.name||'Tournament').slice(0,80),edition:String(v.edition||'').slice(0,80),city:String(v.city||'').slice(0,40),
+      by:cleanUname(v.by),teams:Number(v.teams)||0,live:v.live===true,at:Number(v.updatedAt)||0}))
+      .sort((a,b)=>(b.live-a.live)||(b.at-a.at));
+    renderDiscover();
+  }catch(e){el.innerHTML='<p style="color:var(--dim);font-size:12px">Discover is not available right now.</p>';}
+}
+function renderDiscover(){
+  let el=document.getElementById('dc-list');if(!el||!_disc)return;
+  let q=String((document.getElementById('dc-q')||{}).value||'').trim().toLowerCase();
+  let list=_disc.filter(t=>!q||(t.name+' '+t.edition+' '+t.city+' '+t.by).toLowerCase().includes(q));
+  el.innerHTML=list.length?list.slice(0,40).map(t=>`<button class="btnalt" style="margin-top:6px;text-align:left;display:block;width:100%" onclick="watchTournament('${t.tid}')">
+      ${t.live?'<span class="tag tr">🔴 LIVE</span> ':''}<b>${esc(t.name)}</b>${t.edition?' <span style="color:var(--dim);font-size:11px">'+esc(t.edition)+'</span>':''}
+      <div style="font-size:11px;color:var(--dim);margin-top:2px">${t.city?'📍 '+esc(t.city)+' · ':''}${t.teams?plural(t.teams,'team')+' · ':''}${t.by?'by @'+esc(t.by):''}</div></button>`).join('')
+    :`<p style="color:var(--dim);font-size:12px">${_disc.length?'No tournament matches that search.':'No tournaments are listed yet.'}</p>`;
+  if(CURRENT_LANG!=='en'&&typeof i18nWalk==='function')i18nWalk(el);
 }
 
 // ── Site owner: who is using Stumply ──────────────────────────────────
-let _isOwner=false,_usage=null;
+let _isOwner=false,_usage=null,_slist=[];
 async function loadUsage(){
   if(!_isOwner||APP.role!=='admin')return;
   try{
@@ -2587,12 +2777,47 @@ function onStreamEvent(type,e){
   }
   viewerApply();
 }
+// Light mode: each ball only sends the live match (with the last 12 balls of
+// commentary). Anything else changing bumps live.rev and viewers reload once.
+let _vLite=false,_vlive=null,_vrev=null,_vFetching=false,_vAgain=false;
+function onLiveEvent(type,e){
+  let d;try{d=JSON.parse(e.data);}catch(err){return;}
+  if(!d||typeof d.path!=='string')return;
+  if(d.path==='/'&&type==='put')_vlive=(d.data&&typeof d.data==='object')?d.data:null;
+  else{
+    if(!_vlive||typeof _vlive!=='object')_vlive={};
+    if(type==='put')setAtPath(_vlive,d.path,d.data);
+    else if(d.data&&typeof d.data==='object')Object.keys(d.data).forEach(k=>setAtPath(_vlive,d.path+'/'+k,d.data[k]));
+  }
+  viewerLive();
+}
+function viewerLive(){
+  if(APP.role!=='viewer')return;
+  if(!_vlive||typeof _vlive!=='object'||_vlive.rev!==_vrev){_vrev=_vlive&&_vlive.rev;return viewerFull();}
+  if(!_vraw)return viewerFull();
+  let mid=String(_vlive.mid||'');
+  if(mid&&SAFE_ID.test(mid)&&typeof _vlive.m==='string'&&_vlive.m){
+    if(!_vraw.matches||typeof _vraw.matches!=='object')_vraw.matches={};
+    _vraw.matches[mid]=_vlive.m;
+  }
+  _vraw.liveId=mid;
+  viewerApply();
+}
+async function viewerFull(){
+  if(_vFetching){_vAgain=true;return;}
+  _vFetching=true;
+  try{let raw=await dbReq('GET','tournaments/'+APP.viewTid);if(APP.role==='viewer'){_vraw=raw;viewerApply();if(_vLite&&raw&&!raw.live)startViewerStream();}}
+  catch(e){setSyncBar('📡 Reconnecting…');}
+  finally{_vFetching=false;if(_vAgain){_vAgain=false;viewerFull();}}
+}
 function startViewerPoll(){
   if(_pollTimer)return;
   _pollTimer=setInterval(async()=>{
     if(APP.role!=='viewer'||!APP.viewTid)return;
     if(_es&&_es.readyState===1)return; // stream is healthy
     try{
+      if(_vLite){let lv=await dbReq('GET','tournaments/'+APP.viewTid+'/live');
+        if(JSON.stringify(lv)===JSON.stringify(_vlive))return;_vlive=lv;viewerLive();return;}
       let raw=await dbReq('GET','tournaments/'+APP.viewTid);
       if(raw&&_vraw&&raw._savedAt===_vraw._savedAt)return;
       _vraw=raw;viewerApply();
@@ -2607,11 +2832,14 @@ function startViewerStream(){
   stopViewerStream();
   if(APP.role!=='viewer'||!APP.viewTid)return;
   startViewerPoll(); // only does work while the stream is down
+  _vLite=!!(_vraw&&_vraw.live&&typeof _vraw.live==='object'&&'rev' in _vraw.live);
+  _vlive=_vLite?_vraw.live:null;_vrev=_vLite?_vraw.live.rev:null;
   if(typeof EventSource==='undefined')return;
   try{
-    _es=new EventSource(DB_URL+'/tournaments/'+APP.viewTid+'.json');
-    _es.addEventListener('put',e=>onStreamEvent('put',e));
-    _es.addEventListener('patch',e=>onStreamEvent('patch',e));
+    _es=new EventSource(DB_URL+'/tournaments/'+APP.viewTid+(_vLite?'/live':'')+'.json');
+    let h=_vLite?onLiveEvent:onStreamEvent;
+    _es.addEventListener('put',e=>h('put',e));
+    _es.addEventListener('patch',e=>h('patch',e));
     _es.onerror=()=>setSyncBar('📡 Reconnecting…');
   }catch(e){_es=null;}
 }
@@ -2653,7 +2881,7 @@ function showViewer(){
   showAuthPanel('apanel-viewer',false);
   let ve=document.getElementById('v-err');if(ve)ve.textContent='';
   let vl=document.getElementById('v-list');if(vl)vl.innerHTML='';
-  let vu=document.getElementById('v-uname');if(vu)vu.focus();
+  loadDiscover();
 }
 function showForgot(){
   showAuthPanel('apanel-forgot',false);
@@ -2701,17 +2929,22 @@ async function enterAdmin(){
     try{_tlist=sortTournaments(await dbReq('GET','userTournaments/'+AUTH.uid));}
     catch(e){if(e.message!=='NETWORK')throw e;offline=true;}
   }
+  _slist=[];
+  if(!offline){try{let so=await dbReq('GET','scorerOf/'+AUTH.uid,undefined,true);
+    _slist=Object.entries(so&&typeof so==='object'?so:{}).filter(([k,v])=>SAFE_ID.test(k)&&v&&typeof v==='object')
+      .map(([tid,v])=>({tid,name:String(v.name||'Tournament').slice(0,80),ownerName:String(v.ownerName||'').slice(0,80)}));}catch(e){}}
   let cur=lsGet(LS_CUR);
   if(offline){
     if(!cur||!lsGet(LS_TCACHE+cur))throw new Error('NETWORK');
     await openTournament(cur);
   } else {
-    let pick=_tlist.find(t=>t.tid===cur)||_tlist[0];
+    let pick=_tlist.find(t=>t.tid===cur)||_slist.find(t=>t.tid===cur)||_tlist[0];
     let opened=false;
-    if(pick){try{await openTournament(pick.tid);opened=true;}catch(e){if(e.message!=='NOT_FOUND')throw e;}}
+    if(pick){try{await openTournament(pick.tid);opened=true;}catch(e){if(e.message!=='NOT_FOUND'&&!_slist.includes(pick))throw e;}}
+    if(!opened&&_tlist[0]&&pick!==_tlist[0]){try{await openTournament(_tlist[0].tid);opened=true;}catch(e){}}
     if(!opened)await createTournament(blankTournament(APP.dname+"'s Tournament"));
   }
-  initApp();
+  initApp();startCollab();
 }
 // Claim a username and save the profile for the signed-in account
 async function saveProfile(name,uname){
@@ -2950,6 +3183,9 @@ function initApp(){
       let ty=document.getElementById('t-yr');if(ty)ty.value=APP.tournament.year||2026;
       let ov=APP.tournament.overs||20;
       let tsz=document.getElementById('t-size');if(tsz)tsz.value=String(teamSize());
+      let tci=document.getElementById('t-city');if(tci)tci.value=APP.tournament.city||'';
+      let tli=document.getElementById('t-listed');if(tli)tli.checked=!!APP.tournament.listed;
+      renderScorers();
       let sel=document.getElementById('t-overs');
       let stdOvs=[5,10,12,20,50];
       if(sel){
@@ -3109,6 +3345,7 @@ function openShareLink(){
   window.open(el.value,'_blank');
 }
 function saveTournament(){
+  if(ownerOnly())return;
   let name=document.getElementById('t-name').value.trim();
   if(!name){toast('Enter a tournament name','warn');document.getElementById('t-name').focus();return;}
   let yr=String(document.getElementById('t-yr').value).trim();
@@ -3125,6 +3362,9 @@ function saveTournament(){
   let tsz=document.getElementById('t-size'),oldSize=teamSize();
   if(tsz){let n=+tsz.value;APP.tournament.teamSize=n>=2&&n<=11?n:11;}
   if(teamSize()!==oldSize)buildBulkTable();
+  APP.tournament.city=String(document.getElementById('t-city').value||'').trim().slice(0,40);
+  let wasL=!!APP.tournament.listed;APP.tournament.listed=!!document.getElementById('t-listed').checked;
+  if(wasL&&!APP.tournament.listed)APP.tournament.wasListed=true;
   saveState();toast('Saved ✓');renderHome();updateShareLink();
 }
 const DROLES=['Batsman','Batsman','Batsman','Wicket-keeper','All-rounder','All-rounder','Batsman','Bowler','Bowler','Bowler','Bowler'];
@@ -3165,6 +3405,7 @@ function clearBulk(){
 }
 function validJersey(v){let x=String(v).trim();return /^\d{1,3}$/.test(x)?+x:null;}
 function addTeam(){
+  if(ownerOnly())return;
   let name=document.getElementById('nt-name').value.trim().slice(0,40);
   let code=document.getElementById('nt-code').value.trim().toUpperCase();
   let city=document.getElementById('nt-city').value.trim().slice(0,40);
@@ -3195,7 +3436,7 @@ function addTeam(){
   toast(`✅ ${name} added — ${N} players${subCount?` + ${subCount} sub${subCount>1?'s':''}`:''}`);
 }
 function deleteTeam(id){
-  if(APP.role!=='admin')return;
+  if(APP.role!=='admin'||ownerOnly())return;
   let t0=APP.teams.find(t=>t.id===id);if(!t0)return;
   let ms=APP.matches.filter(m=>m.teamAId===id||m.teamBId===id);
   if(ms.some(m=>m.status==='live')){toast(t0.name+' is playing a live match — finish or discard it first','warn');return;}
@@ -3258,6 +3499,7 @@ function filterPlayers(){
   el.innerHTML=(team.players.length?rows:'<p style="color:var(--dim)">No players.</p>')+add;
 }
 function updPlayer(tid,pid,field,val){
+  if(ownerOnly())return;
   if(APP.role!=='admin')return;
   let t=APP.teams.find(x=>x.id===tid),p=t&&t.players.find(x=>x.id===pid);if(!p)return;
   if(field==='name'){
@@ -3278,6 +3520,7 @@ function updPlayer(tid,pid,field,val){
   saveState();toast('Player updated ✓');
 }
 function addPlayer(tid){
+  if(ownerOnly())return;
   if(APP.role!=='admin')return;
   let t=APP.teams.find(x=>x.id===tid);if(!t)return;
   let n=document.getElementById('pa-name').value.trim().slice(0,40);
@@ -3291,12 +3534,14 @@ function addPlayer(tid){
   filterPlayers();renderTeamList();saveState();toast(`✅ ${n} added`);
 }
 function setCaptain(tid,pid){
+  if(ownerOnly())return;
   if(APP.role!=='admin')return;
   let t=APP.teams.find(x=>x.id===tid);if(!t)return;
   t.captainId=pid;saveState();toast('Captain set ✓');
 }
 function isCaptain(pid){return APP.teams.some(t=>t.captainId===pid);}
 function delPlayer(tid,pid){
+  if(ownerOnly())return;
   if(APP.role!=='admin')return;
   let t=APP.teams.find(x=>x.id===tid),p=t&&t.players.find(x=>x.id===pid);if(!p)return;
   if(!window.confirm('Remove '+p.name+' from '+t.name+'? Past scorecards keep their records.'))return;
@@ -3323,6 +3568,7 @@ function afterPhotoChange(){
   try{renderTeamList();filterPlayers();refreshUmpPhotos();renderMatches();refreshView();}catch(e){}
 }
 function pickPhoto(id){
+  if(ownerOnly())return;
   if(APP.role!=='admin'||!id)return;
   let inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=()=>{
@@ -3348,6 +3594,7 @@ function pickPhoto(id){
   inp.click();
 }
 function removePhoto(id){
+  if(ownerOnly())return;
   if(APP.role!=='admin'||!APP.photos[id])return;
   delete APP.photos[id];afterPhotoChange();toast('Photo removed');
 }
@@ -4849,7 +5096,7 @@ function renderFieldingStats(){
 
 // ── Awards ─────────────────────────────────────────────────────────────
 function setPOTS(pid){
-  if(APP.role!=='admin')return;
+  if(APP.role!=='admin'||ownerOnly())return;
   APP.tournament.pots=pid||'';
   saveState();renderAwards();
   toast(pid?'🌟 Player of the Series saved':'Player of the Series set to auto');
@@ -5181,7 +5428,7 @@ function bindActions(){
         // SECURITY: whitelist of allowed functions — NO eval()
         var ALLOWED = {
           doLogin,doRegister,doGuest,doLogout,showForgot,showLogin,showViewer,
-          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,syncNow,newTournament,newSingleMatch,loadUsage,idpStart,finishSetup,confirmRetiredHurt,cancelToss,openRain,rainSuggest,confirmRain,startSuperOver,superFromCelebration,
+          switchStatTab,openLangModal,setLang,showCelebration,closeCelebration,openMOTM,saveMOTM,showTournamentComplete,applyLanguage,openAfterCelebration,closeCelebration,syncNow,newTournament,newSingleMatch,loadUsage,idpStart,finishSetup,confirmRetiredHurt,cancelToss,addScorer,loadDiscover,openRain,rainSuggest,confirmRain,startSuperOver,superFromCelebration,
           deleteTeam,delPlayer,deleteMatch,confirmDeleteMatch,moveMatch,startMatch,showMHist,openEditMatch,openDiscard,openManage,triggerRetiredHurt,enableNotifications,skipNotifications,toggleNotifications,
           switchTab,fpStep1,
           showTab,saveTournament,addTeam,clearBulk,filterPlayers,
@@ -5224,6 +5471,8 @@ function bindActions(){
   // Special: overs custom input onchange
   var ovsCustom = document.getElementById('t-overs-custom');
   if(ovsCustom) ovsCustom.addEventListener('change', updateBowlerMaxLabel);
+  var dcq = document.getElementById('dc-q');
+  if(dcq) dcq.addEventListener('input', renderDiscover);
   var rainOv = document.getElementById('rain-ov');
   if(rainOv) rainOv.addEventListener('input', rainSuggest);
   // Special: player team select onchange
