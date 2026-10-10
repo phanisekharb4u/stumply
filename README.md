@@ -21,9 +21,9 @@ Admins can add a photo for each player, a logo for each team and a photo for eac
 
 ## Deploy
 
-On Cloudflare Pages: connect this repo, leave the build command empty. `_headers` sets the Content-Security-Policy there; `vercel.json` does the same on Vercel.
+Live at https://stumply.pages.dev on Cloudflare Pages: connect this repo and leave the build command empty. `_headers` sets the security headers.
 
-Static site, no build step: `index.html`, `firebase-config.js`, `sw.js`, `manifest.json`, icons. `vercel.json` sets the Content-Security-Policy.
+Static site, no build step: `index.html`, `firebase-config.js`, `sw.js`, `manifest.json`, icons.
 
 ## Data layout
 
