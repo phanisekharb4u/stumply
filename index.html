@@ -10,8 +10,9 @@
 <meta name="apple-mobile-web-app-title" content="Stumply">
 <meta name="description" content="Cricket tournament manager — live scoring, team management, match history">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png">
+<link rel="icon" type="image/svg+xml" href="/icon-mark.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>Stumply — Cricket Tournament Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -1115,7 +1116,7 @@ body::before{display:block;content:'';position:fixed;inset:0;z-index:0;pointer-e
 #topbar{background:var(--grad-green);border-bottom:none;box-shadow:0 2px 0 var(--g-gold),0 8px 24px rgba(10,59,37,.28)}
 .logo,.logo span{color:#fff}
 .logo span{background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.logo::before{content:'🏏 ';-webkit-text-fill-color:initial}
+.logo::before{content:'';display:inline-block;width:32px;height:32px;margin-right:9px;vertical-align:-7px;border-radius:8px;background:url(/icon-mark.svg) center/contain no-repeat;box-shadow:0 0 0 1px rgba(233,196,106,.5)}
 #unm{color:#EAF3EC!important}
 .btn-out,#help-btn,#lang-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.32);color:#fff}
 .btn-out:hover,#help-btn:hover,#lang-btn:hover{background:rgba(255,255,255,.24);border-color:#fff;color:#fff}
@@ -1224,6 +1225,9 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
 .pweye:hover,.pweye.on{opacity:1;background:var(--emlt)}
 .idpbtn{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;background:#fff}
 .idpic{width:24px;height:24px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;font-family:Arial,sans-serif;flex-shrink:0}
+.brandword{font-family:var(--serif)!important;font-weight:600;letter-spacing:0!important;color:#0A3B25;background:none!important;-webkit-text-fill-color:currentColor!important}
+.brandword span{background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent!important}
+.psvg{border-radius:22px;box-shadow:0 10px 28px rgba(10,59,37,.3)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -1325,14 +1329,8 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
 <!-- ══ AUTH ══ -->
 <div id="authscr">
   <div class="abox">
-    <svg class="psvg" width="64" height="64" viewBox="0 0 80 80">
-      <ellipse cx="40" cy="40" rx="38" ry="38" fill="#0a2a10" stroke="#00c97a" stroke-width="1.5"/>
-      <ellipse cx="40" cy="40" rx="12" ry="28" fill="none" stroke="#f0c040" stroke-width="1" stroke-dasharray="2,2"/>
-      <line x1="40" y1="12" x2="40" y2="68" stroke="#f0c040" stroke-width=".8" opacity=".4"/>
-      <rect x="33" y="14" width="14" height="4" rx="1" fill="#f0c040" opacity=".7"/>
-      <rect x="33" y="62" width="14" height="4" rx="1" fill="#f0c040" opacity=".7"/>
-    </svg>
-    <h1>🏏 Stumply</h1>
+    <img class="psvg" src="/icon-mark.svg" width="96" height="96" alt="">
+    <h1 class="brandword">Stum<span>ply</span></h1>
     <p class="sub">Stumply — Your cricket tournament, your data</p>
 
     <div id="ls-warn" style="display:none;background:rgba(240,160,48,.15);border:1px solid var(--amber);border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--amber);text-align:left">
@@ -1465,7 +1463,8 @@ th:first-child{border-radius:12px 0 0 0}th:last-child{border-radius:0 12px 0 0}
 <!-- HOME -->
 <div id="view-home" class="view active">
   <div style="text-align:center;padding:22px 0 15px">
-    <h1 style="font-family:var(--disp);font-size:26px;color:var(--gold);letter-spacing:2px">STUMPLY</h1>
+    <img src="/icon-mark.svg" width="64" height="64" alt="" style="display:block;margin:0 auto 8px;border-radius:15px;box-shadow:0 8px 20px rgba(10,59,37,.25)">
+    <h1 class="brandword" style="font-size:34px">Stum<span>ply</span></h1>
     <p id="htnm" style="color:var(--dim);font-size:12px;margin-top:2px">Your Tournament</p>
   </div>
   <div class="tcol">
