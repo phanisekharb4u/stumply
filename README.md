@@ -34,7 +34,14 @@ Static site, no build step: `index.html`, `firebase-config.js`, `sw.js`, `manife
 | `/userTournaments/{uid}` (list shown to viewers) | anyone | that user |
 | `/usernames/{name}` → uid | anyone | first to claim it |
 | `/users/{uid}` (name, username) | that user | that user |
+| `/quota/{uid}` (used, credits) | that user, site owner | user adds 1 to `used` when creating; only the site owner adds `credits` |
+| `/payments/{uid}/{id}` (UPI ref, amount) | that user, site owner | user creates as pending; site owner approves or rejects |
+| `/config/pay` (UPI ID, price) | anyone | site owner |
 | `/polls/{tournament}/{match}/{uid}` → team id | anyone | that (anonymous) user; the owner can clear a tournament's votes |
+
+## Free limit and payments
+
+Every admin gets 3 free tournaments or single matches, plus the starter tournament made at their first sign-in. After that each new one needs a credit. Admins pay the site owner by UPI and type the UPI reference number; the site owner checks it and taps **Approve** in Admin → Payments, which adds one credit. Set your UPI ID and price there first. The limit is enforced by the `quota` rules in `database.rules.json` (the number 3 appears there and as `FREE_T` in `index.html`). The site owner (`/owners/{uid}`) has no limit.
 
 ## Live-stream overlay
 
