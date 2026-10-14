@@ -1,0 +1,10 @@
+const {chromium}=require(process.env.PW);const U='http://localhost:8771/';const T=process.env.TAG;
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,serviceWorkers:'block'})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto(U);await p.waitForTimeout(500);await p.fill('#l-p','secret1');await p.click('.pweye[data-for="l-p"]');
+console.log('login field after tap:',await p.evaluate(()=>document.getElementById('l-p').type));
+await p.click('.pweye[data-for="l-p"]');console.log('after second tap:',await p.evaluate(()=>document.getElementById('l-p').type));
+await p.click('#auth-tabs >> text=Register');await p.fill('#r-p','secret1');await p.fill('#r-p2','secret1');await p.click('.pweye[data-for="r-p"]');await p.screenshot({path:'shots/pw-register.png'});
+await p.fill('#r-n','Phani Sekhar S');await p.fill('#r-u',T);await p.fill('#r-e',T+'@example.com');await p.click('#apanel-reg .btnpri');await p.waitForTimeout(1800);
+console.log('registered role:',await p.evaluate(()=>APP.role));await p.evaluate(()=>doLogout());await p.waitForTimeout(800);
+console.log('after logout fields hidden:',await p.evaluate(()=>['l-p','r-p','r-p2'].map(i=>document.getElementById(i).type).join(',')));
+console.log(errs.length?errs:'no page errors');await b.close();})().catch(e=>console.log('FAILED',e.message));

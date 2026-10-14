@@ -1,0 +1,16 @@
+const {chromium}=require(process.env.PW);const U='http://localhost:8771/';
+(async()=>{const b=await chromium.launch();const errs=[];
+const mk=async(n)=>{const ctx=await b.newContext({viewport:{width:390,height:800},serviceWorkers:'block'});const p=await ctx.newPage();p.on('pageerror',e=>errs.push(n+' '+e.message));
+ await p.goto(U);await p.waitForTimeout(400);await p.click('#auth-tabs >> text=Register');
+ await p.fill('#r-n',n);await p.fill('#r-u',n.toLowerCase()+'_x');await p.fill('#r-e',n+'@example.com');await p.fill('#r-p','secret1');await p.fill('#r-p2','secret1');await p.click('#apanel-reg .btnpri');await p.waitForTimeout(1800);return p;};
+const a=await mk('Ravi');const o=await mk('Phani');
+await a.evaluate(()=>showTab('admin'));await a.fill('#tn-new','Ravi Cup');await a.click('text=New tournament >> visible=true');await a.waitForTimeout(1000);
+const st=async p=>p.evaluate(async()=>{showTab('admin');let r={};try{await dbReq('GET','users',undefined,true);r.users='readable'}catch(e){r.users=e.message}r.card=getComputedStyle(document.getElementById('usage-card')).display;return r;});
+console.log('before owner flag  ravi',await st(a),'phani',await st(o));
+const uid=await o.evaluate(()=>AUTH.uid);await o.goto(U+'__owner?uid='+uid);await o.goto(U);await o.waitForTimeout(1800);
+console.log('after  ravi',await st(a),'phani',await st(o));
+console.log('summary',await o.evaluate(()=>document.getElementById('usage-sum').innerText.replace(/\n+/g,' ')));
+console.log('list',await o.evaluate(()=>document.getElementById('usage-list').innerText.replace(/\n+/g,' | ')));
+await o.fill('#usage-q','ravi cup');await o.waitForTimeout(200);console.log('search',await o.evaluate(()=>document.querySelectorAll('#usage-list>div').length));
+await o.fill('#usage-q','');await o.evaluate(()=>document.getElementById('usage-card').scrollIntoView());await o.screenshot({path:'shots/o-usage.png'});
+console.log('hscroll',await o.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),errs.length?errs:'no page errors');await b.close();})().catch(e=>console.log('FAILED',e.message));

@@ -24,7 +24,38 @@ Admins can add a photo for each player, a logo for each team and a photo for eac
 
 Live at https://stumply.pages.dev on Cloudflare Pages: connect this repo and leave the build command empty. `_headers` sets the security headers.
 
-Static site, no build step: `index.html`, `firebase-config.js`, `sw.js`, `manifest.json`, icons.
+Static site, no build step: Cloudflare serves the files exactly as they are in the repo.
+
+## Project layout
+
+| Path | What it is |
+|---|---|
+| `index.html` | The page: all screens and pop-ups |
+| `css/app.css` | All styles |
+| `js/core.js` | Settings, local storage, Firebase sign-in calls, cloud saving, tournaments, co-scorers, Discover, viewer live feed |
+| `js/signin.js` | Sign-in screen (watch first, register, sign in, Google / X, password reset) |
+| `js/admin.js` | Navigation, tournament settings, teams, players, photos, scheduling |
+| `js/scoring.js` | Toss, innings, the scoring engine, mid-match changes, discarding a match |
+| `js/views.js` | Live view, scorecard, history, stats, points table, home |
+| `js/ui.js` | Button wiring and notification prompts |
+| `js/i18n-data.js` | Translations and the Help guide. **Generated** from `tools/i18n/` |
+| `js/lang.js` | Language switching and the translation engine |
+| `js/extras.js` | Celebration, awards, knockouts, player profiles, share image, Super Over, rain, WhatsApp text, graphs, stream overlay, spoken score, fan poll, match rules, entry fees |
+| `js/boot.js` | Start-up. Runs last |
+| `sw.js` | Offline support and notifications. Bump `CACHE` when files change |
+| `database.rules.json` | Firebase Realtime Database rules |
+| `tools/i18n/` | Translation and Help sources (`build.py` writes `js/i18n-data.js`) |
+| `tests/` | End-to-end tests, see `tests/README.md` |
+
+The JavaScript files are plain scripts, not modules: they share global names and must stay in the order listed at the bottom of `index.html`. Code that runs straight away (not inside a function) may only use things from the same or an earlier file.
+
+## Translations and Help
+
+Edit the English → Telugu / Hindi / Tamil / Kannada / Malayalam lists in `tools/i18n/d*.py`, or the Help guide in `tools/i18n/help.py`, then run `python3 tools/i18n/build.py` and commit the updated `js/i18n-data.js`.
+
+## Tests
+
+`tests/` holds end-to-end tests that drive the app in a real browser against a fake Firebase. They run on GitHub for every pull request. To run them yourself: `cd tests && npm install && npx playwright install chromium && node run.js`. See `tests/README.md`.
 
 ## Data layout
 

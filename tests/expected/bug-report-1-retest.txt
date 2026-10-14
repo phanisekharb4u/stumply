@@ -1,0 +1,18 @@
+BUG-07 schedule button hidden: hidden | try anyway: A single match has only one game. To play another, tap New single match in Admin → My Tournaments. | sch-mo open=false
+BUG-02 viewer before innings 1: FRIENDLY | ⏳ MATCH STARTING SOON | 🪙 Test Team A elected to BAT | Waiting for the scorer to pick the openers… | 💬 WhatsApp update | 🔇 Speak score: Off | 🗳 Fan poll: who will win? | Test Team A | Test Team B | 0 votes || manage links: 0 | warn boxes: 0
+BUG-01 viewer openManage(): blocked
+OBS-06 golive link on live tab: none | on home: inline
+OBS-05 commentary: 0.3 rh A Player 1 ; 0.5 rb A Player 1
+BUG-02 viewer at innings break: FRIENDLY | ⏸ INNINGS BREAK | Test Team A: 5/1 (1.0 Ov) | 🎯 6 | Test Team B need 6 runs to win from 1 over | Waiting for the scorer to pick the openers… | 💬 WhatsApp update | 🔇 Speak score: Off | 🗳 Fan poll: who will  || manage links: 0 | warn boxes: 0
+BUG-03 scorer live after tie (behind popup): RRR shown=false ∞=false Need=false
+after SO1: Match tied — Super Over tied too!
+OBS-03 SO2 options: title: ⚡ Super Over 2 — Test Team A batting | out in SO1: B Player 1 offered? false | bowled SO1 for Test Team B: B Player 1 | bowler options B Player 2,B Player 3,B Player 4,B Player 5
+result: Match tied — Super Over tied too!
+BUG-04 matches card: TTA: 5/1 (1.0) / TTB: 5/0 (1.0) / ⚡ Super Over 1 · TTB: 4/1 (1.0) / ⚡ Super Over 1 · TTA: 4/0 (1.0) / ⚡ Super Over 2 · TTA: 6/0 (1.0) / ⚡ Super Over 2 · TTB: 6/0 (1.0)
+BUG-05 history: TTA: 5/1 (1.0) | TTB: 5/0 (1.0) | ⚡SO1 TTB: 4/1 (1.0) | ⚡SO1 TTA: 4/0 (1.0) | ⚡SO2 TTA: 6/0 (1.0) | ⚡SO2 TTB: 6/0 (1.0)
+BUG-05 scorecard headers: Test Team A — Innings 1 / Test Team B — Innings 2 / ⚡ Test Team B — Super Over 1 / ⚡ Test Team A — Super Over 1 / ⚡ Test Team A — Super Over 2 / ⚡ Test Team B — Super Over 2
+BUG-06 dropdown: #1 [Friendly] Test Team A vs Test Team B (<date>) · Test Ground
+BUG-08 M column: A Player 2 bat M=1 bowl M=- field M=-
+OBS-02 auto POTM: B Player 1 — 1 wkt for 5 runs, 3 runs (3b)
+OBS-01 confirm shown: Reopen this finished match? The result is removed for everyone until the match is finished again. | match status now live
+no page errors

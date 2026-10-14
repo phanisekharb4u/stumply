@@ -1,0 +1,12 @@
+{
+  "name": "stumply-tests",
+  "private": true,
+  "description": "End-to-end tests for Stumply (real browser + fake Firebase)",
+  "scripts": {
+    "test": "node run.js",
+    "update": "node run.js --update"
+  },
+  "devDependencies": {
+    "playwright": "1.56.0"
+  }
+}
