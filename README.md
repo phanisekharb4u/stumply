@@ -14,6 +14,7 @@ Cricket tournament app: teams, fixtures, ball-by-ball live scoring, scorecards, 
 4. In Realtime Database open the **Rules** tab, replace everything with the contents of `database.rules.json`, and **Publish**.
 5. **Project settings (gear icon) → General → Your apps → Web (`</>`)**, register an app, and copy `apiKey` and `databaseURL` from the config shown.
 6. Paste those two values into `firebase-config.js` and deploy.
+7. For the fan poll: **Authentication → Sign-in method → Add new provider → Anonymous → Enable.** Viewers get a free anonymous sign-in only when they vote.
 
 ## Optional photos
 
@@ -33,6 +34,11 @@ Static site, no build step: `index.html`, `firebase-config.js`, `sw.js`, `manife
 | `/userTournaments/{uid}` (list shown to viewers) | anyone | that user |
 | `/usernames/{name}` → uid | anyone | first to claim it |
 | `/users/{uid}` (name, username) | that user | that user |
+| `/polls/{tournament}/{match}/{uid}` → team id | anyone | that (anonymous) user; the owner can clear a tournament's votes |
+
+## Live-stream overlay
+
+`?t=<id>&overlay=1` shows only a score strip on a see-through background, for use as a browser source in streaming apps such as OBS. Add `&bg=green` for a green-screen background and `&pos=top` to place it at the top.
 
 ## Moving from the earlier version
 
@@ -40,6 +46,5 @@ The earlier version kept accounts and data in the browser. After registering, op
 
 ## Known limits
 
-- 11-a-side only.
 - One scorer at a time per tournament; if two devices score the same match, the last save wins.
 - Notifications fire only while the app is open; there is no push server.
