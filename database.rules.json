@@ -235,6 +235,37 @@
         }
       }
     },
+    "requests": {
+      ".read": "auth != null && root.child('owners').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$rid": {
+          ".write": "auth != null && ((auth.uid === $uid && !data.exists()) || root.child('owners').child(auth.uid).val() === true)",
+          ".validate": "$rid.matches(/^[A-Za-z0-9_-]{1,40}$/) && newData.hasChildren(['count','reason','at','status'])",
+          "count": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 20"
+          },
+          "reason": {
+            ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 300"
+          },
+          "at": {
+            ".validate": "newData.isNumber()"
+          },
+          "uname": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          },
+          "granted": {
+            ".validate": "root.child('owners').child(auth.uid).val() === true && newData.isNumber() && newData.val() >= 0 && newData.val() <= 20"
+          },
+          "status": {
+            ".validate": "newData.isString() && (newData.val() === 'pending' || (root.child('owners').child(auth.uid).val() === true && (newData.val() === 'approved' || newData.val() === 'rejected')))"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
     "config": {
       ".read": true,
       "pay": {
