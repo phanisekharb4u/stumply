@@ -1,7 +1,7 @@
 rules saved: {"lms":true,"noLBW":true,"noFH":true}
 fees: ₹2,500 Collected ₹1,500 Still to collect 1 / 2 Teams paid | Test Team A Paid / Test Team B Part paid ✓ Mark paid
 overlay link: <site>/?t=<id>&overlay=1
-overlay before match: Test Cup Live scores coming up | body bg: rgba(0, 0, 0, 0) | other UI hidden: none
+overlay before match: TEST CUP Live scores coming up | body bg: rgba(0, 0, 0, 0) | other UI hidden: none
 viewer poll shown: true
 viewer poll after vote: 🗳 Fan poll: who will win? ✓ Test Team A 100% Test Team B 0% 1 vote · Tap the other team to change your vote
 LBW disabled: true
@@ -11,8 +11,8 @@ after 2 wickets (3 players): {"w":2,"maxW":3,"str":"A Player 3","ns":null,"alone
 lone batter card: A Player 3 / 🧍 Batting alone (last man stands) | warn boxes: none
 lone batter keeps strike after odd runs: A Player 3 ns=null balls=6 runs=9
 innings 1 ended all out with 3 wickets: 15 all out completed=true
-overlay at break: TTA 15-3 1.2 Innings break · Test Team B need 16 to win
-overlay live: TTB 11-0 0.3 B Player 2 6 (1) B Player 1 5 (2) A Player 1 0-11 (0.3) 4 1 6 Test Cup · Test Team B need 5 runs from 9 balls
+overlay at break: TEST CUP · INNINGS BREAK TTA 15-3 1.2 / 2 ov Test Team B need 16 runs to win from 2 overs TARGET 16 REQUIRED RATE 8.00 EXTRAS 1 FALL OF WICKETS 5/1 6/2 15/3
+overlay live: TEST CUP · 2ND INNINGS · TEST TEAM B V TEST TEAM A TTB 11-0 0.3 / 2 ov B Player 2 6 (1) 1×6 B Player 1 5 (2) 1×4 A Player 1 0-11 (0.3) Econ 22.00 THIS OVER 4 1 6 TARGET 16 NEED 5 from 9 balls REQUIRED RATE 3.33 RUN RATE 22.00 PARTNERSHIP 11 (3) EXTRAS 0
 poll closed for viewer: 🗳 Fan poll: who will win? ✓ Test Team A 100% Test Team B 0% 1 vote · Voting closed
 --- WhatsApp live text ---
 🏏 *Test Team A vs Test Team B*
