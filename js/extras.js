@@ -533,36 +533,59 @@ function renderOverlay(){
   let el=document.getElementById('ovl');
   if(!el){el=document.createElement('div');el.id='ovl';el.setAttribute('data-noi18n','1');document.body.appendChild(el);}
   el.className='ovl-'+OVL.pos;
-  let tn=esc(APP.tournament.name||'Stumply');
+  const T=id=>esc(rawTeamName(id)),C=id=>esc(teamCode(id));
+  const tag=(m,extra)=>{let a=[esc(APP.tournament.name||'Stumply')];if(m&&m.matchType&&m.matchType!=='League')a.push(esc(m.matchType));if(extra)a.push(extra);return `<div class="ov-tag">${a.join(' · ')}</div>`;};
+  const info=parts=>`<div class="ov-info">${parts.filter(Boolean).map(([k,v])=>`<span><em>${k}</em> ${v}</span>`).join('')}</div>`;
+  const box=(i,small)=>`<div class="ov-score"><span class="ov-team">${C(i.battingTeamId)}</span><span class="ov-runs">${i.runs}-${i.wickets}</span><span class="ov-ovs">${ov(i)}${small?'':'<small> / '+innOvers(i)+' ov</small>'}</span></div>`;
+  const toss=m=>m&&m.toss?['Toss',`${C(m.toss.winner)} chose to ${m.toss.decision==='bat'?'bat':'bowl'}`]:null;
   let m=APP.matches.find(x=>x.status==='live');
   let inn=m&&m.innings[m.currentInnings];
   if(!m||!inn){
-    let last=lastCompletedMatch();
-    el.innerHTML=`<div class="ovb"><div class="ov-score">${tn}</div><div class="ov-mid">${m?`${esc(rawTeamName(m.teamAId))} v ${esc(rawTeamName(m.teamBId))} · Match starting soon`:last&&last.resultText?'🏆 '+esc(last.resultText):'Live scores coming up'}</div></div>`;
+    let last=m?null:lastCompletedMatch();
+    if(last&&last.resultText){
+      let ins=mainInns(last);
+      el.innerHTML=tag(last,'Result')+`<div class="ovb">${ins.map(i=>box(i,true)).join('')}<div class="ov-mid">🏆 ${esc(last.resultText)}</div></div>`
+        +info([last.motm&&playerNameInMatch(last,last.motm)?['Player of the match',esc(playerNameInMatch(last,last.motm))]:null]);
+    }else el.innerHTML=tag(m)+`<div class="ovb"><div class="ov-mid">${m?`${T(m.teamAId)} v ${T(m.teamBId)} · Match starting soon`:'Live scores coming up'}</div></div>`+info([toss(m)]);
     return;
   }
-  let opp=inn.bowlingTeamId,sub='';
-  // Between innings (or before the openers walk out): show the last score and what comes next
+  const innName=i=>i.super?esc(soName(m,i)):(i.number===1?'1st innings':'2nd innings');
+  // Between innings (or before the openers walk out): last score and what comes next
   let prev=inn.completed?inn:(!inn.striker&&inn.legalBalls===0?m.innings[m.currentInnings-1]:null);
   if(prev||(!inn.striker&&inn.legalBalls===0)){
-    let msg=prev?(prev.number%2===1?`Innings break · ${esc(rawTeamName(prev.bowlingTeamId))} need ${prev.runs+1} to win`:'Innings complete'):`${esc(rawTeamName(m.teamAId))} v ${esc(rawTeamName(m.teamBId))} · Match starting soon`;
-    el.innerHTML=`<div class="ovb">${prev?`<div class="ov-score"><span class="ov-team">${esc(teamCode(prev.battingTeamId))}</span><span class="ov-runs">${prev.runs}-${prev.wickets}</span><span class="ov-ovs">${ov(prev)}</span></div>`:`<div class="ov-score">${tn}</div>`}<div class="ov-mid">${msg}</div></div>`;
+    if(prev){
+      let chase=prev.number%2===1,next=m.innings[prev.number]||{},tgt=prev.runs+1,overs=next.maxBalls?Math.round(next.maxBalls/6):innOvers(prev);
+      el.innerHTML=tag(m,chase?'Innings break':'Innings complete')+`<div class="ovb">${box(prev)}<div class="ov-mid">${chase?`${T(prev.bowlingTeamId)} need ${plural(tgt,'run')} to win from ${plural(overs,'over')}`:'Innings complete'}</div></div>`
+        +info([chase?['Target',tgt]:null,chase?['Required rate',(tgt/Math.max(1,overs)).toFixed(2)]:null,['Extras',prev.extras.total||0],(prev.fallOfWickets||[]).length?['Fall of wickets',prev.fallOfWickets.map(f=>`${f.score}/${f.wicket}`).join(' ')]:null]);
+    }else el.innerHTML=tag(m)+`<div class="ovb"><div class="ov-mid">${T(m.teamAId)} v ${T(m.teamBId)} · Match starting soon</div></div>`+info([toss(m)]);
     return;
   }
-  if(inn.target){
-    let need=Math.max(0,inn.target-inn.runs),bl=innBalls(inn)-inn.legalBalls;
-    sub=`${esc(rawTeamName(inn.battingTeamId))} need ${plural(need,'run')} from ${plural(bl,'ball')}`;
-  }else sub=`${esc(rawTeamName(inn.battingTeamId))} v ${esc(rawTeamName(opp))}${m.toss?` · ${esc(rawTeamName(m.toss.winner))} won the toss`:''}`;
-  if(inn.super)sub='⚡ '+esc(soName(m,inn))+' · '+sub;
-  let bat=id=>{let b=id&&inn.batsmen[id];return b?`<div class="ov-row${id===inn.striker?' ov-on':''}"><span class="ov-nm">${esc(b.name)}</span><b>${b.runs}</b><i>(${b.balls})</i></div>`:'';};
+  let bat=id=>{let b=id&&inn.batsmen[id];if(!b)return '';let x=[];if(b.fours)x.push(b.fours+'×4');if(b.sixes)x.push(b.sixes+'×6');
+    return `<div class="ov-row${id===inn.striker?' ov-on':''}"><span class="ov-nm">${esc(b.name)}</span><b>${b.runs}</b><i>(${b.balls})</i>${x.length?`<small>${x.join(' ')}</small>`:''}</div>`;};
   let bw=inn.currentBowler&&inn.bowlers[inn.currentBowler];
-  let balls=(inn.thisOver||[]).length?inn.thisOver:((inn.pastOvers||[]).slice(-1)[0]||[]);
-  el.innerHTML=`<div class="ovb">
-    <div class="ov-score"><span class="ov-team">${esc(teamCode(inn.battingTeamId))}</span><span class="ov-runs">${inn.runs}-${inn.wickets}</span><span class="ov-ovs">${ov(inn)}</span></div>
-    <div class="ov-bat">${bat(inn.striker)}${bat(inn.nonStriker)}</div>
-    <div class="ov-bwl">${bw?`<div class="ov-row"><span class="ov-nm">${esc(bw.name)}</span></div><div class="ov-row"><b>${bw.wickets}-${bw.runs}</b><i>(${bowlerOvTxt(bw)})</i></div>`:''}</div>
-    <div class="ov-balls">${balls.slice(-8).map(ovlBall).join('')}</div>
-  </div><div class="ov-sub">${tn} · ${sub}</div>`;
+  let cur=(inn.thisOver||[]).length,balls=cur?inn.thisOver:((inn.pastOvers||[]).slice(-1)[0]||[]);
+  let crr=inn.legalBalls?(inn.runs*6/inn.legalBalls).toFixed(2):'0.00';
+  let parts=[];
+  if(inn.target){
+    let need=Math.max(0,inn.target-inn.runs),bl=Math.max(0,innBalls(inn)-inn.legalBalls);
+    parts.push(['Target',inn.target],['Need',`${need} from ${plural(bl,'ball')}`],['Required rate',bl?(need*6/bl).toFixed(2):'—'],['Run rate',crr]);
+  }else{
+    parts.push(['Run rate',crr]);
+    if(inn.legalBalls>=6&&!inn.super)parts.push(['Projected',Math.round(inn.runs/inn.legalBalls*innBalls(inn))]);
+  }
+  let cp=inn.currentPartnership||{runs:0,balls:0};parts.push(['Partnership',`${cp.runs} (${cp.balls})`]);
+  let fw=(inn.fallOfWickets||[]).slice(-1)[0];
+  if(fw){let lb=Object.values(inn.batsmen||{}).find(b=>b.name===fw.batsman&&b.status==='out');parts.push(['Last wicket',`${esc(fw.batsman)} ${lb?lb.runs+' ('+lb.balls+')':''} · ${fw.score}/${fw.wicket}`]);}
+  parts.push(['Extras',inn.extras.total||0]);
+  if(!inn.target)parts.push(toss(m));
+  let lastLbl=String(balls[balls.length-1]||'');
+  let freeHit=cur&&/nb/.test(lastLbl)&&!/W$/.test(lastLbl)&&!APP.tournament.noFH;
+  el.innerHTML=tag(m,`${innName(inn)} · ${T(inn.battingTeamId)} v ${T(inn.bowlingTeamId)}`)+`<div class="ovb">
+    ${box(inn)}
+    <div class="ov-bat">${bat(inn.striker)}${bat(inn.nonStriker)}${!inn.nonStriker&&lmsAlone(inn)?'<div class="ov-row"><i>Last man stands</i></div>':''}</div>
+    <div class="ov-bwl">${bw?`<div class="ov-row"><span class="ov-nm">${esc(bw.name)}</span></div><div class="ov-row"><b>${bw.wickets}-${bw.runs}</b><i>(${bowlerOvTxt(bw)})</i><small>Econ ${econTxt(bw.runs,bw.overs,bw.balls)}</small></div>`:''}</div>
+    <div class="ov-balls"><span class="ov-blbl">${cur?'This over':'Last over'}</span>${balls.slice(-8).map(ovlBall).join('')}</div>
+  </div>`+(freeHit?'<div class="ov-fh">FREE HIT</div>':'')+info(parts);
 }
 
 // ══════════════════════════════════════════════════════════════════════════
