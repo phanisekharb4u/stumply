@@ -56,7 +56,7 @@ HELP={
  ['🔴','Score a match live','ol',[
   'On the match card tap [[Start]]. Set the toss, then pick the two openers and the opening bowler.',
   'For each ball tap the runs: [[DOT]] [[1]] [[2]] [[3]] [[4]] [[6]].',
-  '[[WIDE]] and [[NO BALL]]: enter the total for that ball including the 1 penalty run. For a no ball, tick the box if the runs came off the bat. The ball after a no ball is a free hit.',
+  '[[WIDE]] and [[NO BALL]]: enter the total for that ball including the 1 penalty run. For a no ball, tick the box if the runs came off the bat. The ball after a no ball is a free hit, unless the free hit is switched off in Match rules.',
   '[[BYE]] and [[LEG BYE]]: enter the runs taken.',
   '[[WICKET]]: choose how the batter was out, the fielder if caught, stumped or run out, and the next batter.',
   'At the end of each over, choose the next bowler. The bowler of the last over and bowlers who used their quota are greyed out.',
@@ -161,7 +161,7 @@ HELP={
  ['🔴','మ్యాచ్‌ను లైవ్‌గా స్కోర్ చేయడం','ol',[
   'మ్యాచ్ కార్డ్‌లో [[ప్రారంభించు]] నొక్కండి. టాస్ పెట్టి, ఇద్దరు ఓపెనర్లను, మొదటి బౌలర్‌ను ఎంచుకోండి.',
   'ప్రతి బంతికి పరుగులు నొక్కండి: [[డాట్]] [[1]] [[2]] [[3]] [[4]] [[6]].',
-  '[[వైడ్]], [[నో బాల్]]: ఆ బంతికి మొత్తం పరుగులు, 1 పెనాల్టీ పరుగుతో కలిపి ఇవ్వండి. నో బాల్‌లో పరుగులు బ్యాట్ నుండి వస్తే బాక్స్ టిక్ చేయండి. నో బాల్ తర్వాతి బంతి ఫ్రీ హిట్.',
+  '[[వైడ్]], [[నో బాల్]]: ఆ బంతికి మొత్తం పరుగులు, 1 పెనాల్టీ పరుగుతో కలిపి ఇవ్వండి. నో బాల్‌లో పరుగులు బ్యాట్ నుండి వస్తే బాక్స్ టిక్ చేయండి. నో బాల్ తర్వాతి బంతి ఫ్రీ హిట్, మ్యాచ్ నియమాలలో ఫ్రీ హిట్ ఆపితే తప్ప.',
   '[[బై]], [[లెగ్ బై]]: తీసిన పరుగులు ఇవ్వండి.',
   '[[వికెట్]]: బ్యాటర్ ఎలా అవుటయ్యాడో, క్యాచ్, స్టంప్డ్ లేదా రన్ అవుట్ అయితే ఫీల్డర్‌ను, తదుపరి బ్యాటర్‌ను ఎంచుకోండి.',
   'ప్రతి ఓవర్ చివర తదుపరి బౌలర్‌ను ఎంచుకోండి. గత ఓవర్ వేసిన బౌలర్, కోటా పూర్తయిన బౌలర్లు బూడిద రంగులో ఉంటారు.',
@@ -235,3 +235,22 @@ _NEW={
 }
 for _l,_sec in _NEW.items():
     _L=HELP[_l]['sections'];_i=next(k for k,x in enumerate(_L) if x[0]=='🔗');_L.insert(_i+1,_sec)
+
+# The newer features, mentioned in the sections where people look for them (en, te)
+_MORE={
+'👁':(['On the [[Live]] tab you can also vote in the [[Fan poll]], tap [[Speak score]] to hear every ball, send the score to friends with [[WhatsApp update]], and open [[Graphs & scorecard]].'],
+      ['[[లైవ్]] ట్యాబ్‌లో [[ఫ్యాన్ పోల్]]లో ఓటు వేయవచ్చు, ప్రతి బంతి వినడానికి [[స్కోర్ వినిపించు]] నొక్కవచ్చు, [[వాట్సాప్ అప్‌డేట్]]తో స్నేహితులకు స్కోర్ పంపవచ్చు, [[గ్రాఫ్‌లు & స్కోర్‌కార్డ్]] తెరవవచ్చు.']),
+'🏆':(['Under [[Match rules]] choose Last man stands or No LBW, or switch off the free hit after a no ball.'],
+      ['[[మ్యాచ్ నియమాలు]] కింద లాస్ట్ మ్యాన్ స్టాండ్స్ లేదా LBW లేదు ఎంచుకోండి, లేదా నో బాల్ తర్వాత ఫ్రీ హిట్ ఆపండి.']),
+'🔴':(['Match rules change scoring: with Last man stands the last batter bats alone and always keeps the strike; with No LBW, LBW is greyed out; with the free hit switched off, there is no free hit after a no ball.'],
+      ['మ్యాచ్ నియమాలు స్కోరింగ్‌ను మారుస్తాయి: లాస్ట్ మ్యాన్ స్టాండ్స్‌లో చివరి బ్యాటర్ ఒంటరిగా ఆడతాడు, స్ట్రైక్ ఎప్పుడూ అతనిదే; LBW లేదు అయితే LBW ఎంచుకోలేరు; ఫ్రీ హిట్ ఆపితే నో బాల్ తర్వాత ఫ్రీ హిట్ ఉండదు.']),
+'🔗':(['[[WhatsApp update]] on the Live tab and [[WhatsApp scorecard]] on a scorecard send the score as text, with the watch link.','Streaming on YouTube or Facebook? Use the live-stream score overlay link in [[Tournament Info]] (see Match-day extras).'],
+      ['[[లైవ్]] ట్యాబ్‌లో [[వాట్సాప్ అప్‌డేట్]], స్కోర్‌కార్డ్‌లో [[వాట్సాప్ స్కోర్‌కార్డ్]] స్కోర్‌ను టెక్స్ట్‌గా, చూసే లింక్‌తో పంపుతాయి.','YouTube లేదా Facebook లో లైవ్ చేస్తున్నారా? [[టోర్నమెంట్ వివరాలు]] లోని లైవ్ స్ట్రీమ్ స్కోర్ ఓవర్‌లే లింక్ వాడండి (మ్యాచ్ రోజు అదనపు సౌకర్యాలు చూడండి).']),
+'🏅':(['Every scorecard ends with the match graphs: worm, Manhattan and partnerships.','In [[History]] → [[Awards]], tap [[Share awards on WhatsApp]] to send the full award list for prize giving.'],
+      ['ప్రతి స్కోర్‌కార్డ్ కింద మ్యాచ్ గ్రాఫ్‌లు ఉంటాయి: వార్మ్, మ్యాన్‌హట్టన్, భాగస్వామ్యాలు.','[[చరిత్ర]] → [[అవార్డులు]] లో [[అవార్డులను వాట్సాప్‌లో పంపండి]] నొక్కి బహుమతి ప్రదానం కోసం పూర్తి జాబితా పంపండి.']),
+'📱':(['Match alerts: tap 🔔 to switch them on or off. On iPhone and iPad, alerts reach the lock screen only after you add Stumply to the Home Screen; in a Safari tab they show as a banner inside Stumply.'],
+      ['మ్యాచ్ అలర్ట్‌లు: ఆన్ లేదా ఆఫ్ చేయడానికి 🔔 నొక్కండి. iPhone, iPad లో Stumply ని హోమ్ స్క్రీన్‌కు చేర్చిన తర్వాతే అలర్ట్‌లు లాక్ స్క్రీన్‌కు వస్తాయి; Safari ట్యాబ్‌లో అవి Stumply లోపల బ్యానర్‌గా కనిపిస్తాయి.']),
+}
+for _ic,(_en,_te) in _MORE.items():
+    for _l,_items in (('en',_en),('te',_te)):
+        _sec=next(x for x in HELP[_l]['sections'] if x[0]==_ic);_sec[3].extend(_items)
