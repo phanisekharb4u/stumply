@@ -16,7 +16,7 @@ L('rules saved:',await A.evaluate(()=>JSON.stringify({lms:APP.tournament.lms,noL
 // Fees
 await A.evaluate(async()=>{showTab('admin');setFee('2000');setPaid(APP.teams[0].id,2000);setPaid(APP.teams[1].id,500);await W(50);});
 L('fees:',await A.evaluate(()=>document.querySelector('.fee-sum').innerText.replace(/\n/g,' ')),'|',await A.evaluate(()=>[...document.querySelectorAll('#fee-list tbody tr')].map(r=>r.innerText.replace(/\s+/g,' ').trim()).join(' / ')));
-L('overlay link:',await A.evaluate(()=>document.getElementById('ovl-url').value));
+L('overlay link:',await A.evaluate(()=>overlayLink()));
 await A.screenshot({path:'shots/t28-admin.png',fullPage:false});
 const tid=await A.evaluate(()=>APP.tid);
 // Viewer (phone) and overlay page
