@@ -1,0 +1,60 @@
+0 unconfigured: warning shown false
+1 auth screen shown flex
+2 short password: Password must be at least 6 characters
+3 registered: {
+  role: 'admin',
+  uname: 'asha_three',
+  tid: true,
+  t: "Asha's Tournament"
+}
+  db keys [ 'usernames', 'users', 'tournaments', 'userTournaments' ] usernames {"asha_three":"<uid>"} tournaments 1
+4 legacy card visible true
+  after import: { t: 'Old Cup', teams: 1, list: 2, cardHidden: true }
+5 new tournament: {
+  t: 'Winter Cup',
+  teams: 0,
+  list: [ 'Winter Cup', 'Old Cup', "Asha's Tournament" ]
+}
+  share <site>/?t=<id>
+6 viewer: {
+  role: 'viewer',
+  teams: 2,
+  matches: 2,
+  innEmpty: true,
+  adminHidden: true,
+  watching: 'Watching: Asha',
+  stream: 1
+}
+7 viewer live: { tab: 'live', runs: 4 }
+  update reached viewer in <n> ms; viewer tab still history
+  stored match is string: string index live: true
+8 viewer write w/o auth: 401
+  viewer faking admin role: server runs still 10
+  duplicate username: That username is taken — choose another
+  other admin writes my tournament: PERMISSION_DENIED | opens it as admin: PERMISSION_DENIED
+9 after token expiry, saved runs: 11 status: ☁️ All changes saved to the cloud
+10 offline status: 📡 Offline — scores are kept on this device and will sync when you are back online
+  server runs while offline: 11
+  server runs after reconnect: 15 | ☁️ All changes saved to the cloud
+11 after reload: {
+  role: 'admin',
+  t: 'Winter Cup',
+  live: 15,
+  m2inn: 0,
+  winnerNull: true
+}
+12 viewer sees result: LEAGUE Alpha vs img src=x onerror=window.__xss=1 ALP: 22/0 (2.0) | IM: 24/0 (0.4) img src=x onerror=window.__xss=1 won by 10 wickets 🏅 Player of the  | xss false
+13 switched: { t: 'Old Cup', teams: [ 'Legacy XI' ], rows: 3, html: 1412, tl: 3 }
+  unknown user: Nothing found. Check the spelling, or ask the organiser for the share link.
+  picker: [
+  'Winter Cup Season 1, <year>',
+  'Old Cup S1, 2025',
+  "Asha's Tournament Season 1, <year>"
+]
+  opened: { role: 'viewer', t: 'Winter Cup' }
+  old-style link opens: Winter Cup
+14 after delete: tournaments on server 3 list [ 'Winter Cup', 'Old Cup' ]
+15 wrong password: Wrong email or password.
+  forgot: ✅ If an account exists for that email, a reset link is on its way. Check your inbox and spam folder.
+  login ok: { role: 'admin', t: 'Old Cup', n: 2 } hscroll ok true
+no page errors

@@ -1,0 +1,23 @@
+add unknown: No Stumply account has that username.
+add self: That is your own username.
+add scorer: 🤝 @scrr10001
+Remove
+cloud: scorers {"<uid>":{"uname":"scrr10001"}} | scorerOf 1 | public {"name":"Test Discover Cup","edition":"Season 1","city":"Test City","by":"ownr10001","teams":2,"live":false,"updatedAt":<time>}
+scorer list: Test Scorer's Tournament OPEN | Season 1, <year> | 🤝 YOU SCORE FOR | 🤝 Test Discover Cup | Co-scorer · 👤 Test Owner | Open
+scorer view: co true | owner cards visible: 0 | note: 🤝 You are a co-scorer
+Test Discover Cup · 👤 Test Owner
+
+Yo
+scorer addTeam: Only the tournament owner can change this
+viewer lite mode: true
+~ viewer live score: 13/0 log 5
+cloud: full match 4024 bytes | live node m 3838 bytes | rev <time> | viewer score 23/0 log 12
+owner idx live flag: true | public live: true
+~ owner state: {"ca":true,"d":false,"p":false,"t":false,"v":"visible","mo":[],"cel":false,"pushed":true,"timer":true}
+~ owner pending:
+owner sees: 23/0 | toast: 🔄 Updated with changes from another scorer
+discover: 🔴 LIVE · 📍 Test City | Test Discover Cup | Season 1 · 2 teams · by @ownr10001
+discover search miss: No tournament matches that search. Press Watch to look it up as an admin username.
+public after unlist: null
+scorer after removal: <id> co=false | You are no longer a scorer for this tournament
+no page errors

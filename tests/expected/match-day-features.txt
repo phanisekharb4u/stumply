@@ -1,0 +1,73 @@
+rules saved: {"lms":true,"noLBW":true,"noFH":true}
+fees: ₹2,500 Collected ₹1,500 Still to collect 1 / 2 Teams paid | Test Team A Paid / Test Team B Part paid ✓ Mark paid
+overlay link: <site>/?t=<id>&overlay=1
+overlay before match: Test Cup Live scores coming up | body bg: rgba(0, 0, 0, 0) | other UI hidden: none
+viewer poll shown: true
+viewer poll after vote: 🗳 Fan poll: who will win? ✓ Test Team A 100% Test Team B 0% 1 vote · Tap the other team to change your vote
+LBW disabled: true
+free hit after no ball (should be false): false
+~ viewer heard: Score updates on | no ball. Test Team A 5 for 0.
+after 2 wickets (3 players): {"w":2,"maxW":3,"str":"A Player 3","ns":null,"alone":true,"done":false}
+lone batter card: A Player 3 / 🧍 Batting alone (last man stands) | warn boxes: none
+lone batter keeps strike after odd runs: A Player 3 ns=null balls=6 runs=9
+innings 1 ended all out with 3 wickets: 15 all out completed=true
+overlay at break: TTA 15-3 1.2 Innings break · Test Team B need 16 to win
+overlay live: TTB 11-0 0.3 B Player 2 6 (1) B Player 1 5 (2) A Player 1 0-11 (0.3) 4 1 6 Test Cup · Test Team B need 5 runs from 9 balls
+poll closed for viewer: 🗳 Fan poll: who will win? ✓ Test Team A 100% Test Team B 0% 1 vote · Voting closed
+--- WhatsApp live text ---
+🏏 *Test Team A vs Test Team B*
+Test Cup
+Test Team A: *15 all out* (1.2 ov)
+Test Team B: *11/0* (0.3 ov)
+Batting: B Player 2 6 (1) & B Player 1 5 (2)
+Bowling: A Player 1 0/11 (0.3 ov)
+🎯 Test Team B need 5 runs from 9 balls
+
+📺 Watch live: <site>/?t=<id>
+result: Test Team B won by 3 wickets
+graphs: {"card":true,"worms":2,"bars":3,"wkts":6,"parts":4}
+partnership rows: 1st wkt A Player 1 & A Player 2 5 (3) / 2nd wkt A Player 2 & A Player 3 1 (2) / 3rd wkt A Player 3 9 (4) / 1st wkt B Player 2 & B Player 1 17 (4)
+bar tap shows: Over 1: Test Team A 9 runs, 2 wickets
+--- WhatsApp scorecard ---
+🏏 *Test Team A vs Test Team B*
+Test Cup
+📅 <date> · 📍 Venue not set
+🪙 Test Team A won the toss and chose to bat
+
+*Test Team A — Innings 1: 15 all out (1.2 ov)*
+A Player 1 4 (3) 1x4 0x6 — b B Player 1
+A Player 2 0 (1) — b B Player 1
+A Player 3 10 (5) 0x4 1x6 — c B Player 1 b B Player 2
+Extras 1 (w 0, nb 1, b 0, lb 0)
+Fall of wickets: 5/1 (A Player 1), 6/2 (A Player 2), 15/3 (A Player 3)
+Bowling:
+B Player 1 1-0-9-2
+B Player 2 0.2-0-6-1
+
+*Test Team B — Innings 2: 17/0 (0.4 ov)*
+B Player 1 5 (2) 1x4 0x6 — not out
+B Player 2 12 (2) 0x4 2x6 — not out
+Extras 0 (w 0, nb 0, b 0, lb 0)
+Did not bat: B Player 3
+Bowling:
+A Player 1 0.4-0-17-0
+
+🏆 *Test Team B won by 3 wickets*
+🏅 Player of the Match: B Player 1
+
+📊 <site>/?t=<id>
+--- WhatsApp awards ---
+🏆 *Test Cup — Season 1* — Awards
+
+🌟 Player of the Series: *B Player 1* (TTB) — 5 runs · 2 wkts · 1 dismissal
+🟠 Orange Cap — Most Runs: *B Player 2* (TTB) — 12 runs
+🟣 Purple Cap — Most Wickets: *B Player 1* (TTB) — 2 wickets
+⚡ Highest Score: *B Player 2* (TTB) — 12* runs
+🎳 Best Bowling Figure: *B Player 1* (TTB) — 2/9
+💥 Most Sixes: *B Player 2* (TTB) — 2 sixes
+🧤 Best Fielder: *B Player 1* (TTB) — 1 dismissal
+4️⃣ Most Fours: *A Player 1* (TTA) — 1 four
+
+📊 <site>/?t=<id>
+admin sees poll votes: 1
+no page errors

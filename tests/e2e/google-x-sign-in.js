@@ -1,0 +1,23 @@
+const {chromium}=require(process.env.PW);const U='http://localhost:8771/';
+(async()=>{const b=await chromium.launch();const errs=[];const ctx=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,serviceWorkers:'block'});const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));
+const L=(...a)=>console.log(...a);const vis=()=>p.evaluate(()=>['google','twitter','facebook'].map(k=>k+':'+[...document.querySelectorAll('.idp-'+k)].some(b=>b.offsetParent)).join(' '));
+await p.goto(U);await p.waitForTimeout(800);L('buttons on sign in:',await vis());await p.screenshot({path:'shots/social-signin.png'});
+await p.click('#apanel-login .idp-google');await p.waitForTimeout(1800);
+L('after Google: panel',await p.evaluate(()=>document.querySelector('.apanel.on').id),'name',await p.evaluate(()=>document.getElementById('s-n').value),'username',await p.evaluate(()=>document.getElementById('s-u').value),'url',p.url());
+await p.screenshot({path:'shots/social-setup.png'});
+await p.fill('#s-u','social_tester');await p.click('#apanel-setup .btnpri');await p.waitForTimeout(1800);
+L('after setup: role',await p.evaluate(()=>APP.role),'name',await p.evaluate(()=>APP.dname),'uname',await p.evaluate(()=>APP.uname));
+await p.evaluate(()=>doLogout());await p.waitForTimeout(800);
+await p.click('#apanel-login .idp-twitter');await p.waitForTimeout(1800);L('X sign-in same mock user again: role',await p.evaluate(()=>APP.role));
+await p.evaluate(()=>doLogout());await p.waitForTimeout(600);
+// existing password account with same email
+await p.click('#auth-tabs >> text=Register');await p.fill('#r-n','Dup User');await p.fill('#r-u','dup_user'+Date.now()%1000);await p.fill('#r-e','dup@example.com');await p.fill('#r-p','secret1');await p.fill('#r-p2','secret1');await p.click('#apanel-reg .btnpri');await p.waitForTimeout(1600);
+await p.evaluate(()=>doLogout());await p.waitForTimeout(600);
+await p.evaluate(()=>sessionStorage.setItem('stumply_idp',JSON.stringify({pid:'facebook.com',sid:'sid-facebook.com'})));await p.goto(U+'?code=c1&state=s1&em=dup%40example.com');await p.waitForTimeout(1500);
+L('Facebook with email of a password account:',await p.evaluate(()=>document.getElementById('l-err').textContent),'| role',await p.evaluate(()=>APP.role),'| url',p.url());
+await p.evaluate(()=>sessionStorage.setItem('stumply_idp',JSON.stringify({pid:'google.com',sid:'sid-google.com'})));await p.goto(U+'?error=access_denied');await p.waitForTimeout(1200);
+L('cancelled at Google:',await p.evaluate(()=>document.getElementById('l-err').textContent));
+await p.evaluate(()=>switchTab('reg'));L('buttons on register:',await vis());
+const q=await (await b.newContext({serviceWorkers:'block'})).newPage();await q.goto('http://localhost:8774/');await q.waitForTimeout(800);
+L('only Google switched on:',await q.evaluate(()=>['google','twitter','facebook'].map(k=>k+':'+[...document.querySelectorAll('#apanel-login .idp-'+k)].some(b=>b.offsetParent)).join(' ')));
+L(errs.length?errs:'no page errors');await b.close();})().catch(e=>console.log('FAILED',e.message));

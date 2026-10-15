@@ -1,0 +1,31 @@
+# Runs the end-to-end tests on every pull request and on every push to main.
+# Free on GitHub. Results show as a green tick or red cross on the pull request.
+name: Tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright
+        run: npm install && npx playwright install --with-deps chromium
+      - name: Run tests
+        run: node run.js
+      - name: Keep test output and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: tests/out/
+          retention-days: 7

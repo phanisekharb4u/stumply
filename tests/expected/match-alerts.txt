@@ -1,0 +1,11 @@
+iPhone Safari tab, tap Yes notify me: ✅ Alerts are on inside Stumply while it is open. For alerts on your iPhone lock screen: tap Share, then Add to Home Screen, open Stumply from the new icon and tap Yes, notify me again.
+bell: 🔔 Match alerts on (inside the app) — tap to turn off
+desktop, tap Yes notify me: ✅ Alerts are on inside Stumply while it is open. Phone notifications are blocked: allow them for this site in your browser settings to get them on the lock screen too.
+iPhone viewer in-app alerts:
+  🏏 Match Started! | Test Team A vs Test Team B
+  ⚡ Wicket! A Player 2 out for 18 | b B Player 2 | Score: 54/1 (1.4)
+  📊 Innings Complete | Test Team A: 56/1 (2.0 Ov)
+  🏆 Match Result | Test Team A won by 56 runs
+desktop viewer alerts shown: 4
+scorer got alerts on own phone: false
+no page errors

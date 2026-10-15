@@ -1,0 +1,6 @@
+before owner flag  ravi { users: 'PERMISSION_DENIED', card: 'none' } phani { users: 'PERMISSION_DENIED', card: 'none' }
+after  ravi { users: 'PERMISSION_DENIED', card: 'none' } phani { users: 'readable', card: 'block' }
+summary 2 Admins 3 Tournaments 0 Live now 2 Active this week 2 New this week
+list Phani | @phani_x | Today | 1 tournament · joined <date> | Phani's Tournament Season 1 · Today | Ravi | @ravi_x | Today | 2 tournaments · joined <date> | Ravi Cup Season 1 · Today | Ravi's Tournament Season 1 · Today
+search 1
+hscroll false no page errors

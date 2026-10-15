@@ -1,0 +1,9 @@
+buttons on sign in: google:true twitter:true facebook:false
+after Google: panel apanel-setup name Social Test User username social_test_user url <site>/
+after setup: role admin name Social Test User uname social_tester
+X sign-in same mock user again: role admin
+Facebook with email of a password account: This email already has a Stumply account. Sign in with your email and password, or the service you used before. | role null | url <site>/
+cancelled at Google: Google sign-in was cancelled.
+buttons on register: google:true twitter:true facebook:false
+only Google switched on: google:true twitter:false facebook:false
+no page errors
