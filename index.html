@@ -441,15 +441,6 @@
       </div>
       <div id="share-hint" style="font-size:10px;color:var(--dim);margin-top:4px">Anyone with this link can view live scores, scorecards, and history — no login needed.</div>
     </div>
-    <div style="margin-bottom:12px">
-      <div style="font-size:11px;color:var(--dim);margin-bottom:6px">📺 Live-stream score overlay (for YouTube or Facebook live):</div>
-      <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
-        <input class="ifield" id="ovl-url" readonly style="flex:1;min-width:180px;font-size:11px;color:var(--em)" placeholder="Save tournament first to generate link">
-        <button class="bsm bblu" onclick="copyOverlayLink()" style="white-space:nowrap">📋 Copy</button>
-        <button class="bsm bgld" onclick="openOverlayLink()" style="white-space:nowrap">👁 Preview</button>
-      </div>
-      <div style="font-size:10px;color:var(--dim);margin-top:4px;line-height:1.5">In your streaming app, add this link as a <b>Browser</b> or <b>Web page</b> source (for example in OBS Studio). It shows a score strip with a see-through background that updates by itself. Apps that only support a green screen: add <b>&amp;bg=green</b> to the end of the link. Add <b>&amp;pos=top</b> to show it at the top.</div>
-    </div>
     <button class="bsm bgld" data-action="saveTournament()">💾 Save Tournament</button>
   </div>
   <div class="card owner-only" id="scorer-card">

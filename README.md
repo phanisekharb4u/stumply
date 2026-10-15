@@ -69,7 +69,7 @@ Edit the English → Telugu / Hindi / Tamil / Kannada / Malayalam lists in `tool
 
 ## Live-stream overlay
 
-`?t=<id>&overlay=1` shows only a score strip on a see-through background, for use as a browser source in streaming apps such as OBS. Add `&bg=green` for a green-screen background and `&pos=top` to place it at the top.
+Not shown in Admin (no cameras at our matches), but the link still works for anyone who wants it. `?t=<id>&overlay=1` shows only a score strip on a see-through background, for use as a browser source in streaming apps such as OBS. Add `&bg=green` for a green-screen background and `&pos=top` to place it at the top.
 
 ## Moving from the earlier version
 
