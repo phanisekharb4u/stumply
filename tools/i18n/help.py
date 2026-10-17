@@ -4,7 +4,7 @@ HELP={
  'intro':'Tap a heading to open it. <b>Admins</b> run tournaments and score matches. <b>Viewers</b> only watch, and need no account.',
  'sections':[
  ['🚀','Quick start: your first match in 5 minutes','ol',[
-  'Open stumply.pages.dev and use the [[Organisers: sign in to score]] box (on a phone, scroll down or tap [[Sign in]] at the bottom). The first time, tap [[Register]].',
+  'Open stumply.pages.dev and use the [[Organisers: sign in to score]] box at the top of the page. The first time, tap [[Register]].',
   'One game only? In [[Admin]] tap [[New single match]]. A whole tournament? Type a name and tap [[New tournament]].',
   'In [[Admin]], add the two teams and their players under [[Add Team + Squad]].',
   'Open [[Matches]], tap [[+ Schedule]], pick the two teams and tap [[Schedule]].',
@@ -13,7 +13,7 @@ HELP={
   'Each step is explained in more detail below.'],
  ['👁','Watch live scores (viewers)','ol',[
   'Open the share link the admin sent you. No sign-in is needed.',
-  'Or open stumply.pages.dev. Under [[Watch a match live]], type the tournament name, city or the admin\'s username and tap [[Watch]], or tap a match in the list.',
+  'Or open stumply.pages.dev. Under [[Watch a match live]] (on a phone, scroll down past the sign-in box), type the tournament name, city or the admin\'s username and tap [[Watch]], or tap a match in the list.',
   'The [[Live]] tab shows the score, batters, bowler and ball-by-ball commentary. It updates by itself after every ball.',
   'Between innings you see the innings break with the target.',
   'Use [[Scores]] for full scorecards and [[History]] for results, points table, stats, knockouts and awards. Tap a player name to see their profile.'],
@@ -109,7 +109,7 @@ HELP={
  'intro':'తెరవడానికి శీర్షికను నొక్కండి. <b>అడ్మిన్‌లు</b> టోర్నమెంట్లు నిర్వహించి మ్యాచ్‌లు స్కోర్ చేస్తారు. <b>వీక్షకులు</b> చూడటం మాత్రమే; వారికి ఖాతా అవసరం లేదు.',
  'sections':[
  ['🚀','త్వరగా మొదలుపెట్టండి: 5 నిమిషాల్లో మొదటి మ్యాచ్','ol',[
-  'stumply.pages.dev తెరిచి [[నిర్వాహకులు: స్కోర్ చేయడానికి సైన్ ఇన్ అవ్వండి]] బాక్స్ వాడండి (ఫోన్‌లో కిందకు స్క్రోల్ చేయండి లేదా కింద [[సైన్ ఇన్]] నొక్కండి). మొదటిసారి అయితే [[నమోదు]] నొక్కండి.',
+  'stumply.pages.dev తెరిచి [[నిర్వాహకులు: స్కోర్ చేయడానికి సైన్ ఇన్ అవ్వండి]] బాక్స్ వాడండి (పేజీ పైభాగంలో ఉంటుంది). మొదటిసారి అయితే [[నమోదు]] నొక్కండి.',
   'ఒక్క మ్యాచ్ మాత్రమేనా? [[అడ్మిన్]]లో [[కొత్త సింగిల్ మ్యాచ్]] నొక్కండి. పూర్తి టోర్నమెంట్ అయితే పేరు టైప్ చేసి [[కొత్త టోర్నమెంట్]] నొక్కండి.',
   '[[అడ్మిన్]]లో [[జట్టు + ఆటగాళ్ళను చేర్చు]] కింద రెండు జట్లను, ఆటగాళ్ళను చేర్చండి.',
   '[[మ్యాచ్‌లు]] తెరిచి [[+ షెడ్యూల్]] నొక్కి, రెండు జట్లను ఎంచుకుని [[షెడ్యూల్]] నొక్కండి.',
@@ -118,7 +118,7 @@ HELP={
   'ప్రతి దశ కింద వివరంగా ఉంది.'],
  ['👁','లైవ్ స్కోర్లు చూడటం (వీక్షకులు)','ol',[
   'అడ్మిన్ పంపిన షేర్ లింక్ తెరవండి. సైన్ ఇన్ అవసరం లేదు.',
-  'లేదా stumply.pages.dev తెరవండి. [[మ్యాచ్‌ను లైవ్‌గా చూడండి]] కింద టోర్నమెంట్ పేరు, నగరం లేదా అడ్మిన్ యూజర్‌నేమ్ టైప్ చేసి [[చూడండి]] నొక్కండి, లేదా జాబితాలో మ్యాచ్‌ను నొక్కండి.',
+  'లేదా stumply.pages.dev తెరవండి. [[మ్యాచ్‌ను లైవ్‌గా చూడండి]] (ఫోన్‌లో సైన్ ఇన్ బాక్స్ దాటి కిందకు స్క్రోల్ చేయండి) కింద టోర్నమెంట్ పేరు, నగరం లేదా అడ్మిన్ యూజర్‌నేమ్ టైప్ చేసి [[చూడండి]] నొక్కండి, లేదా జాబితాలో మ్యాచ్‌ను నొక్కండి.',
   '[[లైవ్]] ట్యాబ్‌లో స్కోర్, బ్యాటర్లు, బౌలర్, బంతి-బంతి కామెంటరీ ఉంటాయి. ప్రతి బంతి తర్వాత దానంతట అదే అప్‌డేట్ అవుతుంది.',
   'ఇన్నింగ్స్ మధ్యలో లక్ష్యంతో ఇన్నింగ్స్ విరామం కనిపిస్తుంది.',
   'పూర్తి స్కోర్‌కార్డ్‌ల కోసం [[స్కోర్లు]], ఫలితాలు, పాయింట్ల పట్టిక, గణాంకాలు, నాకౌట్స్, అవార్డుల కోసం [[చరిత్ర]] చూడండి. ఆటగాడి పేరు నొక్కితే ప్రొఫైల్ వస్తుంది.'],
