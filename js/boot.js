@@ -17,6 +17,7 @@ if('serviceWorker' in navigator){
 }
 // Bind all data-action elements (auth buttons need this before login)
 bindActions();
+try{syncNotifCard();}catch(e){}
 
 // ── Start-up: shared link → saved viewer → saved admin session → sign-in screen
 (async function boot(){

@@ -126,7 +126,14 @@ async function toggleNotifications(){
   if(lsGet('notif_enabled')==='1'){lsSet('notif_enabled','0');updateNotifBell();toast('🔕 Match alerts off');return;}
   await enableNotifications();
 }
+// Sign-in screen alerts card: once alerts are on, the Yes / Not now buttons are not needed
+function syncNotifCard(){
+  let box=document.querySelector('#authscr .anotif');if(!box)return;
+  let on=lsGet('notif_enabled')==='1';box.classList.toggle('anotif-on',on);
+  let s=document.getElementById('notif-status');if(on&&s&&!s.textContent)s.textContent='✅ Match alerts are on.';
+}
 function updateNotifBell(){
+  syncNotifCard();
   let btn=document.getElementById('notif-btn');
   if(!btn)return;
   btn.style.display='';

@@ -120,18 +120,12 @@
     <button class="ahbtn" data-action="openM('demo-mo')" aria-label="Help">❓<span class="ahlbl"> Help</span></button>
     <button class="ahbtn" data-action="openLangModal()" aria-label="Language">🌐</button>
   </div>
-  <div class="abar" id="abar">
-    <div class="abar-t">Just watching? No account needed.</div>
-    <div class="abar-b">
-      <button class="abar-in" data-action="watchGo()">👁 Watch a match ↓</button>
-    </div>
-  </div>
   <div class="awrap">
     <section class="awatch" id="awatch">
       <h1 class="atitle">Watch a match live</h1>
       <p class="asub">No account needed. Search a tournament, city or the organiser's username.</p>
       <div class="asearch">
-        <input id="dc-q" type="search" placeholder="Tournament name, city or admin username" autocomplete="off" autocapitalize="none" aria-label="Search tournaments">
+        <input id="dc-q" type="search" placeholder="Tournament, city or username" autocomplete="off" autocapitalize="none" aria-label="Search tournaments">
         <button class="btnpri" data-action="watchSearch()">👁 Watch</button>
       </div>
       <div id="v-err" class="emsg" style="text-align:left"></div>
@@ -140,7 +134,7 @@
       <div id="dc-list" class="agrid"></div>
       <div class="anotif">
         <span>🔔 Get alerts when a match starts, wickets fall and the result comes.</span>
-        <span style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="anotif-btns" style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="bsm bgld" data-action="enableNotifications()">🔔 Yes, notify me</button>
           <button class="bsm" style="background:#fff;color:var(--dim);border:1px solid var(--bdr)" data-action="skipNotifications()">Not now</button>
         </span>
