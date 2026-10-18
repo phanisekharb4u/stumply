@@ -1,6 +1,6 @@
 // Stumply Service Worker v4 — offline support + push notifications
-const CACHE = 'stumply-v13';
-const ASSETS = ['/', '/index.html', '/css/app.css', '/js/core.js', '/js/signin.js', '/js/admin.js', '/js/scoring.js', '/js/views.js', '/js/ui.js', '/js/i18n-data.js', '/js/lang.js', '/js/extras.js', '/js/boot.js', '/firebase-config.js', '/manifest.json', '/icon-192.png', '/icon-512.png', '/icon-mark.svg', '/apple-touch-icon.png', '/favicon-32.png'];
+const CACHE = 'stumply-v14';
+const ASSETS = ['/', '/index.html', '/css/app.css', '/js/core.js', '/js/signin.js', '/js/admin.js', '/js/scoring.js', '/js/views.js', '/js/ui.js', '/js/i18n-data.js', '/js/lang.js', '/js/extras.js', '/js/assistant.js', '/js/boot.js', '/firebase-config.js', '/manifest.json', '/icon-192.png', '/icon-512.png', '/icon-mark.svg', '/apple-touch-icon.png', '/favicon-32.png'];
 
 // ── Install ──────────────────────────────────────────────────────────
 self.addEventListener('install', e => {

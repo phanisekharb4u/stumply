@@ -4,6 +4,7 @@
 //  NAVIGATION
 // ══════════════════════════════════════════════════════════════════════════
 function showTab(t){
+  document.body.setAttribute('data-tab',t);
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   // Show the target view
