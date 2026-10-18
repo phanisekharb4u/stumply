@@ -252,3 +252,9 @@ _MORE={
 for _ic,(_en,_te) in _MORE.items():
     for _l,_items in (('en',_en),('te',_te)):
         _sec=next(x for x in HELP[_l]['sections'] if x[0]==_ic);_sec[3].extend(_items)
+
+# Auto fixtures (en, te)
+for _l,_t in (('en','Many teams? Tap [[Auto fixtures]] in Matches: choose the first date and how many matches a day, and every team gets a League match against every other team, spread over the days. Tick "Play each other twice" for return games.'),
+              ('te','చాలా జట్లు ఉన్నాయా? మ్యాచ్‌లు లో [[ఆటో ఫిక్స్చర్లు]] నొక్కండి: మొదటి తేదీ, రోజుకు ఎన్ని మ్యాచ్‌లో ఎంచుకోండి, ప్రతి జట్టుకు మిగతా ప్రతి జట్టుతో ఒక లీగ్ మ్యాచ్ రోజులవారీగా తయారవుతుంది. రెండోసారి ఆడాలంటే "ఒకరితో ఒకరు రెండుసార్లు ఆడాలి" టిక్ చేయండి.')):
+    next(x for x in HELP[_l]['sections'] if x[0]=='📅')[3].insert(1,_t)
+

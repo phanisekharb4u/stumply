@@ -1,0 +1,19 @@
+auto button shown: true
+plan: 10 matches will be created over 5 days.
+matches: 10
+  <date> TTB TTE
+  <date> TTC TTD
+  <date> TTE TTA
+  <date> TTC TTB
+  <date> TTA TTD
+  <date> TTE TTC
+  <date> TTB TTD
+  <date> TTC TTA
+  <date> TTD TTE
+  <date> TTA TTB
+every pair once: true
+team playing two in a row: 0
+second time: Every pair of teams already has a League match.
+return legs: 10 matches will be created over 5 days.
+first fixture can start (toss open): true
+no page errors

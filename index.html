@@ -262,7 +262,8 @@
 <!-- MATCHES -->
 <div id="view-matches" class="view">
   <div class="stitle flex" style="display:flex;align-items:center;gap:8px">📋 Matches
-    <button class="bsm bgld admin-only hidden" id="sched-btn" style="margin-left:auto;font-size:12px" data-action="openSchedModal()">+ Schedule</button>
+    <button class="bsm admin-only hidden" id="auto-btn" style="margin-left:auto;font-size:12px" onclick="openAutoFix()">🔁 Auto fixtures</button>
+    <button class="bsm bgld admin-only hidden" id="sched-btn" style="font-size:12px" data-action="openSchedModal()">+ Schedule</button>
   </div>
   <div id="mlist"></div>
 </div>
@@ -541,6 +542,21 @@
 </div>
 
 <!-- Schedule -->
+<div class="mo" id="fix-mo">
+  <div class="mb">
+    <div class="mt">🔁 Auto fixtures</div>
+    <p style="font-size:12px;color:var(--dim);line-height:1.5;margin-bottom:10px">Makes a League match for every pair of teams, in an order that gives teams a rest between games. Pairs that already have a League match are skipped.</p>
+    <div class="mr"><label>First match date</label><input type="date" id="fx-d"></div>
+    <div class="mr"><label>Matches per day</label><select class="sfield" id="fx-n"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>6</option><option>8</option></select></div>
+    <div class="mr"><label>Venue (optional)</label><input class="ifield" id="fx-v" maxlength="60" placeholder="e.g. School Ground"></div>
+    <label class="rchk" style="margin:6px 0 4px!important"><input type="checkbox" id="fx-2"> Play each other twice</label>
+    <div id="fx-info" style="font-size:12px;color:var(--em);margin:6px 0"></div>
+    <div class="mact">
+      <button class="bsm bgld" onclick="makeAutoFix()">✔ Create fixtures</button>
+      <button class="bsm bdng" onclick="closeM('fix-mo')">✕ Cancel</button>
+    </div>
+  </div>
+</div>
 <div class="mo" id="sch-mo">
   <div class="mb" style="max-width:600px">
     <div class="mt gold">📅 Schedule Match</div>
