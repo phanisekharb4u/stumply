@@ -1,0 +1,11 @@
+mode by default: 4s6s
+picker after a single (fours and sixes mode): false
+picker after a four: true | 🎯 FOUR by A Player 2: where did it go?
+picker closed after tap: true
+picker after a 2 in all-runs mode: true
+skip closes it: true
+saved spots: [["A Player 2",4,[0.7,-0.1]],["A Player 2",6,[-0.5,-0.8]],["A Player 2",2,[0,0.8]]]
+picker when off: false
+scorecard wagon wheel: Wagon wheel — Test Team A | lines 3 | 3 shots marked · 12 runs
+one batter only: A Player 2 | lines 3 | 3 shots marked · 12 runs
+no page errors

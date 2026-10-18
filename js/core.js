@@ -631,7 +631,7 @@ function collabActive(){return APP.role==='admin'&&!!APP.tid&&(APP.coScorer||Obj
 function startCollab(){if(_collabTimer)clearInterval(_collabTimer);_collabTimer=setInterval(collabTick,6000);}
 async function collabTick(){
   if(!collabActive()||_dirty||_pushing||_pushTimer||document.visibilityState==='hidden'||!_pushed)return;
-  if(document.querySelector('.mo.on')||document.getElementById('celebration-overlay').classList.contains('on'))return;
+  if(document.querySelector('.mo.on:not(#ww-mo)')||document.getElementById('celebration-overlay').classList.contains('on'))return;
   let tid=APP.tid;
   try{
     let at=await dbReq('GET','tournaments/'+tid+'/_savedAt');
