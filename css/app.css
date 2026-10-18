@@ -1388,3 +1388,11 @@ html.ovl body>*:not(#ovl){display:none!important}
   .awrap{padding-top:16px}
   .apanel .fg{margin-bottom:10px}
 }
+/* ── Wagon wheel ── */
+.ww-mode{float:right;font-size:12px;padding:4px 6px;border-radius:8px;border:1px solid var(--bdr);background:var(--bg3,#fff);color:var(--txt);font-family:inherit;max-width:52%}
+.ww-field svg,.ww-wrap svg{width:100%;max-width:340px;height:auto;display:block;margin:6px auto;touch-action:manipulation}
+.ww-field svg{cursor:crosshair}
+.ww-zone{font-size:8px;fill:rgba(255,255,255,.85);font-family:inherit;pointer-events:none}
+.ww-sel{width:auto;max-width:100%;margin:4px 0;padding:6px 8px;font-size:13px}
+.ww-sum{margin-left:auto}
+

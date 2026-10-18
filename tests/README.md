@@ -40,3 +40,4 @@ Then commit the changed `expected/` file together with your change.
 | security-hostile-data | A tournament owner saves booby-trapped names and data; a viewer opens it and no injected code runs |
 | show-password | The eye button on password boxes shows and hides the password |
 | site-owner-usage | Only the site owner can see Site Usage |
+| wagon-wheel | The shot picker opens after 4s and 6s (or every run, or never), a tap saves the spot, Skip works, and the scorecard shows the wagon wheel for all batters or one |

@@ -88,7 +88,7 @@ function renderLive(){
       ${inn.super?'':'<button class="bsm" onclick="openRain()" style="background:var(--bg2);color:var(--txt);border:1px solid var(--bdr)">🌧 Reduce overs</button>'}
       <button class="bsm bdng" onclick="openDiscard()" style="margin-left:auto">🚫 Discard Match</button>
     </div>
-    <div class="card"><div class="ch">🎯 Ball-by-Ball Entry</div>
+    <div class="card"><div class="ch">🎯 Ball-by-Ball Entry <select class="ww-mode" aria-label="Shot map" onchange="wwSet(this.value)">${['off','4s6s','all'].map(v=>`<option value="${v}"${wwMode()===v?' selected':''}>${v==='off'?'Shot map: off':v==='4s6s'?'Shot map: 4s & 6s':'Shot map: all runs'}</option>`).join('')}</select></div>
       <div class="sbtns">
         <button class="sbtn b0" onclick="addRun(0)">•<span>DOT</span></button>
         <button class="sbtn b1" onclick="addRun(1)">1</button>

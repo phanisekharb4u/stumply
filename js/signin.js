@@ -47,6 +47,7 @@ function authBusy(on){
   document.querySelectorAll('#authscr .btnpri').forEach(b=>{b.disabled=on;b.style.opacity=on?'.6':'';});
 }
 function showAuthScreen(msg){
+  document.querySelectorAll('.mo.on').forEach(o=>o.classList.remove('on')); // no pop-up from the last session stays on top
   document.querySelectorAll('.pweye').forEach(b=>{let i=document.getElementById(b.dataset.for);if(i)i.type='password';b.classList.remove('on');b.textContent='👁';b.setAttribute('aria-label','Show password');b.title='Show password';});
   document.getElementById('authscr').style.display='flex';
   document.getElementById('topbar').classList.add('hidden');

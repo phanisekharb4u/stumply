@@ -505,6 +505,60 @@ function partnershipsHTML(m,ins){
     return `<div class="g-pt"><div class="g-pth"><i style="background:${G_COL[k]}"></i>${esc(rawTeamName(inn.battingTeamId))}</div>${list.map(p=>`<div class="g-prow"><span class="g-pl">${p.lbl}</span><div class="g-pmid"><div class="g-pn">${p.a?esc(p.a)+(p.b?' & '+esc(p.b):''):''}${p.now?' <em>(batting)</em>':''}</div><div class="g-ptrack"><div style="width:${Math.max(2,(p.runs||0)/mx*100)}%;background:${G_COL[k]}"></div></div></div><span class="g-pv"><b>${p.runs||0}</b> (${p.balls||0})</span></div>`).join('')}</div>`;
   }).join('');
 }
+// ══════════════════════════════════════════════════════════════════════════
+//  WAGON WHEEL — the scorer taps where a shot went; the scorecard shows the shot map
+//  Saved on the ball's commentary entry as w:[x,y] (-1…1, batter at the centre,
+//  straight down the ground at the top, off side on the right for a right-hander)
+// ══════════════════════════════════════════════════════════════════════════
+const WW_ZONES=[['Straight',0,-80],['Long off',40,-68],['Cover',64,-30],['Point',72,6],['Third man',46,66],['Fine leg',-46,66],['Square leg',-68,6],['Mid-wicket',-62,-30],['Long on',-40,-68]];
+function wwMode(){let v=lsGet('stumply_ww');return v==='off'||v==='all'?v:'4s6s';}
+function wwSet(v){lsSet('stumply_ww',v);toast(v==='off'?'🎯 Shot map off':v==='all'?'🎯 Shot map: tap where every scoring shot went':'🎯 Shot map: tap where each 4 and 6 went');}
+function wwField(inner){
+  return `<svg viewBox="-100 -100 200 200" class="ww-svg" role="img" aria-label="Cricket field">
+    <circle r="96" fill="#2E7D4F"/><circle r="94" fill="#3C9A62"/><circle r="52" fill="none" stroke="rgba(255,255,255,.45)" stroke-dasharray="4 4"/>
+    <rect x="-4" y="-16" width="8" height="32" rx="1.5" fill="#D9C79A"/>
+    ${WW_ZONES.map(([n,x,y])=>`<text x="${x}" y="${y}" text-anchor="middle" class="ww-zone">${n}</text>`).join('')}
+    ${inner||''}</svg>`;
+}
+function wwMaybeAsk(r){
+  let mode=wwMode();if(mode==='off'||!r||APP.role!=='admin')return;
+  if(mode==='4s6s'&&r!==4&&r!==6)return;
+  let m=APP.liveMatch,inn=m&&m.innings[m.currentInnings];if(!inn||!(inn.log||[]).length)return;
+  let c=inn.log[inn.log.length-1];if(c.e!=='run')return;
+  setTxt(document.getElementById('ww-title'),`🎯 ${r===4?'FOUR':r===6?'SIX':plural(r,'run')} by ${c.s||'batter'}: where did it go?`);
+  let f=document.getElementById('ww-field');
+  f.innerHTML=wwField()+'<div class="g-tip">Tap the spot on the field. Off side is on the right for a right-handed batter.</div>';
+  let svg=f.querySelector('svg');
+  svg.onclick=e=>{
+    let b=svg.getBoundingClientRect(),x=((e.clientX-b.left)/b.width)*200-100,y=((e.clientY-b.top)/b.height)*200-100;
+    let d=Math.hypot(x,y);if(d>96){x*=96/d;y*=96/d;}
+    c.w=[Math.round(x)/100,Math.round(y)/100];
+    closeM('ww-mo');saveState();toast('🎯 Shot saved');
+  };
+  openM('ww-mo');
+}
+function wwSVG(inn,who){
+  let shots=(inn.log||[]).filter(c=>c.e==='run'&&Array.isArray(c.w)&&c.w.length===2&&(!who||c.s===who));
+  let col=r=>r===6?'#7B3FA0':r===4?'#2A66B3':'#F4F1E6';
+  let lines=shots.map(c=>{let x=Math.max(-1,Math.min(1,+c.w[0]||0))*100,y=Math.max(-1,Math.min(1,+c.w[1]||0))*100;
+    return `<line x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${col(+c.r)}" stroke-width="${+c.r>=4?2.2:1.4}" stroke-linecap="round"><title>${esc(c.s)}: ${plural(+c.r,'run')} (over ${esc(c.o)})</title></line>`;}).join('');
+  return {svg:wwField(lines),n:shots.length,runs:shots.reduce((a,c)=>a+(+c.r||0),0)};
+}
+function wwPick(sel){
+  let box=sel.closest('.g-box'),m=findMatch(sel.getAttribute('data-mid')),inn=m&&m.innings[+sel.getAttribute('data-inn')];if(!inn)return;
+  let r=wwSVG(inn,sel.value);box.querySelector('.ww-wrap').innerHTML=r.svg;box.querySelector('.ww-sum').textContent=`${plural(r.n,'shot')} marked · ${plural(r.runs,'run')}`;
+}
+function wagonHTML(m,ins){
+  let parts=ins.map(inn=>{
+    let r=wwSVG(inn,'');if(!r.n)return '';
+    let names=[...new Set((inn.log||[]).filter(c=>Array.isArray(c.w)).map(c=>c.s))];
+    return `<div class="g-box"><div class="g-t">Wagon wheel — ${esc(rawTeamName(inn.battingTeamId))}</div>
+      <select class="sfield ww-sel" data-mid="${esc(m.id)}" data-inn="${m.innings.indexOf(inn)}" onchange="wwPick(this)" aria-label="Batter"><option value="">All batters</option>${names.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select>
+      <div class="ww-wrap">${r.svg}</div>
+      <div class="g-leg"><span><i style="background:#F4F1E6;border:1px solid #9AA79E"></i>1–3 runs</span><span><i style="background:#2A66B3"></i>Four</span><span><i style="background:#7B3FA0"></i>Six</span><span class="ww-sum">${plural(r.n,'shot')} marked · ${plural(r.runs,'run')}</span></div></div>`;
+  }).join('');
+  return parts;
+}
 function graphsHTML(m){
   let ins=mainInns(m).filter(i=>i.legalBalls>0||(i.thisOver||[]).length).slice(0,2);
   if(!ins.length)return '';
@@ -512,6 +566,7 @@ function graphsHTML(m){
     <div class="g-box"><div class="g-t">Worm — runs after each over</div>${gLegend(ins)}${wormSVG(m,ins)}<div class="g-tip">Tap the chart to see the score after an over.</div></div>
     <div class="g-box"><div class="g-t">Manhattan — runs in each over</div>${gLegend(ins)}${manhattanSVG(m,ins)}<div class="g-tip">Tap a bar to see that over. Red dots are wickets.</div></div>
     <div class="g-box"><div class="g-t">Partnerships</div>${partnershipsHTML(m,ins)}</div>
+    ${wagonHTML(m,ins)}
   </div>`;
 }
 
