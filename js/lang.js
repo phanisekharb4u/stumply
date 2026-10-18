@@ -384,6 +384,8 @@ const _i18nNodes=new Set();
 function i18nFill(tpl,args){return String(tpl).replace(/\{(\d)\}/g,(m,i)=>args[+i]??'');}
 // Sentences that contain names or numbers: [pattern, dictionary key, which captures to translate]
 const I18N_PAT=[
+  [/^(\d+) match(?:es)? will be created over (\d+) days?\.$/,'%fx_plan'],
+  [/^(\d+) match(?:es)? scheduled$/,'%fx_done'],
   [/^(.+) won by (\d+) runs? \(revised target\)$/,'%won_runs_rev'],
   [/^(.+) won by (\d+) wickets? \(revised target\)$/,'%won_wkts_rev'],
   [/^Match tied — (.+) won the Super Over$/,'%so_won'],

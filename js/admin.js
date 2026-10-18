@@ -631,6 +631,55 @@ function scheduleMatch(){
     closeM('sch-mo');renderMatches();populateSCSelect();saveState();toast('Match scheduled ✓');
   }
 }
+// ── Auto fixtures: a League match for every pair of teams (round robin) ──
+// Circle method: each round every team plays once, so nobody plays twice in a row.
+function roundRobin(ids,twice){
+  let t=ids.slice();if(t.length%2)t.push(null);
+  let n=t.length,rounds=[];
+  for(let r=0;r<n-1;r++){
+    let games=[];
+    for(let i=0;i<n/2;i++){let a=t[i],b=t[n-1-i];if(a&&b)games.push(r%2?[b,a]:[a,b]);}
+    rounds.push(games);t.splice(1,0,t.pop());
+  }
+  // Order games inside each round so a team never plays the last game of one round and the first of the next
+  for(let r=1;r<rounds.length;r++){let last=rounds[r-1][rounds[r-1].length-1]||[],g=rounds[r];
+    for(let k=0;k<g.length&&g.length>1;k++){if(!last.includes(g[0][0])&&!last.includes(g[0][1]))break;g.push(g.shift());}}
+  let all=rounds.flat();
+  return twice?all.concat(all.map(([a,b])=>[b,a])):all;
+}
+function autoFixPlan(){
+  let pairs=roundRobin(APP.teams.map(t=>t.id),!!(document.getElementById('fx-2')||{}).checked);
+  // Skip pairs already scheduled: once if single round robin, per direction if twice
+  let twice=!!(document.getElementById('fx-2')||{}).checked,seen={};
+  APP.matches.filter(m=>(m.matchType||'League')==='League').forEach(m=>{let k=[m.teamAId,m.teamBId].sort().join('|');seen[k]=(seen[k]||0)+1;});
+  return pairs.filter(([a,b])=>{let k=[a,b].sort().join('|');if(seen[k]>0){seen[k]--;return false;}return true;});
+}
+function updAutoFixInfo(){
+  let el=document.getElementById('fx-info');if(!el)return;
+  let plan=autoFixPlan(),per=Math.max(1,+document.getElementById('fx-n').value||1);
+  el.textContent=plan.length?`${plan.length} ${plan.length===1?'match':'matches'} will be created over ${plural(Math.ceil(plan.length/per),'day')}.`:'Every pair of teams already has a League match.';
+}
+function openAutoFix(){
+  if(APP.role!=='admin')return;
+  if(APP.teams.length<3){toast('Add at least 3 teams first','warn');return;}
+  document.getElementById('fx-d').value=todayISO();
+  ['fx-n','fx-2','fx-d'].forEach(id=>{let e=document.getElementById(id);if(e)e.onchange=updAutoFixInfo;});
+  updAutoFixInfo();openM('fix-mo');
+}
+function makeAutoFix(){
+  let d=document.getElementById('fx-d').value,per=Math.max(1,+document.getElementById('fx-n').value||1),venue=document.getElementById('fx-v').value.trim().slice(0,60);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(d)){toast('Choose the first match date','warn');return;}
+  let plan=autoFixPlan();if(!plan.length){toast('Every pair of teams already has a League match','warn');return;}
+  let day=new Date(d+'T12:00:00');
+  plan.forEach(([a,b],i)=>{
+    if(i&&i%per===0)day.setDate(day.getDate()+1);
+    let date=new Date(day.getTime()-day.getTimezoneOffset()*60000).toISOString().slice(0,10);
+    APP.matches.push({id:uid('m_'),teamAId:a,teamBId:b,matchType:'League',playingXI:{},venue,date,umpires:['','',''],size:teamSize(),
+      status:'scheduled',innings:[],winner:null,toss:null,resultText:null});
+  });
+  closeM('fix-mo');renderMatches();populateSCSelect();saveState();
+  toast(`✅ ${plan.length} ${plan.length===1?'match':'matches'} scheduled`);
+}
 function cancelSchModal(){
   let mo=document.getElementById('sch-mo');
   mo.removeAttribute('data-edit-id');
@@ -640,6 +689,7 @@ function cancelSchModal(){
 function renderMatches(){
   let el=document.getElementById('mlist');
   let sb=document.getElementById('sched-btn');if(sb)sb.style.visibility=APP.tournament.single&&APP.matches.length?'hidden':'';
+  let ab=document.getElementById('auto-btn');if(ab)ab.style.display=APP.tournament.single||APP.teams.length<3?'none':'';
   if(!APP.matches.length){el.innerHTML='<div class="card"><p style="color:var(--dim)">No matches scheduled yet.</p></div>';return;}
   el.innerHTML=APP.matches.map((m,idx)=>{
     let tA=APP.teams.find(t=>t.id===m.teamAId),tB=APP.teams.find(t=>t.id===m.teamBId);
