@@ -270,3 +270,8 @@ for _l,_t in (('en','Open a player and tap [[Career: all tournaments by this org
               ('te','ఆటగాడిని తెరిచి [[కెరీర్: ఈ నిర్వాహకుడి అన్ని టోర్నమెంట్లు]] నొక్కండి: అదే నిర్వాహకుడి అన్ని టోర్నమెంట్లలో వారి మొత్తం గణాంకాలు కనిపిస్తాయి, జట్టు మారినా సరే. ఆటగాళ్లను పేరుతో కలుపుతాము.')):
     next(x for x in HELP[_l]['sections'] if x[0]=='📊')[3].append(_t)
 
+# Ask Stumply helper (en, te)
+for _l,_t in (('en','Stuck? Tap the 💬 button at the bottom right and type your question, for example "how do I add players". The answer comes from this guide, with a button to the right screen.'),
+              ('te','సందేహమా? కింద కుడివైపు ఉన్న 💬 బటన్ నొక్కి మీ ప్రశ్న టైప్ చేయండి, ఉదా. "ఆటగాళ్లను ఎలా చేర్చాలి". ఈ గైడ్ నుండి సమాధానం, సరైన స్క్రీన్‌కు బటన్‌తో వస్తుంది.')):
+    next(x for x in HELP[_l]['sections'] if x[0]=='🚀')[3].append(_t)
+

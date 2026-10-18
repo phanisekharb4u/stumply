@@ -764,6 +764,12 @@
   </div>
 </div>
 
+<button id="as-fab" class="noprint" onclick="asToggle()" aria-label="Ask Stumply: help">💬</button>
+<div id="as-panel" class="noprint" role="dialog" aria-label="Ask Stumply">
+  <div class="as-head"><b id="as-title">💬 Ask Stumply</b><button class="as-x" onclick="asClose()" aria-label="Close">✕</button></div>
+  <div id="as-log" class="as-log" aria-live="polite"></div>
+  <div class="as-in"><input id="as-q" type="text" maxlength="200" autocomplete="off" placeholder="Ask a question…" aria-label="Your question"><button class="bsm bgld" onclick="asAsk(document.getElementById('as-q').value)" aria-label="Send">➤</button></div>
+</div>
 <script src="firebase-config.js"></script>
 <script src="/js/core.js"></script>
 <script src="/js/signin.js"></script>
@@ -774,6 +780,7 @@
 <script src="/js/i18n-data.js"></script>
 <script src="/js/lang.js"></script>
 <script src="/js/extras.js"></script>
+<script src="/js/assistant.js"></script>
 <script src="/js/boot.js"></script>
 </body>
 </html>

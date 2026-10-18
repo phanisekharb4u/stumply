@@ -1,0 +1,25 @@
+how do I create a tournament → 🏆 Create a tournament
+how to make a single match → 🏏 Play a single match (one game, no tournament)
+add players to team → 👥 Add teams and players
+how to score a match → 🔴 Score a match live
+how can my friends watch → 👁 Watch live scores (viewers)
+share score on whatsapp → 🔗 Share scores with your audience
+delete a team → 🗑 Delete or correct things
+undo wrong ball → 🗑 Delete or correct things
+change language to telugu → 📱 Phone, language and offline
+is it free → 💰 Is Stumply free?
+super over tie → ⚡ Ties, rain and shorter matches
+reset password → 🔑 Create an account and sign in (admins)
+points table → 📊 History, stats and knockouts
+auto fixtures → 📅 Schedule matches
+career stats of a player → 📊 History, stats and knockouts
+how do i report a bug → 📮 Report a problem
+asdfgh → (no match) I couldn't find that in the Help guide.
+panel opens with greeting and 6 question chips
+chip answer: 🏆 Create a tournament
+signed-out viewer button: ➜ Find a match to watch
+టోర్నమెంట్ ఎలా సృష్టించాలి? → 🏆 టోర్నమెంట్ సృష్టించడం
+ఆటగాళ్లను ఎలా చేర్చాలి → 👥 జట్లు, ఆటగాళ్ళను చేర్చడం
+లైవ్ ఎలా చూడాలి? → 👁 లైవ్ స్కోర్లు చూడటం (వీక్షకులు)
+ఉచితమా → 💰 Stumply ఉచితమా?
+no page errors

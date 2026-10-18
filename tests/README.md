@@ -30,6 +30,7 @@ Then commit the changed `expected/` file together with your change.
 
 | Test | What it checks |
 |---|---|
+| ask-stumply | The 💬 helper answers common questions with the right Help section in English and Telugu, offers a button to the right screen, and says so when it cannot help |
 | accounts-and-tournaments | Register, the starter tournament, importing old data, new tournaments, the share link, viewers following live scores, viewers cannot write, duplicate usernames, another admin cannot edit your tournament, expired sign-in, offline scoring and syncing again |
 | auto-fixtures | One tap creates a League match for every pair of teams, spread over days, nobody plays two in a row, existing pairs are skipped |
 | bug-report-1-retest | Every fix from tester bug report 1: viewer screens before the innings and at the break, Super Over 2 rules, Player of the Match, reopening a finished match, and more |
