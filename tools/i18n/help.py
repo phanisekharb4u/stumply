@@ -265,3 +265,8 @@ for _l,_i,_t in (('en','🔴','Shot map (wagon wheel): after a 4 or a 6, tap whe
                  ('te','🏅','స్కోర్‌కార్డ్‌లోని వాగన్ వీల్ ప్రతి గుర్తించిన షాట్ ఎక్కడికి వెళ్లిందో చూపిస్తుంది; ఒక బ్యాటర్‌ను ఎంచుకుంటే వారి షాట్లు మాత్రమే కనిపిస్తాయి.')):
     next(x for x in HELP[_l]['sections'] if x[0]==_i)[3].append(_t)
 
+# Career profile (en, te)
+for _l,_t in (('en','Open a player and tap [[Career: all tournaments by this organiser]] to see their totals across every tournament the same organiser has run, even if they changed teams. Players are matched by name.'),
+              ('te','ఆటగాడిని తెరిచి [[కెరీర్: ఈ నిర్వాహకుడి అన్ని టోర్నమెంట్లు]] నొక్కండి: అదే నిర్వాహకుడి అన్ని టోర్నమెంట్లలో వారి మొత్తం గణాంకాలు కనిపిస్తాయి, జట్టు మారినా సరే. ఆటగాళ్లను పేరుతో కలుపుతాము.')):
+    next(x for x in HELP[_l]['sections'] if x[0]=='📊')[3].append(_t)
+

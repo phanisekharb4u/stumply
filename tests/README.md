@@ -33,6 +33,7 @@ Then commit the changed `expected/` file together with your change.
 | accounts-and-tournaments | Register, the starter tournament, importing old data, new tournaments, the share link, viewers following live scores, viewers cannot write, duplicate usernames, another admin cannot edit your tournament, expired sign-in, offline scoring and syncing again |
 | auto-fixtures | One tap creates a League match for every pair of teams, spread over days, nobody plays two in a row, existing pairs are skipped |
 | bug-report-1-retest | Every fix from tester bug report 1: viewer screens before the innings and at the break, Super Over 2 rules, Player of the Match, reopening a finished match, and more |
+| career-profile | One player's career across two tournaments by the same organiser, matched by name even in a different team, for the organiser and for viewers |
 | co-scorers-discover-light-viewer | Adding and removing a co-scorer and what they can change, Discover listing, and the light live feed for viewers |
 | google-x-sign-in | Google and X sign-in buttons, first-time setup, an email that already has an account, cancelling, and providers that are switched off |
 | match-alerts | Viewers get alerts for match start, wickets, innings end and result; iPhone Safari gets in-app alerts and the Add to Home Screen steps; the scorer gets none |
