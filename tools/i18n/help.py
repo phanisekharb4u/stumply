@@ -258,3 +258,15 @@ for _l,_t in (('en','Many teams? Tap [[Auto fixtures]] in Matches: choose the fi
               ('te','చాలా జట్లు ఉన్నాయా? మ్యాచ్‌లు లో [[ఆటో ఫిక్స్చర్లు]] నొక్కండి: మొదటి తేదీ, రోజుకు ఎన్ని మ్యాచ్‌లో ఎంచుకోండి, ప్రతి జట్టుకు మిగతా ప్రతి జట్టుతో ఒక లీగ్ మ్యాచ్ రోజులవారీగా తయారవుతుంది. రెండోసారి ఆడాలంటే "ఒకరితో ఒకరు రెండుసార్లు ఆడాలి" టిక్ చేయండి.')):
     next(x for x in HELP[_l]['sections'] if x[0]=='📅')[3].insert(1,_t)
 
+# Wagon wheel (en, te)
+for _l,_i,_t in (('en','🔴','Shot map (wagon wheel): after a 4 or a 6, tap where the ball went on the small field, or tap Skip. Change it at the top of the ball-by-ball card: off, 4s & 6s, or all runs.'),
+                 ('te','🔴','షాట్ మ్యాప్ (వాగన్ వీల్): 4 లేదా 6 తర్వాత చిన్న మైదానంలో బంతి వెళ్లిన చోట నొక్కండి, లేదా Skip నొక్కండి. బంతి-బంతి కార్డ్ పైభాగంలో మార్చవచ్చు: ఆఫ్, 4లు & 6లు, లేదా అన్ని పరుగులు.'),
+                 ('en','🏅','The wagon wheel on the scorecard shows where each marked shot went; pick a batter to see only their shots.'),
+                 ('te','🏅','స్కోర్‌కార్డ్‌లోని వాగన్ వీల్ ప్రతి గుర్తించిన షాట్ ఎక్కడికి వెళ్లిందో చూపిస్తుంది; ఒక బ్యాటర్‌ను ఎంచుకుంటే వారి షాట్లు మాత్రమే కనిపిస్తాయి.')):
+    next(x for x in HELP[_l]['sections'] if x[0]==_i)[3].append(_t)
+
+# Career profile (en, te)
+for _l,_t in (('en','Open a player and tap [[Career: all tournaments by this organiser]] to see their totals across every tournament the same organiser has run, even if they changed teams. Players are matched by name.'),
+              ('te','ఆటగాడిని తెరిచి [[కెరీర్: ఈ నిర్వాహకుడి అన్ని టోర్నమెంట్లు]] నొక్కండి: అదే నిర్వాహకుడి అన్ని టోర్నమెంట్లలో వారి మొత్తం గణాంకాలు కనిపిస్తాయి, జట్టు మారినా సరే. ఆటగాళ్లను పేరుతో కలుపుతాము.')):
+    next(x for x in HELP[_l]['sections'] if x[0]=='📊')[3].append(_t)
+

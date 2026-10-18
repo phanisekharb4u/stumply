@@ -181,7 +181,7 @@ function undoLast(){
   let m=JSON.parse(u.snap);
   APP.matches[idx]=m;APP.liveMatch=m;
   APP.pendingFreeHit=u.fh;APP.pendingExtra=null;
-  ['nov-mo','ins-mo','wkt-mo','ex-mo','mg-mo','rh-mo','rain-mo','motm-mo','tourn-complete-mo'].forEach(id=>{let e=document.getElementById(id);if(e)e.classList.remove('on');});
+  ['ww-mo','nov-mo','ins-mo','wkt-mo','ex-mo','mg-mo','rh-mo','rain-mo','motm-mo','tourn-complete-mo'].forEach(id=>{let e=document.getElementById(id);if(e)e.classList.remove('on');});
   try{closeCelebration();}catch(e){}
   document.getElementById('livebadge').classList.remove('hidden');
   saveState();renderLive();renderMatches();renderHistory();populateSCSelect();renderHome();
@@ -220,7 +220,7 @@ function addRun(r){
     else if(prev<50&&curr>=50) notifyHalfCentury(bs.name,curr);
   }
   checkChase(inn);
-  flashScore();afterScore();
+  flashScore();afterScore();wwMaybeAsk(r);
 }
 function addExtra(type){
   if(!canScore())return;

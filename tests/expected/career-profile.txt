@@ -1,0 +1,5 @@
+this tournament profile shows career button: true
+career (organiser): ← Back | TB | test batter | Career · 2 tournaments · 2 matches | 🏏 BATTING | 23 | Runs | 12 | Highest | 23.0 | Average | 328.6 | Strike rate | 1 | 4s | 3 | 6s | 0 / 0 | 50s / 100s | 🎳 BOWLING | 2 | Overs | 0 | Wickets | 0/0 | Best | 6.00 | Economy | 🏆 TOURNAMENTS | Test Cup Two | 1 match | 🏏 12 · 🎳 0 wkts | Test Cup One | 1 match | 🏏 11 · 🎳 0 wkts | Career counts completed matches in every tournament by this organiser, matching the player by name. Super Overs are not included.
+career (viewer): ← Back | TB | test batter | Career · 2 tournaments · 2 matches | 🏏 BATTING | 23 | Runs | 12 | Highest | 23.0 | Average | 328.6 | Strike rate | 1 | 4s | 3 | 6s
+back to tournament profile: true
+no page errors
