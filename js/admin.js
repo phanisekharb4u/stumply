@@ -3,6 +3,13 @@
 // ══════════════════════════════════════════════════════════════════════════
 //  NAVIGATION
 // ══════════════════════════════════════════════════════════════════════════
+// Tapping the Stumply logo goes to Home (Ctrl/Cmd-click still opens a new tab)
+function logoHome(e){
+  if(e&&(e.metaKey||e.ctrlKey||e.shiftKey||e.button===1))return true;
+  if(APP.role){showTab('home');window.scrollTo({top:0,behavior:'smooth'});}
+  else window.scrollTo({top:0,behavior:'smooth'});
+  return false;
+}
 function showTab(t){
   document.body.setAttribute('data-tab',t);
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));

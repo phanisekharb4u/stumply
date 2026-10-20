@@ -1423,3 +1423,6 @@ html.ovl body>*:not(#ovl){display:none!important}
 @media print{#as-fab,#as-panel{display:none!important}}
 /* The scorer needs the whole Live screen: no helper button over the scoring buttons */
 body[data-tab="live"]:not(.is-viewer) #as-fab{display:none}
+/* The logo is a link to Home */
+a.logo,a.awm{text-decoration:none;cursor:pointer}
+a.logo:focus-visible,a.awm:focus-visible{outline:2px solid #E9C46A;outline-offset:3px;border-radius:8px}
