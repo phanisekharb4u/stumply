@@ -28,6 +28,7 @@ const AS_FAQ={
   en:[
     ['free cost price pay paid money charge','💰 Is Stumply free?','Yes. Stumply is free for organisers and viewers, with no ads. Viewers do not even need an account.'],
     ['contact support bug problem report email complain','📮 Report a problem','Write to phanisekharb4u@gmail.com with what you did, what you expected and a screenshot if you can.'],
+    ['who developed made built created developer owner author contact','👤 Who made Stumply?','Stumply is developed by Phani Sekhar Sunkara. Contact: phanisekharb4u@gmail.com'],
     ['what stumply about','🏏 What is Stumply?','Stumply is a free cricket scorer for local tournaments and single matches. Organisers score ball by ball on their phone, and anyone with the link watches the live score, scorecards and stats, with no app to install.'],
   ],
   te:[
