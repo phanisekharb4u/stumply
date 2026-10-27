@@ -1426,3 +1426,6 @@ body[data-tab="live"]:not(.is-viewer) #as-fab{display:none}
 /* The logo is a link to Home */
 a.logo,a.awm{text-decoration:none;cursor:pointer}
 a.logo:focus-visible,a.awm:focus-visible{outline:2px solid #E9C46A;outline-offset:3px;border-radius:8px}
+/* Developer credit */
+.credit{text-align:center;font-size:12px;color:var(--dim);margin:18px 16px 8px;line-height:1.6}
+.credit a{color:var(--em)}
