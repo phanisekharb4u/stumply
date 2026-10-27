@@ -146,10 +146,10 @@ function asOpen(){
   let inp=document.getElementById('as-q');if(inp)inp.placeholder=asT('ph');
   let log=document.getElementById('as-log');
   if(log&&(!log.children.length||log.getAttribute('data-lang')!==CURRENT_LANG)){log.innerHTML='';log.setAttribute('data-lang',CURRENT_LANG);asAdd('bot',`<p>${esc(asT('hello'))}</p>${asChips()}`);}
-  p.classList.add('on');document.getElementById('as-fab').classList.add('on');
+  p.classList.add('on');
   if(inp&&window.matchMedia&&window.matchMedia('(min-width:900px)').matches)inp.focus();
 }
-function asClose(){let p=document.getElementById('as-panel');if(p)p.classList.remove('on');let f=document.getElementById('as-fab');if(f)f.classList.remove('on');}
+function asClose(){let p=document.getElementById('as-panel');if(p)p.classList.remove('on');}
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target&&e.target.id==='as-q'){e.preventDefault();asAsk(e.target.value);}
   if(e.key==='Escape'&&document.getElementById('as-panel')?.classList.contains('on'))asClose();

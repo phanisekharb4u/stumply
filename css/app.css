@@ -1396,9 +1396,6 @@ html.ovl body>*:not(#ovl){display:none!important}
 .ww-sel{width:auto;max-width:100%;margin:4px 0;padding:6px 8px;font-size:13px}
 .ww-sum{margin-left:auto}
 /* ── Ask Stumply help assistant ── */
-#as-fab{position:fixed;right:16px;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:900;width:54px;height:54px;border-radius:50%;border:0;background:#0F5132;color:#fff;font-size:24px;box-shadow:0 8px 22px rgba(10,59,37,.35);cursor:pointer}
-#as-fab.on{background:#E9C46A}
-@media(min-width:900px){#as-fab{bottom:24px;right:24px}}
 #as-panel{position:fixed;z-index:950;display:none;flex-direction:column;background:#fff;box-shadow:0 18px 50px rgba(0,0,0,.28);left:0;right:0;bottom:0;max-height:78vh;border-radius:20px 20px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
 #as-panel.on{display:flex}
 @media(min-width:900px){#as-panel{left:auto;right:24px;bottom:90px;width:390px;max-height:70vh;border-radius:18px}}
@@ -1420,12 +1417,14 @@ html.ovl body>*:not(#ovl){display:none!important}
 .as-in{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--bdr)}
 .as-in input{flex:1;min-width:0;height:44px;border:1.5px solid var(--bdr2,var(--bdr));border-radius:12px;padding:0 12px;font-size:16px;font-family:inherit}
 .as-in .bsm{min-width:48px}
-@media print{#as-fab,#as-panel{display:none!important}}
-/* The scorer needs the whole Live screen: no helper button over the scoring buttons */
-body[data-tab="live"]:not(.is-viewer) #as-fab{display:none}
+@media print{#as-panel{display:none!important}}
 /* The logo is a link to Home */
 a.logo,a.awm{text-decoration:none;cursor:pointer}
 a.logo:focus-visible,a.awm:focus-visible{outline:2px solid #E9C46A;outline-offset:3px;border-radius:8px}
 /* Developer credit */
 .credit{text-align:center;font-size:12px;color:var(--dim);margin:18px 16px 8px;line-height:1.6}
 .credit a{color:var(--em)}
+.as-head b{margin-right:auto}
+.as-guide{margin-right:8px;font-size:12px;padding:6px 10px}
+#as-panel{z-index:1100}
+@media(min-width:900px){#as-panel{top:76px;bottom:auto}}
