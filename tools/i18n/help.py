@@ -271,7 +271,7 @@ for _l,_t in (('en','Open a player and tap [[Career: all tournaments by this org
     next(x for x in HELP[_l]['sections'] if x[0]=='📊')[3].append(_t)
 
 # Ask Stumply helper (en, te)
-for _l,_t in (('en','Stuck? Tap the 💬 button at the bottom right and type your question, for example "how do I add players". The answer comes from this guide, with a button to the right screen.'),
-              ('te','సందేహమా? కింద కుడివైపు ఉన్న 💬 బటన్ నొక్కి మీ ప్రశ్న టైప్ చేయండి, ఉదా. "ఆటగాళ్లను ఎలా చేర్చాలి". ఈ గైడ్ నుండి సమాధానం, సరైన స్క్రీన్‌కు బటన్‌తో వస్తుంది.')):
+for _l,_t in (('en','Stuck? Tap ❓ Help at the top and type your question, for example "how do I add players". The answer comes from this guide, with a button to the right screen. Tap 📖 Full guide there to read this guide.'),
+              ('te','సందేహమా? పైన ఉన్న ❓ సహాయం నొక్కి మీ ప్రశ్న టైప్ చేయండి, ఉదా. "ఆటగాళ్లను ఎలా చేర్చాలి". ఈ గైడ్ నుండి సమాధానం, సరైన స్క్రీన్‌కు బటన్‌తో వస్తుంది. ఈ గైడ్ చదవడానికి అక్కడ 📖 పూర్తి గైడ్ నొక్కండి.')):
     next(x for x in HELP[_l]['sections'] if x[0]=='🚀')[3].append(_t)
 

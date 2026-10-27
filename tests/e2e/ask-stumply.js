@@ -5,7 +5,7 @@ const P=await (await b.newContext({viewport:{width:390,height:844},serviceWorker
 await P.goto(U);await P.waitForTimeout(800);
 const top=q=>P.evaluate(q=>{let d=document.createElement('div');d.innerHTML=asAnswer(q);return (d.querySelector('b')||{}).textContent||'(no match) '+d.textContent.slice(0,40);},q);
 for(const q of ['how do I create a tournament','how to make a single match','add players to team','how to score a match','how can my friends watch','share score on whatsapp','delete a team','undo wrong ball','change language to telugu','is it free','super over tie','reset password','points table','auto fixtures','career stats of a player','how do i report a bug','asdfgh'])L(q,'→',await top(q));
-await P.click('#as-fab');await P.waitForTimeout(150);
+await P.click('.ahbtn[aria-label="Help"]');await P.waitForTimeout(150);
 L('panel opens with greeting and',await P.evaluate(()=>document.querySelectorAll('#as-log .as-chip').length),'question chips');
 await P.click('#as-log .as-chip >> nth=0');await P.waitForTimeout(400);
 L('chip answer:',await P.evaluate(()=>[...document.querySelectorAll('#as-log .as-bot')].pop().querySelector('b').textContent));
