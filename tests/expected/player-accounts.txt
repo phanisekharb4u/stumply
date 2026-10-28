@@ -1,0 +1,17 @@
+viewer sees claim button: 🙋 This is me: add to my player career | Playing in more than one place? Sign in for free, tap this on your name in each tournament, and all your runs and wickets add up in one career, whoever organised the match.
+sign-in screen message: shown
+after sign-up the career opens: TB | Test Batter | Career · 1 tournament · 1 match | 🏏 BATTING | 11 | Runs | 11* | Highest | — | Average | 275.0 | Strike rate | 1 | 4s | 1 | 6s | 0 / 0 | 50s / 100s | 🎳 BOWLING | 1 | Overs | 0 | Wickets | 0/0 | Best | 6.00 | Economy | 🏆 TOURNAMENTS | Test Cup One | 1 match | 🏏 11 · 🎳 0 wkts | 📤 Share on WhatsApp | 🔗 Copy link | ✏️ Edit my profile | Counts completed matches in every tournament where this player tapped “This is me”, whoever organised it. Super Overs are not included. Organisers can remove a wrong claim.
+after claiming in the second tournament: ✅ This is you. These matches count in your player career. | 🏆 My player career | Not me
+career across both organisers: ← Back | TB | Test Batter | Career · 2 tournaments · 2 matches | 🏏 BATTING | 23 | Runs | 12 | Highest | 23.0 | Average | 328.6 | Strike rate | 1 | 4s | 3 | 6s | 0 / 0 | 50s / 100s | 🎳 BOWLING | 2 | Overs | 0 | Wickets | 0/0 | Best | 6.00 | Economy | 🏆 TOURNAMENTS | Test Cup Two | 1 match | 🏏 12 · 🎳 0 wkts | Test Cup One | 1 match | 🏏 11 · 🎳 0 wkts | 📤 Share on WhatsApp | 🔗 Copy link | ✏️ Edit my profile | Counts completed matches in every tournament where this player tapped “This is me”, whoever organised it. Super Overs are not included. Organisers can remove a wrong claim.
+profile line: TB | Test Batter | Batter · Guntur | Career · 2 tournaments · 2 matches
+organiser two tries to claim the same player: blocked
+public career link: TB | Test Batter | Batter · Guntur | Career · 2 tournaments · 2 matches | 🏏 BATTING | 23 | Runs | 12 | Highest | 23.0 | Average | 328.6 | Strike rate | 1 | 4s | 3 | 6s | 0 / 0 | 50s / 100s | 🎳 BOWLI
+viewer has no edit button: true
+organiser sees: 🧢 Test Batter has a Stumply player account. | 🏆 Career: all organisers | Remove claim
+after removing: 🙋 This is me: add to my player career | Playing in more than one place? Sign in for free, tap this on your name in each tournament, and all your runs and wickets add up in one career, whoever organised the match.
+career after the claim was removed: TB | Test Batter | Batter · Guntur | Career · 1 tournament · 1 match | 🏏 BATTING | 12 | Runs | 12 | Highest | 12.0 | Av
+player sees: ✅ This is you. These matches count in your player career. | 🏆 My player career | Not me
+after Not me: 🙋 This is me: add to my player career | Playing in more than one place? Sign in for free, tap this on your name in each tournament, and all your runs and wickets add up in one career, whoever organised the match.
+admin card: 🧢 My player career | Do you play too? Open your name in any Stumply tournament (Players, a scorecard or Stats) and tap “🙋 This is me”. Your runs and wickets from every organiser's tournaments add up in one career you can share. | 🏆 Open my career | 📤 Share my career
+organiser own empty career: Your player career is empty so far. | Open any Stumply tournament, tap your name (in Players, a scorecard or Stats) and tap “🙋 This is me”. Your matches then add up here.
+no page errors

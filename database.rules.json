@@ -206,6 +206,53 @@
           ".validate": "$tid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.hasChildren(['name','owner'])"
         }
       }
+    },
+    "players": {
+      "$uid": {
+        ".read": true,
+        ".write": "auth != null && auth.uid === $uid && auth.token.firebase.sign_in_provider !== 'anonymous'",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60"
+        },
+        "city": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "role": {
+          ".validate": "newData.isString() && newData.val().length <= 30"
+        },
+        "at": {
+          ".validate": "newData.isNumber()"
+        },
+        "claims": {
+          "$k": {
+            ".validate": "$k.matches(/^[A-Za-z0-9_-]{1,80}~[A-Za-z0-9_-]{1,80}$/) && newData.hasChildren(['t','p'])",
+            "t": {
+              ".validate": "newData.isString() && newData.val().length <= 80"
+            },
+            "p": {
+              ".validate": "newData.isString() && newData.val().length <= 80"
+            },
+            "at": {
+              ".validate": "newData.isNumber()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "claims": {
+      "$tid": {
+        ".read": true,
+        "$pid": {
+          ".write": "auth != null && auth.token.firebase.sign_in_provider !== 'anonymous' && ((!data.exists() && newData.val() === auth.uid && root.child('tournaments').child($tid).exists()) || (!newData.exists() && (data.val() === auth.uid || root.child('tournaments').child($tid).child('owner').val() === auth.uid)))",
+          ".validate": "$pid.matches(/^[A-Za-z0-9_-]{1,80}$/) && newData.isString() && newData.val().length <= 128"
+        }
+      }
     }
   }
 }

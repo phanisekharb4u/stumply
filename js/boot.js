@@ -26,6 +26,8 @@ try{syncNotifCard();}catch(e){}
   if(!CLOUD_OK){showAuthScreen('');return;}
   let loading=document.getElementById('boot-msg');
   const busy=msg=>{if(loading){loading.textContent=msg||'';loading.style.display=msg?'block':'none';}};
+  let pl=params.get('player');
+  if(pl&&SAFE_ID.test(pl)){showAuthScreen('');openPlayerCareer(pl);return;}
   try{
     if(t){busy('Loading tournament…');await openViewer(t);busy('');return;}
     if(view){

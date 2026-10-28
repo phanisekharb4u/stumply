@@ -275,3 +275,10 @@ for _l,_t in (('en','Stuck? Tap ❓ Help at the top and type your question, for 
               ('te','సందేహమా? పైన ఉన్న ❓ సహాయం నొక్కి మీ ప్రశ్న టైప్ చేయండి, ఉదా. "ఆటగాళ్లను ఎలా చేర్చాలి". ఈ గైడ్ నుండి సమాధానం, సరైన స్క్రీన్‌కు బటన్‌తో వస్తుంది. ఈ గైడ్ చదవడానికి అక్కడ 📖 పూర్తి గైడ్ నొక్కండి.')):
     next(x for x in HELP[_l]['sections'] if x[0]=='🚀')[3].append(_t)
 
+
+# Player accounts (en, te)
+for _l,_t in (('en','Players can have their own free Stumply account. Sign in (Google is quickest), open your name in any tournament (Players, a scorecard or Stats) and tap [[🙋 This is me: add to my player career]]. Do this in each tournament you play in, whoever organised it, and your runs, wickets and catches add up in one player career. Open it from Admin → [[🏆 Open my career]] and share the link on WhatsApp.'),
+              ('en','Organisers: if someone claims the wrong name in your tournament, open that player and tap [[Remove claim]]. A player can tap [[Not me]] to undo their own claim. Each name can be claimed by one account only.'),
+              ('te','ఆటగాళ్లు తమకంటూ ఉచిత Stumply ఖాతా తెరవవచ్చు. సైన్ ఇన్ చేసి (Google తో అత్యంత వేగం), ఏదైనా టోర్నమెంట్‌లో మీ పేరు తెరిచి (ఆటగాళ్లు, స్కోర్‌కార్డ్ లేదా గణాంకాలు) [[🙋 ఇది నేనే: నా ప్లేయర్ కెరీర్‌లో చేర్చు]] నొక్కండి. మీరు ఆడే ప్రతి టోర్నమెంట్‌లో, ఎవరు నిర్వహించినా ఇలా చేస్తే, మీ పరుగులు, వికెట్లు, క్యాచ్‌లు ఒకే ప్లేయర్ కెరీర్‌లో కలుస్తాయి. అడ్మిన్ → [[🏆 నా కెరీర్ తెరువు]] నుండి తెరిచి లింక్‌ను WhatsApp లో షేర్ చేయండి.'),
+              ('te','నిర్వాహకులు: మీ టోర్నమెంట్‌లో ఎవరైనా తప్పు పేరును క్లెయిమ్ చేస్తే, ఆ ఆటగాడిని తెరిచి [[క్లెయిమ్ తీసివేయి]] నొక్కండి. ఆటగాడు తన క్లెయిమ్‌ను [[నేను కాదు]] నొక్కి రద్దు చేయవచ్చు. ఒక పేరును ఒక ఖాతా మాత్రమే క్లెయిమ్ చేయగలదు.')):
+    next(x for x in HELP[_l]['sections'] if x[0]=='📊')[3].append(_t)

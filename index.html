@@ -363,6 +363,12 @@
     <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5">Each tournament has its own teams, matches, stats and share link. Finished tournaments stay here as history.</p>
     <p style="font-size:11px;color:var(--dim);margin-top:4px;line-height:1.5">A single match is a one-off game outside any tournament: add the two teams, schedule it and score it. It has its own share link and no points table.</p>
   </div>
+  <!-- Player career across all organisers -->
+  <div class="card" id="me-player-card">
+    <div class="ch">🧢 My player career</div>
+    <p style="font-size:12px;color:var(--dim);line-height:1.5;margin-bottom:8px">Do you play too? Open your name in any Stumply tournament (Players, a scorecard or Stats) and tap “🙋 This is me”. Your runs and wickets from every organiser's tournaments add up in one career you can share.</p>
+    <div style="display:flex;gap:7px;flex-wrap:wrap"><button class="bsm bgld" onclick="openMyCareer()">🏆 Open my career</button><button class="bsm bblu" onclick="shareMyCareer()">📤 Share my career</button></div>
+  </div>
   <!-- One-time import from the old version -->
   <!-- Site owner only: who is using Stumply -->
   <div class="card" id="usage-card" style="display:none">
@@ -781,6 +787,7 @@
 <script src="/js/i18n-data.js"></script>
 <script src="/js/lang.js"></script>
 <script src="/js/extras.js"></script>
+<script src="/js/players.js"></script>
 <script src="/js/assistant.js"></script>
 <script src="/js/boot.js"></script>
 </body>
