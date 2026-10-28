@@ -387,6 +387,7 @@ const I18N_PAT=[
   [/^(.+): where did it go\?$/,'%ww_title'],
   [/^Wagon wheel — (.+)$/,'%ww_head'],
   [/^(\d+) match(?:es)? will be created over (\d+) days?\.$/,'%fx_plan'],
+  [/^Your post is public for (\d+) days, then it disappears\. Under 18\? Do not share a phone number: ask a parent, coach or organiser to post for you, or say in the details where to find you\.$/,'%bd_hint'],
   [/^(\d+) match(?:es)? scheduled$/,'%fx_done'],
   [/^(.+) won by (\d+) runs? \(revised target\)$/,'%won_runs_rev'],
   [/^(.+) won by (\d+) wickets? \(revised target\)$/,'%won_wkts_rev'],

@@ -40,6 +40,7 @@ Then commit the changed `expected/` file together with your change.
 | match-alerts | Viewers get alerts for match start, wickets, innings end and result; iPhone Safari gets in-app alerts and the Add to Home Screen steps; the scorer gets none |
 | match-day-features | Last man stands, no LBW, free hit off, entry fees, stream overlay, fan poll, spoken score, WhatsApp texts, graphs and awards sharing |
 | player-accounts | A player taps "This is me" in two organisers' tournaments, signs up on the way, and gets one career across both; nobody else can take the same name; the organiser can remove a wrong claim; the career link is public |
+| players-board | Looking for players: reading needs no account, posting does; a phone number only with the 18+ tick; posts end after 30 days; only the poster can delete; search and filters |
 | security-hostile-data | A tournament owner saves booby-trapped names and data; a viewer opens it and no injected code runs |
 | show-password | The eye button on password boxes shows and hides the password |
 | site-owner-usage | Only the site owner can see Site Usage |

@@ -1,0 +1,22 @@
+empty board: No posts yet. Be the first: tap ➕ Post.
+posting without an account goes to sign-in: true
+admin card: 🤝 Looking for players | Short of a player for Saturday? Post what your team needs, or see players near you who are free to play. | 🤝 Open the board
+no phone and no details: Please say in the details how people can reach you.
+after posting: 🏏 Team needs: Bowler | 📍 Guntur · 📅 Saturday 7 am | Tennis ball, 10 overs. Ask for the captain at Test Ground nets. | Test Captain · 28 Oct | No phone shared. Reply as the post says. | 🗑 Delete
+short phone: Enter a 10-digit mobile number, or untick the box.
+WhatsApp link: https://wa.me/<time>
+database blocks a phone without the 18+ tick: blocked
+database blocks posts longer than 30 days: blocked
+fourth post is refused: true
+visitor sees: 🏏 Team needs: Players | 📍 Tenali | Need two fielders | Test Captain · 28 Oct | No phone shared. Reply as the post says. | 🚩 Report
+   🙋 Available: Wicket-keeper | 📍 Vijayawada | Test Captain · 28 Oct | 💬 WhatsApp | 🚩 Report
+   🏏 Team needs: Bowler | 📍 Guntur · 📅 Saturday 7 am | Tennis ball, 10 overs. Ask for the captain at Test Ground nets. | Test Captain · 28 Oct | No phone shared. Reply as the post says. | 🚩 Report
+expired post hidden: true
+players only: 1
+search guntur: 1
+visitor buttons: No phone shared. Reply as the post says. 🚩 Report / 💬 WhatsApp 🚩 Report / No phone shared. Reply as the post says. 🚩 Report
+another user deletes it: blocked
+expired post removed from the database: true
+after deleting: 🏏 Team needs: Players | 📍 Tenali | Need two fielders | Test Captain · 28 Oct | No phone shared. Reply as the post says. | 🗑 Delete
+   🙋 Available: Wicket-keeper | 📍 Vijayawada | Test Captain · 28 Oct | 💬 WhatsApp | 🗑 Delete
+no page errors
