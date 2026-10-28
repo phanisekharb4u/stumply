@@ -1428,3 +1428,9 @@ a.logo:focus-visible,a.awm:focus-visible{outline:2px solid #E9C46A;outline-offse
 .as-guide{margin-right:8px;font-size:12px;padding:6px 10px}
 #as-panel{z-index:1100}
 @media(min-width:900px){#as-panel{top:76px;bottom:auto}}
+
+/* ── Player accounts ── */
+.pcl{font-size:13px;line-height:1.5;padding:9px 11px;border-radius:10px;background:var(--emlt,#E7F1EA);border:1px solid var(--bdr)}
+.pcl.pcl-me{background:var(--goldlt,#FBF3DC)}
+.pcl-btns{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.pcl-hint{font-size:11px;color:var(--dim);line-height:1.5;margin-top:6px}

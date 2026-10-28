@@ -10,7 +10,7 @@ const uidOf=t=>{if(!t)return null;let p=t.split('.');return p[0]==='tok'&&+p[2]=
 const get=(p)=>p.reduce((o,k)=>o&&typeof o==='object'?o[k]:undefined,db);
 function set(p,v){if(!p.length){db=v||{};return;}let o=db;for(let i=0;i<p.length-1;i++){if(!o[p[i]]||typeof o[p[i]]!=='object')o[p[i]]={};o=o[p[i]];}
   if(v===null||v===undefined)delete o[p[p.length-1]];else o[p[p.length-1]]=v;}
-function canRead(p,uid){const own=!!(uid&&db.owners&&db.owners[uid]===true);if(p[0]==='public')return true;if(p[0]==='polls')return p.length>=3;if(p[0]==='scorerOf'&&p.length>=2)return uid===p[1];if(p[0]==='owners'&&p.length===2)return uid===p[1];if((p[0]==='users'||p[0]==='userTournaments')&&p.length===1)return !!(uid&&db.owners&&db.owners[uid]===true);if(['tournaments','userTournaments','usernames'].includes(p[0])&&p.length>=2)return true;if(p[0]==='users'&&p.length>=2)return uid===p[1];return false;}
+function canRead(p,uid){const own=!!(uid&&db.owners&&db.owners[uid]===true);if(p[0]==='public')return true;if((p[0]==='players'||p[0]==='claims')&&p.length>=2)return true;if(p[0]==='polls')return p.length>=3;if(p[0]==='scorerOf'&&p.length>=2)return uid===p[1];if(p[0]==='owners'&&p.length===2)return uid===p[1];if((p[0]==='users'||p[0]==='userTournaments')&&p.length===1)return !!(uid&&db.owners&&db.owners[uid]===true);if(['tournaments','userTournaments','usernames'].includes(p[0])&&p.length>=2)return true;if(p[0]==='users'&&p.length>=2)return uid===p[1];return false;}
 function canWrite(p,uid,val,method){
   if(!uid)return false;
   const T=id=>get(['tournaments',id]);const isSc=id=>{let t=T(id);return !!(t&&t.scorers&&t.scorers[uid]);};
@@ -22,6 +22,9 @@ function canWrite(p,uid,val,method){
   if(p[0]==='scorerOf'&&p.length===3){if(uid===p[1])return val===null;let t=T(p[2]);return !!(t&&t.owner===uid);}
   if(p[0]==='polls'){if(p.length===2){let t=get(['tournaments',p[1]]);return !!(t&&t.owner===uid)&&val===null;}
     return p.length===4&&p[3]===uid&&get(['tournaments',p[1]])!==undefined&&typeof val==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(val);}
+  if(p[0]==='players'&&p.length>=2)return p[1]===uid&&!uid.startsWith('a');
+  if(p[0]==='claims'&&p.length===3){if(uid.startsWith('a'))return false;const cur=get(p),t=T(p[1]);
+    if(val===null)return cur===uid||!!(t&&t.owner===uid);return cur===undefined&&val===uid&&!!t;}
   if(p[0]==='usernames'&&p.length===2)return get(p)===undefined&&val===uid;
   if(p[0]==='users'&&p.length>=2)return p[1]===uid;
   return false;}

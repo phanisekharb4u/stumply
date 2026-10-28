@@ -100,6 +100,7 @@ async function enterAdmin(){
     if(!opened)await createTournament(blankTournament(APP.dname+"'s Tournament"));
   }
   initApp();startCollab();
+  if(typeof finishPendingClaim==='function')finishPendingClaim();
 }
 // Claim a username and save the profile for the signed-in account
 async function saveProfile(name,uname){

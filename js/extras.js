@@ -298,9 +298,11 @@ function openPlayer(pid){
   if(rows.length)html+=`<div class="pl-sec" style="margin-top:12px">📅 MATCHES</div>${rows.join('')}`;
   html+=`<p style="font-size:11px;color:var(--dim);margin-top:10px">Stats are for this tournament only. Totals count completed matches; Super Overs are not included.</p>`;
   html+=`<button class="bsm bgld" style="margin-top:8px" onclick="openCareer(this.getAttribute('data-n'))" data-n="${esc(name)}">🏆 Career: all tournaments by this organiser</button>`;
+  html+=`<div id="pl-claim" style="margin-top:10px"></div>`;
   document.getElementById('pl-cont').innerHTML=html;
   if(CURRENT_LANG!=='en'&&typeof i18nWalk==='function')i18nWalk(document.getElementById('pl-cont'));
   openM('pl-mo');
+  if(typeof renderClaim==='function')renderClaim(pid,name);
 }
 
 // ── Career: one player's totals across every tournament run by the same organiser ──
@@ -308,12 +310,13 @@ function openPlayer(pid){
 // career even when they change teams. Two different players with the same name are counted together.
 const careerKey=n=>String(n||'').trim().toLowerCase().replace(/\s+/g,' ');
 function careerOwner(){return APP.role==='admin'?(APP.ownerUid||(AUTH&&AUTH.uid)):(_vraw&&_vraw.owner);}
-function careerAdd(C,m,tname){
-  let k=C.key,did=false,row={t:tname,runs:0,wk:0,m:0};
+function careerAdd(C,m,tname,key,pid){
+  let k=key||C.key,did=false,row={t:tname,runs:0,wk:0,m:0};
+  const me=(id,o)=>pid?id===pid:careerKey(o.name)===k;
   mainInns(m).forEach(inn=>{
-    Object.values(inn.batsmen||{}).forEach(b=>{
+    Object.entries(inn.batsmen||{}).forEach(([bid,b])=>{
       if(!b)return;
-      if(careerKey(b.name)===k&&b.status!=='yet'){did=true;C.runs+=b.runs||0;C.balls+=b.balls||0;C.fours+=b.fours||0;C.sixes+=b.sixes||0;row.runs+=b.runs||0;
+      if(me(bid,b)&&b.status!=='yet'){did=true;C.runs+=b.runs||0;C.balls+=b.balls||0;C.fours+=b.fours||0;C.sixes+=b.sixes||0;row.runs+=b.runs||0;
         if(b.status==='out')C.outs++;let r=b.runs||0;if(r>=100)C.h100++;else if(r>=50)C.h50++;
         if(r>C.hs||(r===C.hs&&b.status!=='out'))C.hs=r,C.hsNo=b.status!=='out';}
       let d=String(b.dismissal||'');let f=d.match(/^c (.+?) b (.+)$/),st=d.match(/^st (.+?) b /),ro=d.match(/^run out \((.+)\)$/),cb=d.match(/^c & b (.+)$/);
@@ -321,14 +324,30 @@ function careerAdd(C,m,tname){
       if(b.status==='out'&&st&&careerKey(st[1])===k)C.st++;
       if(b.status==='out'&&ro&&careerKey(ro[1])===k)C.ro++;
     });
-    Object.values(inn.bowlers||{}).forEach(w=>{
-      if(!w||careerKey(w.name)!==k||!hasBowled(w))return;did=true;
+    Object.entries(inn.bowlers||{}).forEach(([wid,w])=>{
+      if(!w||!me(wid,w)||!hasBowled(w))return;did=true;
       let bb=(w.overs||0)*6+(w.balls||0);C.bb+=bb;C.br+=w.runs||0;C.wk+=w.wickets||0;row.wk+=w.wickets||0;
       if((w.wickets||0)>C.bestW||((w.wickets||0)===C.bestW&&(w.runs||0)<C.bestR))C.bestW=w.wickets||0,C.bestR=w.runs||0;
     });
   });
   if(did){C.m++;row.m=1;}
   return row;
+}
+function careerNew(key){return {key,m:0,runs:0,balls:0,fours:0,sixes:0,outs:0,hs:0,hsNo:false,h50:0,h100:0,bb:0,br:0,wk:0,bestW:0,bestR:0,ct:0,st:0,ro:0};}
+// Career card: header, batting, bowling, fielding and one row per tournament
+function careerBody(name,C,per,sub){
+  let g=a=>`<div class="pl-grid">${a.map(([l,v])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>`;
+  let ov=C.bb?Math.floor(C.bb/6)+(C.bb%6?'.'+C.bb%6:''):'0';
+  let html=`<div class="pl-head" style="margin-top:8px"><div class="pl-ini">${esc(String(name).trim().split(/\s+/).map(w=>w[0]||'').slice(0,2).join('').toUpperCase())}</div>
+    <div><div style="font:700 20px var(--disp)">${esc(name)}</div>${sub||''}<div style="font-size:13px;color:var(--dim)">Career · ${plural(per.length,'tournament')} · ${C.m} ${C.m===1?'match':'matches'}</div></div></div>`;
+  if(!C.m)html+='<p style="color:var(--dim)">No completed matches found for this name.</p>';
+  else{
+    html+=`<div class="pl-sec">🏏 BATTING</div>`+g([['Runs',C.runs],['Highest',C.hs+(C.hsNo?'*':'')],['Average',C.outs?(C.runs/C.outs).toFixed(1):'—'],['Strike rate',C.balls?(C.runs/C.balls*100).toFixed(1):'—'],['4s',C.fours],['6s',C.sixes],['50s / 100s',C.h50+' / '+C.h100]]);
+    if(C.bb)html+=`<div class="pl-sec">🎳 BOWLING</div>`+g([['Overs',ov],['Wickets',C.wk],['Best',C.bestW+'/'+C.bestR],['Economy',econTxt(C.br,0,C.bb)]]);
+    if(C.ct+C.st+C.ro)html+=`<div class="pl-sec">🧤 FIELDING</div>`+g([['Catches',C.ct],['Stumpings',C.st],['Run outs',C.ro]]);
+    html+=`<div class="pl-sec" style="margin-top:12px">🏆 TOURNAMENTS</div>`+per.sort((a,b)=>b.runs-a.runs).map(r=>`<div class="pl-m"><span>${esc(r.t)}<br><span style="font-size:11px;color:var(--dim)">${r.m} ${r.m===1?'match':'matches'}</span></span><span>🏏 ${r.runs} · 🎳 ${plural(r.wk,'wkt')}</span></div>`).join('');
+  }
+  return html;
 }
 async function openCareer(name){
   let box=document.getElementById('pl-cont');if(!box)return;
@@ -339,7 +358,7 @@ async function openCareer(name){
       .sort((a,b)=>(b[1].updatedAt||0)-(a[1].updatedAt||0)).slice(0,40).map(([tid,v])=>({tid,name:String(v.name||'Tournament').slice(0,60)}));}
   catch(e){}
   if(cur&&!list.some(x=>x.tid===cur))list.unshift({tid:cur,name:APP.tournament.name||'This tournament'});
-  let C={key:careerKey(name),m:0,runs:0,balls:0,fours:0,sixes:0,outs:0,hs:0,hsNo:false,h50:0,h100:0,bb:0,br:0,wk:0,bestW:0,bestR:0,ct:0,st:0,ro:0},per=[];
+  let C=careerNew(careerKey(name)),per=[];
   await Promise.all(list.map(async t=>{
     let ms=[];
     if(t.tid===cur)ms=APP.matches;
@@ -349,18 +368,7 @@ async function openCareer(name){
     ms.filter(m=>m.status==='completed'&&Array.isArray(m.innings)).forEach(m=>{let r=careerAdd(C,m,t.name);tot.runs+=r.runs;tot.wk+=r.wk;tot.m+=r.m;});
     if(tot.m)per.push(tot);
   }));
-  let g=a=>`<div class="pl-grid">${a.map(([l,v])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>`;
-  let ov=C.bb?Math.floor(C.bb/6)+(C.bb%6?'.'+C.bb%6:''):'0';
-  let html=`<button class="bsm" onclick="openPlayerBack()">← Back</button>
-    <div class="pl-head" style="margin-top:8px"><div class="pl-ini">${esc(String(name).trim().split(/\s+/).map(w=>w[0]||'').slice(0,2).join('').toUpperCase())}</div>
-    <div><div style="font:700 20px var(--disp)">${esc(name)}</div><div style="font-size:13px;color:var(--dim)">Career · ${plural(per.length,'tournament')} · ${C.m} ${C.m===1?'match':'matches'}</div></div></div>`;
-  if(!C.m)html+='<p style="color:var(--dim)">No completed matches found for this name.</p>';
-  else{
-    html+=`<div class="pl-sec">🏏 BATTING</div>`+g([['Runs',C.runs],['Highest',C.hs+(C.hsNo?'*':'')],['Average',C.outs?(C.runs/C.outs).toFixed(1):'—'],['Strike rate',C.balls?(C.runs/C.balls*100).toFixed(1):'—'],['4s',C.fours],['6s',C.sixes],['50s / 100s',C.h50+' / '+C.h100]]);
-    if(C.bb)html+=`<div class="pl-sec">🎳 BOWLING</div>`+g([['Overs',ov],['Wickets',C.wk],['Best',C.bestW+'/'+C.bestR],['Economy',econTxt(C.br,0,C.bb)]]);
-    if(C.ct+C.st+C.ro)html+=`<div class="pl-sec">🧤 FIELDING</div>`+g([['Catches',C.ct],['Stumpings',C.st],['Run outs',C.ro]]);
-    html+=`<div class="pl-sec" style="margin-top:12px">🏆 TOURNAMENTS</div>`+per.sort((a,b)=>b.runs-a.runs).map(r=>`<div class="pl-m"><span>${esc(r.t)}<br><span style="font-size:11px;color:var(--dim)">${r.m} ${r.m===1?'match':'matches'}</span></span><span>🏏 ${r.runs} · 🎳 ${plural(r.wk,'wkt')}</span></div>`).join('');
-  }
+  let html=`<button class="bsm" onclick="openPlayerBack()">← Back</button>`+careerBody(name,C,per,'');
   html+=`<p style="font-size:11px;color:var(--dim);margin-top:10px">Career counts completed matches in every tournament by this organiser, matching the player by name. Super Overs are not included.</p>`;
   box.innerHTML=html;
   if(CURRENT_LANG!=='en'&&typeof i18nWalk==='function')i18nWalk(box);
