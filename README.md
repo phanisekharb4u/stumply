@@ -24,6 +24,8 @@ Admins can add a photo for each player, a logo for each team and a photo for eac
 
 Live at https://stumply.pages.dev on Cloudflare Pages: connect this repo and leave the build command empty. `_headers` sets the security headers.
 
+Visitor numbers: turn on **Web Analytics** for the Pages project (Workers & Pages → stumply → Metrics). `_headers` already allows Cloudflare's analytics script (`static.cloudflareinsights.com`) and beacon (`cloudflareinsights.com`).
+
 Static site, no build step: Cloudflare serves the files exactly as they are in the repo.
 
 ## Project layout
