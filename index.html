@@ -133,6 +133,7 @@
       <div id="v-list"></div>
       <div class="alabel">LIVE AND RECENT</div>
       <div id="dc-list" class="agrid"></div>
+      <button class="acard bd-entry" onclick="openBoard()"><span class="at">🤝 Looking for players?</span><span class="an">Teams that need players and players looking for a game near you</span></button>
       <div class="anotif">
         <span>🔔 Get alerts when a match starts, wickets fall and the result comes.</span>
         <span class="anotif-btns" style="display:flex;gap:8px;flex-wrap:wrap">
@@ -368,6 +369,11 @@
     <div class="ch">🧢 My player career</div>
     <p style="font-size:12px;color:var(--dim);line-height:1.5;margin-bottom:8px">Do you play too? Open your name in any Stumply tournament (Players, a scorecard or Stats) and tap “🙋 This is me”. Your runs and wickets from every organiser's tournaments add up in one career you can share.</p>
     <div style="display:flex;gap:7px;flex-wrap:wrap"><button class="bsm bgld" onclick="openMyCareer()">🏆 Open my career</button><button class="bsm bblu" onclick="shareMyCareer()">📤 Share my career</button></div>
+  </div>
+  <div class="card" id="board-card">
+    <div class="ch">🤝 Looking for players</div>
+    <p style="font-size:12px;color:var(--dim);line-height:1.5;margin-bottom:8px">Short of a player for Saturday? Post what your team needs, or see players near you who are free to play.</p>
+    <button class="bsm bgld" onclick="openBoard()">🤝 Open the board</button>
   </div>
   <!-- One-time import from the old version -->
   <!-- Site owner only: who is using Stumply -->
@@ -765,6 +771,7 @@
 <div id="print-area"></div>
 
 <!-- 👤 PLAYER PROFILE -->
+<div class="mo" id="bd-mo"><div class="mb" id="bd-body" style="max-width:560px"></div></div>
 <div class="mo" id="pl-mo">
   <div class="mb" style="max-width:520px">
     <div id="pl-cont"></div>
@@ -788,6 +795,7 @@
 <script src="/js/lang.js"></script>
 <script src="/js/extras.js"></script>
 <script src="/js/players.js"></script>
+<script src="/js/board.js"></script>
 <script src="/js/assistant.js"></script>
 <script src="/js/boot.js"></script>
 </body>
